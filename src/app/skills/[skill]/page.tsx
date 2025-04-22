@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect, ChangeEvent } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -12,20 +15,15 @@ import {
   HStack,
   VStack,
   SimpleGrid,
-  Progress,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  ButtonGroup
+  ButtonGroup,
+  Badge
 } from "@chakra-ui/react";
 import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
+import { trainingMethods, TrainingMethod } from "@/data/trainingMethods";
 
-// Example XP table (simplified)
+// Experience table for levels 1-99
 const xpTable = [
   0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 
   1358, 1584, 1833, 2107, 2411, 2746, 3115, 3523, 3973, 
@@ -46,6 +44,15 @@ const xpTable = [
   70170840, 77474828, 85539082, 94442737, 104273167
 ];
 
+// Get experience for a given level
+const getXpForLevel = (level: number): number => {
+  if (level < 1 || level > 99) return 0;
+  return level === 1 ? 0 : xpTable[level - 2];
+};
+
+// Sort options for training methods
+type SortOption = "level" | "xphr" | "gphr";
+
 type Props = {
   params: {
     skill: string;
@@ -63,99 +70,149 @@ export default function SkillPage({ params }: Props) {
   const skillKey = skill.toLowerCase() as SkillName;
   // Get skill name from constants
   const skillName = SKILL_NAMES[skillKey];
+  
+  // State for calculator
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [targetLevel, setTargetLevel] = useState(99);
+  const [currentXp, setCurrentXp] = useState(0);
+  const [targetXp, setTargetXp] = useState(13034431);
+  const [neededXp, setNeededXp] = useState(13034431);
+  const [progress, setProgress] = useState(0);
+  const [sortOption, setSortOption] = useState<SortOption>("level");
+  
+  // Training methods for this skill
+  const methods = trainingMethods[skillKey] || [];
+  
+  // Sort and filter methods based on current level
+  const filteredMethods = [...methods]
+    .filter(method => method.level <= targetLevel)
+    .sort((a, b) => {
+      switch (sortOption) {
+        case "level":
+          return a.level - b.level;
+        case "xphr":
+          return (b.xpEach * (b.estimatedActionsPerHour || 0)) - (a.xpEach * (a.estimatedActionsPerHour || 0));
+        case "gphr":
+          return (b.gpEach * (b.estimatedActionsPerHour || 0)) - (a.gpEach * (a.estimatedActionsPerHour || 0));
+        default:
+          return a.level - b.level;
+      }
+    });
+  
+  // Calculated results for each method
+  const calculatedMethods = filteredMethods.map(method => {
+    const actionsNeeded = Math.ceil(neededXp / method.xpEach);
+    const hoursNeeded = method.estimatedActionsPerHour 
+      ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
+      : "?";
+    const totalProfit = method.gpEach * actionsNeeded;
+    
+    return {
+      ...method,
+      actionsNeeded,
+      hoursNeeded,
+      totalProfit
+    };
+  });
+  
+  // Handle level input changes
+  const handleCurrentLevelChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (value >= 1 && value <= 99) {
+      setCurrentLevel(value);
+      const xp = getXpForLevel(value);
+      setCurrentXp(xp);
+    }
+  };
+  
+  const handleTargetLevelChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (value >= 1 && value <= 99) {
+      setTargetLevel(value);
+      const xp = getXpForLevel(value);
+      setTargetXp(xp);
+    }
+  };
+  
+  // Calculate needed XP and progress whenever levels or XP changes
+  useEffect(() => {
+    const needed = Math.max(0, targetXp - currentXp);
+    setNeededXp(needed);
+    
+    const progressPercent = targetXp === 0 
+      ? 100 
+      : Math.min(100, Math.max(0, (currentXp / targetXp) * 100));
+    setProgress(progressPercent);
+  }, [currentXp, targetXp, currentLevel, targetLevel]);
+  
+  // Format number with commas
+  const formatNumber = (num: number): string => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   return (
     <Box>
       {/* Header */}
       <Box borderBottom="1px solid" borderColor="brand.border" bg="brand.card">
         <Container maxW="7xl" py={4}>
-          <Flex justify="space-between" align="center">
-            <Flex align="center">
-              <Link href="/" style={{ textDecoration: 'none' }}>
-                <Heading as="h1" size="lg" fontWeight="bold">
-                  <Text as="span" color="brand.primary">Pro</Text>
-                  <Text as="span" color="white">bemas</Text>
-                </Heading>
-              </Link>
-              <Text ml={2} fontSize="sm" color="gray.400">| {skillName}</Text>
-            </Flex>
-            
-            <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
-              <Link href="/" style={{ textDecoration: 'none' }}>
-                <Text fontWeight="medium" color="white" _hover={{ color: 'brand.primary' }}>Home</Text>
-              </Link>
-              <Link href="/skills" style={{ textDecoration: 'none' }}>
-                <Text fontWeight="medium" color="brand.primary">Skills</Text>
-              </Link>
-              <Link href="/how-it-works" style={{ textDecoration: 'none' }}>
-                <Text fontWeight="medium" color="white" _hover={{ color: 'brand.primary' }}>How It Works</Text>
-              </Link>
-              <Link href="/support" style={{ textDecoration: 'none' }}>
-                <Text fontWeight="medium" color="white" _hover={{ color: 'brand.primary' }}>Support</Text>
-              </Link>
-            </HStack>
-            
-            <HStack spacing={3}>
-              <Link href="/login" style={{ textDecoration: 'none' }}>
-                <Text px={4} py={2} fontWeight="medium" color="white" _hover={{ color: 'brand.primary' }}>
-                  Login
-                </Text>
-              </Link>
-              <Link href="/signup" style={{ textDecoration: 'none' }}>
-                <Button 
-                  bg="brand.primary" 
-                  color="brand.background" 
-                  px={4} 
-                  py={2} 
-                  borderRadius="md" 
-                  fontWeight="medium"
-                  _hover={{ bg: 'brand.primaryHover' }}
-                >
-                  Sign Up
-                </Button>
-              </Link>
-            </HStack>
+          <Flex justify="center" align="center">
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <Heading as="h1" size="lg" fontWeight="bold">
+                <Text as="span" color="brand.primary">Pro</Text>
+                <Text as="span" color="white">bemas</Text>
+                <Text as="span" color="gray.400" ml={2} fontSize="sm">| {skillName}</Text>
+              </Heading>
+            </Link>
           </Flex>
         </Container>
       </Box>
 
       {/* Main content */}
       <Container maxW="6xl" py={8}>
-        <Flex justify="space-between" align="center" mb={8}>
-          <Flex align="center">
-            <Box mr={4}>
-              <SkillIcon skill={skillKey} size={56} />
-            </Box>
-            <Box>
-              <Heading size="lg" color="white" mb={1}>{skillName} Calculator</Heading>
-              <Text color="gray.400">
-                Plan your {skillName} training efficiently with live Grand Exchange prices.
-              </Text>
-            </Box>
+        {/* Hero Banner */}
+        <Box bg="brand.card" borderRadius="lg" p={6} mb={8} border="1px solid" borderColor="brand.border">
+          <Flex align="center" justify="space-between" flexDir={{ base: "column", md: "row" }} gap={4}>
+            <Flex align="center">
+              <Box mr={4}>
+                <SkillIcon skill={skillKey} size={56} />
+              </Box>
+              <Box>
+                <Heading size="lg" color="white" mb={1}>{skillName} Calculator</Heading>
+                <Text color="gray.400">
+                  Plan your {skillName} training efficiently with live Grand Exchange prices.
+                </Text>
+              </Box>
+            </Flex>
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <Button
+                colorScheme="yellow"
+                variant="outline"
+                color="brand.primary" 
+                borderColor="brand.primary"
+                _hover={{ bg: "rgba(234, 181, 22, 0.1)" }}
+              >
+                ← Back to Skills
+              </Button>
+            </Link>
           </Flex>
-          <Link href="/skills" style={{ textDecoration: 'none' }}>
-            <Text color="brand.primary" _hover={{ textDecoration: 'underline' }} fontWeight="medium">
-              ← Back to Skills
-            </Text>
-          </Link>
-        </Flex>
+        </Box>
 
         {/* Calculator Inputs */}
         <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6}>
           <Box bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
             <Heading size="md" color="brand.primary" mb={4}>Input</Heading>
             
-            <VStack spacing={4} align="stretch">
+            <VStack gap={4} align="stretch">
               <Box>
                 <Text mb={2} fontWeight="medium" color="white">
                   Current Level
                 </Text>
                 <Input
-                  id="current-level"
                   type="number"
                   min={1}
                   max={99}
-                  defaultValue={1}
+                  value={currentLevel}
+                  onChange={handleCurrentLevelChange}
                   bg="#1a243b"
                   border="1px solid"
                   borderColor="brand.border"
@@ -170,11 +227,11 @@ export default function SkillPage({ params }: Props) {
                   Target Level
                 </Text>
                 <Input
-                  id="target-level"
                   type="number"
                   min={2}
                   max={99}
-                  defaultValue={99}
+                  value={targetLevel}
+                  onChange={handleTargetLevelChange}
                   bg="#1a243b"
                   border="1px solid"
                   borderColor="brand.border"
@@ -183,21 +240,6 @@ export default function SkillPage({ params }: Props) {
                   _focus={{ borderColor: "brand.primary", outline: "none" }}
                 />
               </Box>
-              
-              <Box pt={2}>
-                <Button
-                  width="100%"
-                  bg="brand.primary"
-                  color="brand.background"
-                  fontWeight="medium"
-                  py={2}
-                  px={6}
-                  borderRadius="md"
-                  _hover={{ bg: "brand.primaryHover" }}
-                >
-                  Calculate
-                </Button>
-              </Box>
             </VStack>
           </Box>
           
@@ -205,93 +247,133 @@ export default function SkillPage({ params }: Props) {
           <Box bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
             <Heading size="md" color="brand.primary" mb={4}>Summary</Heading>
             
-            <VStack spacing={5} align="stretch">
-              <SimpleGrid columns={2} spacing={4}>
+            <VStack gap={5} align="stretch">
+              <SimpleGrid columns={2} gap={4}>
                 <Box>
                   <Text fontSize="sm" color="gray.400" mb={1}>Current XP</Text>
-                  <Text fontSize="lg" fontWeight="bold" color="white">0</Text>
+                  <Text fontSize="lg" fontWeight="bold" color="white">{formatNumber(currentXp)}</Text>
                 </Box>
                 <Box>
                   <Text fontSize="sm" color="gray.400" mb={1}>Needed XP</Text>
-                  <Text fontSize="lg" fontWeight="bold" color="white">13,034,431</Text>
+                  <Text fontSize="lg" fontWeight="bold" color="white">{formatNumber(neededXp)}</Text>
                 </Box>
               </SimpleGrid>
               
               <Box>
-                <Progress value={0} size="sm" colorScheme="yellow" bg="#1a243b" borderRadius="full" />
-                <Text fontSize="xs" color="gray.400" mt={1}>0% Complete</Text>
+                <Box 
+                  h="8px" 
+                  bg="#1a243b" 
+                  borderRadius="full" 
+                  overflow="hidden"
+                >
+                  <Box 
+                    h="100%" 
+                    w={`${progress}%`} 
+                    bg="#eab516" 
+                    borderRadius="full"
+                  ></Box>
+                </Box>
+                <Text fontSize="xs" color="gray.400" mt={1}>{progress.toFixed(1)}% Complete</Text>
               </Box>
             </VStack>
           </Box>
         </Grid>
         
-        {/* Methods Table (placeholder) */}
+        {/* Methods Table */}
         <Box mt={8} bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
           <Flex justify="space-between" align="center" mb={4}>
             <Heading size="md" color="brand.primary">Training Methods</Heading>
-            <ButtonGroup size="sm" isAttached variant="outline">
+            <ButtonGroup size="sm" attached variant="outline">
               <Button 
-                bg="#1a243b" 
-                color="white" 
+                bg={sortOption === "xphr" ? "brand.primary" : "#1a243b"}
+                color={sortOption === "xphr" ? "brand.background" : "white"}
                 borderColor="brand.border" 
                 borderLeftRadius="md" 
                 _hover={{ bg: "#222b43" }}
+                onClick={() => setSortOption("xphr")}
               >
                 XP/hr
               </Button>
               <Button 
-                bg="#1a243b" 
-                color="white" 
+                bg={sortOption === "gphr" ? "brand.primary" : "#1a243b"}
+                color={sortOption === "gphr" ? "brand.background" : "white"}
                 borderColor="brand.border" 
                 borderRadius="0" 
                 _hover={{ bg: "#222b43" }}
+                onClick={() => setSortOption("gphr")}
               >
                 GP/hr
               </Button>
               <Button 
-                bg="#1a243b" 
-                color="white" 
+                bg={sortOption === "level" ? "brand.primary" : "#1a243b"}
+                color={sortOption === "level" ? "brand.background" : "white"}
                 borderColor="brand.border" 
                 borderRightRadius="md" 
                 _hover={{ bg: "#222b43" }}
+                onClick={() => setSortOption("level")}
               >
                 Level
               </Button>
             </ButtonGroup>
           </Flex>
           
-          <Box overflowX="auto">
-            <Table variant="unstyled" width="full">
-              <Thead bg="#1a243b" borderBottom="1px solid" borderColor="brand.border">
-                <Tr>
-                  <Th px={4} py={3} textAlign="left" color="gray.400" fontWeight="medium" fontSize="sm">Method</Th>
-                  <Th px={4} py={3} textAlign="left" color="gray.400" fontWeight="medium" fontSize="sm">Level</Th>
-                  <Th px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">XP/ea</Th>
-                  <Th px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Actions</Th>
-                  <Th px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">GP/ea</Th>
-                  <Th px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Profit/Loss</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr _hover={{ bg: "#1a243b" }} cursor="pointer" borderBottom="1px solid" borderColor="brand.border">
-                  <Td px={4} py={3} color="white">Placeholder Item</Td>
-                  <Td px={4} py={3} color="white">1</Td>
-                  <Td px={4} py={3} textAlign="right" color="white">50</Td>
-                  <Td px={4} py={3} textAlign="right" color="white">260,689</Td>
-                  <Td px={4} py={3} textAlign="right" color="red.500">-100</Td>
-                  <Td px={4} py={3} textAlign="right" color="red.500">-26,068,900</Td>
-                </Tr>
-                <Tr _hover={{ bg: "#1a243b" }} cursor="pointer">
-                  <Td px={4} py={3} color="white">Placeholder Item 2</Td>
-                  <Td px={4} py={3} color="white">10</Td>
-                  <Td px={4} py={3} textAlign="right" color="white">100</Td>
-                  <Td px={4} py={3} textAlign="right" color="white">130,344</Td>
-                  <Td px={4} py={3} textAlign="right" color="green.500">+50</Td>
-                  <Td px={4} py={3} textAlign="right" color="green.500">+6,517,200</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </Box>
+          {methods.length === 0 ? (
+            <Flex justify="center" align="center" py={8}>
+              <Text color="gray.400">
+                Training methods for {skillName} are coming soon. Check back later!
+              </Text>
+            </Flex>
+          ) : (
+            <Box overflowX="auto">
+              <Box as="table" width="100%">
+                <Box as="thead" bg="#1a243b" borderBottom="1px solid" borderColor="brand.border">
+                  <Box as="tr">
+                    <Box as="th" px={4} py={3} textAlign="left" color="gray.400" fontWeight="medium" fontSize="sm">Method</Box>
+                    <Box as="th" px={4} py={3} textAlign="left" color="gray.400" fontWeight="medium" fontSize="sm">Level</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">XP/ea</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Actions</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Hours</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">GP/ea</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Profit/Loss</Box>
+                  </Box>
+                </Box>
+                <Box as="tbody">
+                  {calculatedMethods.map((method) => (
+                    <Box 
+                      key={method.id}
+                      as="tr" 
+                      _hover={{ bg: "#1a243b" }} 
+                      cursor="pointer" 
+                      borderBottom="1px solid" 
+                      borderColor="brand.border"
+                      title={method.notes}
+                    >
+                      <Box as="td" px={4} py={3} color="white">
+                        <Flex align="center" gap={2}>
+                          {method.name}
+                          {method.isMembers && (
+                            <Badge bg="rgba(234, 181, 22, 0.1)" color="brand.primary" fontSize="xs">
+                              P2P
+                            </Badge>
+                          )}
+                        </Flex>
+                      </Box>
+                      <Box as="td" px={4} py={3} color="white">{method.level}</Box>
+                      <Box as="td" px={4} py={3} textAlign="right" color="white">{method.xpEach}</Box>
+                      <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
+                      <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
+                      <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "green.500" : "red.500"}>
+                        {method.gpEach >= 0 ? `+${method.gpEach}` : method.gpEach}
+                      </Box>
+                      <Box as="td" px={4} py={3} textAlign="right" color={method.totalProfit >= 0 ? "green.500" : "red.500"}>
+                        {method.totalProfit >= 0 ? `+${formatNumber(method.totalProfit)}` : formatNumber(method.totalProfit)}
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
       </Container>
 
