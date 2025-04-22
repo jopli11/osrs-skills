@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import '../styles/probemas-theme.css';
+html,
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+.base-styles {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0e1117;
+    color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* Button styles */
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(234, 181, 22, 0.25);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+    border: 1px solid var(--secondary-foreground);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: color-mix(in srgb, var(--secondary), black 10%);
+}
+
+
+/* Card style */
+
+.card {
+    background-color: var(--card);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Typography */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+p,
+li,
+input,
+textarea {
+    line-height: 1.6;
+}
+
+
+/* Logo styling */
+
+.probemas-logo {
+    font-weight: 800;
+}
+
+.probemas-logo .pro {
+    color: var(--primary);
+}
+
+.probemas-logo .bemas {
+    color: var(--foreground);
+}
+
+
+/* Animations */
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}

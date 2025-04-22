@@ -1,0 +1,96 @@
+/* OSRS Skills Calculator Theme Variables */
+
+:root {
+    /* Colors */
+    --osrs-yellow: #eab516;
+    --osrs-dark: #1a1e2c;
+    --osrs-brown: #8e683b;
+    --osrs-green: #0dc10d;
+    --osrs-red: #e53935;
+    --osrs-blue: #3b82f6;
+    /* Theme colors (dark default) */
+    --background: hsl(218, 35%, 7%);
+    --foreground: hsl(0, 0%, 100%);
+    --card: hsl(222, 42%, 11%);
+    --primary: var(--osrs-yellow);
+    --primary-foreground: hsl(0, 0%, 0%);
+    --secondary: hsl(33, 29%, 16%);
+    --secondary-foreground: var(--osrs-yellow);
+    --destructive: var(--osrs-red);
+    --destructive-foreground: hsl(0, 0%, 100%);
+    --border: hsl(217, 33%, 25%);
+    --muted: hsl(217, 33%, 17%);
+    --muted-foreground: hsl(215, 16%, 65%);
+    --accent: hsl(217, 33%, 17%);
+    --accent-foreground: hsl(0, 0%, 100%);
+    /* Light theme overrides */
+    --light-background: hsl(0, 0%, 100%);
+    --light-foreground: hsl(222, 47%, 11%);
+    --light-card: hsl(0, 0%, 100%);
+    --light-border: hsl(214, 32%, 91%);
+    --light-muted: hsl(214, 32%, 91%);
+    --light-muted-foreground: hsl(215, 16%, 45%);
+    --light-accent: hsl(43, 50%, 95%);
+    --light-accent-foreground: hsl(222, 47%, 11%);
+    /* Typography */
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.25rem;
+    --font-2xl: 1.5rem;
+    --font-3xl: 1.875rem;
+    --font-4xl: 2.25rem;
+    --font-5xl: 3rem;
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 350ms ease;
+    /* Z-index */
+    --z-0: 0;
+    --z-10: 10;
+    --z-20: 20;
+    --z-30: 30;
+    --z-40: 40;
+    --z-50: 50;
+    --z-max: 999;
+}
+
+
+/* Light Theme */
+
+[data-theme="light"] {
+    --background: var(--light-background);
+    --foreground: var(--light-foreground);
+    --card: var(--light-card);
+    --border: var(--light-border);
+    --muted: var(--light-muted);
+    --muted-foreground: var(--light-muted-foreground);
+    --accent: var(--light-accent);
+    --accent-foreground: var(--light-accent-foreground);
+    /* Keep primary, secondary, and destructive the same */
+    --primary: var(--osrs-yellow);
+    --primary-foreground: hsl(0, 0%, 0%);
+    --secondary: hsl(43, 50%, 95%);
+    --secondary-foreground: var(--osrs-yellow);
+    --destructive: var(--osrs-red);
+    --destructive-foreground: hsl(0, 0%, 100%);
+}

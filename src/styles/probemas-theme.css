@@ -1,0 +1,30 @@
+:root {
+    /* Probemas brand colors */
+    --probemas-gold: #eab516;
+    --probemas-dark: #1a1e2c;
+    --probemas-accent: #3b82f6;
+    /* Dark theme (default) */
+    --background: hsl(218, 35%, 7%);
+    --foreground: hsl(0, 0%, 100%);
+    --card: hsl(222, 42%, 11%);
+    --primary: hsl(43, 91%, 50%);
+    --primary-foreground: hsl(0, 0%, 0%);
+    --secondary: hsl(33, 29%, 16%);
+    --secondary-foreground: hsl(43, 91%, 50%);
+    --destructive: hsl(0, 63%, 50%);
+    --destructive-foreground: hsl(0, 0%, 100%);
+    --border: hsl(217, 33%, 25%);
+}
+
+[data-theme="light"] {
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(222, 47%, 11%);
+    --card: hsl(0, 0%, 100%);
+    --primary: hsl(43, 91%, 50%);
+    --primary-foreground: hsl(0, 0%, 0%);
+    --secondary: hsl(43, 50%, 95%);
+    --secondary-foreground: hsl(43, 91%, 50%);
+    --destructive: hsl(0, 63%, 50%);
+    --destructive-foreground: hsl(0, 0%, 100%);
+    --border: hsl(214, 32%, 91%);
+}

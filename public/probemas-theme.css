@@ -1,0 +1,37 @@
+:root {
+    /* Probemas brand colors */
+    --probemas-gold: #DAA520;
+    --probemas-dark: #1a1e2c;
+    --probemas-accent: #3b82f6;
+    /* Default light theme */
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --primary: #DAA520;
+    --primary-foreground: #000000;
+    --secondary: #f8f5e6;
+    --secondary-foreground: #DAA520;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e2e8f0;
+    --accent: #f8f9fa;
+    --accent-foreground: #0f172a;
+}
+
+[data-theme="dark"] {
+    /* Dark theme variables */
+    --background: #0e1117;
+    --foreground: #ffffff;
+    --card: #1a1e2c;
+    --card-foreground: #ffffff;
+    --primary: #DAA520;
+    --primary-foreground: #000000;
+    --secondary: #272b35;
+    --secondary-foreground: #DAA520;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #2d3748;
+    --accent: #1e293b;
+    --accent-foreground: #ffffff;
+}
