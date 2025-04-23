@@ -5,7 +5,6 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--background);
     color: var(--foreground);
 }
 
@@ -13,7 +12,13 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #0e1117;
+    color: #ffffff;
+}
+
+.osrs-background {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
     color: #ffffff;
 }
 

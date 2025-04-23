@@ -7,8 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
-import { ChakraProvider } from '@chakra-ui/react';
-import chakraSystem from '@/lib/theme';
+import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
 
 // Client-side cache, shared for the whole session of the user
 const createEmotionCache = () => {
@@ -29,17 +28,17 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <CacheProvider value={emotionCache}>
-      <ChakraProvider value={chakraSystem}>
+      <ChakraProvider value={defaultSystem}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider
             attribute="data-theme"
             defaultTheme="dark"
-            enableSystem
+            enableSystem={false}
             disableTransitionOnChange
           >
             {children}
+            {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
           </ThemeProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ChakraProvider>
     </CacheProvider>

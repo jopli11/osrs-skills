@@ -9,8 +9,6 @@ import {
   Heading, 
   Button, 
   SimpleGrid,
-  VStack,
-  HStack,
   Badge
 } from '@chakra-ui/react';
 import SkillCard from '@/components/SkillCard';
@@ -21,13 +19,34 @@ export default function Home() {
   return (
     <Box>
       {/* Header/Navigation Bar */}
-      <Box borderBottom="1px solid" borderColor="brand.border" bg="brand.card">
+      <Box 
+        borderBottom="2px solid" 
+        borderColor="black" 
+        bg="#2a1e0f"
+        boxShadow="0 4px 6px rgba(0,0,0,0.6)"
+        position="relative"
+        _after={{
+          content: '""',
+          position: 'absolute',
+          bottom: '-2px',
+          left: 0,
+          right: 0,
+          height: '1px',
+          backgroundColor: 'rgba(255, 203, 47, 0.2)'
+        }}
+      >
         <Container maxW="7xl" py={4}>
           <Flex justify="center" align="center">
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <Heading as="h1" size="lg" fontWeight="bold">
-                <Text as="span" color="brand.primary">Pro</Text>
-                <Text as="span" color="white">bemas</Text>
+              <Heading 
+                as="h1" 
+                size="lg" 
+                fontWeight="bold" 
+                fontFamily="'Roboto Slab', serif"
+                textShadow="2px 2px 0px #000"
+              >
+                <Text as="span" color="#ffcb2f">OSRS</Text>
+                <Text as="span" color="white">Calculators</Text>
               </Heading>
             </Link>
           </Flex>
@@ -37,18 +56,47 @@ export default function Home() {
       <Box as="main">
         {/* Hero Section */}
         <Container maxW="6xl" mt={8} p={{ base: 4, md: 8 }}>
-          <Box bg="brand.card" borderRadius="lg" p={{ base: 6, md: 12 }} textAlign="center">
-            <VStack gap={5} mb={8}>
-              <Heading size="2xl" mb={2}>
-                <Text as="span" color="brand.primary">Pro</Text>
-                <Text as="span" color="white">bemas</Text>
-                <Text as="span" color="white" mx={4}>|</Text>
-                <Text as="span" color="brand.primary">Skills</Text>
-              </Heading>
-              <Text fontSize="lg" color="gray.300" maxW="3xl" mx="auto">
-                Skip the Grind. Gear Up. Enjoy the Game. Mobile-first calculators with 100% mathematical parity with OldSchool.tools.
+          <Box 
+            bg="rgba(42, 30, 15, 0.85)" 
+            borderRadius="md" 
+            p={{ base: 6, md: 12 }} 
+            textAlign="center"
+            border="2px solid black"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            backdropFilter="blur(4px)"
+            position="relative"
+            _after={{
+              content: '""',
+              position: 'absolute',
+              top: '1px',
+              left: '1px',
+              right: '1px',
+              height: '1px',
+              backgroundColor: 'rgba(255, 203, 47, 0.2)'
+            }}
+          >
+            <Flex direction="column" gap={5} mb={8}>
+              <Box mb={2}>
+                {/* OSRS Style Logo */}
+                <Heading 
+                  size="2xl" 
+                  fontFamily="'Roboto Slab', serif"
+                  textShadow="3px 3px 0px #000"
+                >
+                  <Text as="span" color="#ffcb2f">OSRS</Text>
+                  <Text as="span" color="white">Calculators</Text>
+                </Heading>
+              </Box>
+              <Text 
+                fontSize="lg" 
+                color="#e0d0b0" 
+                maxW="3xl" 
+                mx="auto"
+                textShadow="1px 1px 0px rgba(0,0,0,0.8)"
+              >
+                Plan your Old School RuneScape journey with precision. Calculate XP needed, find the most efficient training methods, and track profit/loss with live Grand Exchange prices.
               </Text>
-            </VStack>
+            </Flex>
             
             <Flex 
               direction={{ base: 'column', md: 'row' }} 
@@ -59,9 +107,25 @@ export default function Home() {
               <Button 
                 onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })}
                 size="lg"
-                bg="brand.primary"
-                color="brand.background"
-                _hover={{ bg: 'brand.primaryHover' }}
+                bg="#ffcb2f"
+                color="#211305"
+                _hover={{ bg: '#e0a922', transform: 'translateY(1px)' }}
+                border="2px solid black"
+                boxShadow="3px 3px 0 rgba(0,0,0,0.5)"
+                fontWeight="bold"
+                fontSize="md"
+                borderRadius="sm"
+                py={6}
+                position="relative"
+                _after={{
+                  content: '""',
+                  position: 'absolute',
+                  top: '1px',
+                  left: '1px',
+                  right: '1px',
+                  height: '1px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.4)'
+                }}
               >
                 Browse Skills →
               </Button>
@@ -70,75 +134,128 @@ export default function Home() {
         </Container>
 
         {/* Skills Section */}
-        <Container maxW="6xl" py={16} id="skills">
-          <Flex align="center" mb={6}>
-            <Badge 
-              bg="rgba(234, 181, 22, 0.1)" 
-              color="brand.primary" 
-              px={3} 
-              py={1} 
-              borderRadius="md" 
-              mr={3}
-              fontWeight="medium"
-            >
-              Featured
-            </Badge>
+        <Container maxW="6xl" pt={12} pb={8} id="skills">
+          <Flex direction="column" gap={6} align="flex-start">
+            <Flex align="center">
+              <Badge 
+                bg="#361f0e" 
+                color="#ffcb2f" 
+                px={3} 
+                py={1.5} 
+                borderRadius="sm" 
+                mr={3}
+                fontWeight="medium"
+                border="1px solid black"
+                boxShadow="1px 1px 0 rgba(0,0,0,0.2)"
+              >
+                Featured
+              </Badge>
+              <Heading 
+                color="#ffcb2f" 
+                size="lg"
+                fontFamily="'Roboto Slab', serif"
+                textShadow="2px 2px 0px #000"
+              >
+                Choose a Skill
+              </Heading>
+            </Flex>
+            
+            <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }} gap={4} width="100%">
+              {ALL_SKILLS.map((skill) => (
+                <SkillCard 
+                  key={skill} 
+                  skill={skill as SkillName}
+                />
+              ))}
+            </SimpleGrid>
           </Flex>
-          
-          <Heading color="white" size="lg" mb={8}>Choose a Skill</Heading>
-          
-          <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }} gap={4}>
-            {ALL_SKILLS.map((skill) => (
-              <SkillCard 
-                key={skill} 
-                skill={skill as SkillName}
-              />
-            ))}
-          </SimpleGrid>
         </Container>
         
         {/* Why Use Our Calculators Section */}
         <Container maxW="6xl" py={8}>
-          <Box bg="brand.card" borderRadius="lg" p={8} border="1px solid" borderColor="brand.border">
-            <Heading size="lg" color="brand.primary" mb={4}>Why Use Our Calculators?</Heading>
-            <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
-              <HStack align="start" gap={3}>
-                <Text color="brand.primary">✓</Text>
+          <Box 
+            bg="rgba(42, 30, 15, 0.75)" 
+            borderRadius="md" 
+            p={8} 
+            border="2px solid" 
+            borderColor="black"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            backdropFilter="blur(4px)"
+            position="relative"
+            _after={{
+              content: '""',
+              position: 'absolute',
+              top: '1px',
+              left: '1px',
+              right: '1px',
+              height: '1px',
+              backgroundColor: 'rgba(255, 203, 47, 0.2)'
+            }}
+          >
+            <Heading 
+              size="lg" 
+              color="#ffcb2f" 
+              mb={6}
+              fontFamily="'Roboto Slab', serif"
+              textShadow="2px 2px 0px #000"
+            >
+              Why Use Our Calculators?
+            </Heading>
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
+              <Flex align="start" gap={3}>
+                <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="medium" color="white">Live Prices</Text>
-                  <Text fontSize="sm" color="gray.400">Grand Exchange prices updated daily</Text>
+                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">Live Prices</Text>
+                  <Text fontSize="sm" color="#e0d0b0">Grand Exchange prices updated daily</Text>
                 </Box>
-              </HStack>
-              <HStack align="start" gap={3}>
-                <Text color="brand.primary">✓</Text>
+              </Flex>
+              <Flex align="start" gap={3}>
+                <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="medium" color="white">Mobile-First</Text>
-                  <Text fontSize="sm" color="gray.400">Responsive design works on all devices</Text>
+                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">Mobile-First</Text>
+                  <Text fontSize="sm" color="#e0d0b0">Responsive design works on all devices</Text>
                 </Box>
-              </HStack>
-              <HStack align="start" gap={3}>
-                <Text color="brand.primary">✓</Text>
+              </Flex>
+              <Flex align="start" gap={3}>
+                <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="medium" color="white">100% Accurate</Text>
-                  <Text fontSize="sm" color="gray.400">Mathematically accurate XP calculations</Text>
+                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">100% Accurate</Text>
+                  <Text fontSize="sm" color="#e0d0b0">Mathematically accurate XP calculations</Text>
                 </Box>
-              </HStack>
-              <HStack align="start" gap={3}>
-                <Text color="brand.primary">✓</Text>
+              </Flex>
+              <Flex align="start" gap={3}>
+                <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="medium" color="white">Advanced Filtering</Text>
-                  <Text fontSize="sm" color="gray.400">Sort by XP efficiency, GP profit, or level</Text>
+                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">Advanced Filtering</Text>
+                  <Text fontSize="sm" color="#e0d0b0">Sort by XP efficiency, GP profit, or level</Text>
                 </Box>
-              </HStack>
+              </Flex>
             </SimpleGrid>
           </Box>
         </Container>
       </Box>
 
-      <Box as="footer" bg="brand.card" mt={16} py={8} borderTop="1px solid" borderColor="brand.border">
+      <Box 
+        as="footer" 
+        bg="rgba(42, 30, 15, 0.9)"
+        mt={16} 
+        py={8} 
+        borderTop="2px solid black"
+        backdropFilter="blur(2px)"
+        position="relative"
+        _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          backgroundColor: 'rgba(255, 203, 47, 0.15)'
+        }}
+      >
         <Container maxW="7xl" textAlign="center">
-          <Text fontSize="sm" color="gray.400">© {new Date().getFullYear()} Probemas | All game content is copyright Jagex Ltd.</Text>
-          <Text fontSize="sm" color="gray.400" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
+          <Text fontSize="sm" color="#e0d0b0">© {new Date().getFullYear()} OSRSCalculators | All game content is copyright Jagex Ltd.</Text>
+          <Text fontSize="sm" color="#e0d0b0" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
         </Container>
       </Box>
     </Box>

@@ -5,17 +5,21 @@ const system = createSystem(defaultConfig, {
     tokens: {
       fonts: {
         body: { value: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif' },
-        heading: { value: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif' },
+        heading: { value: '"Roboto Slab", serif' },
       },
       colors: {
         brand: {
-          primary: { value: '#eab516' },
-          primaryHover: { value: '#d9a012' },
-          background: { value: '#0f111a' },
-          card: { value: '#141824' },
-          cardHover: { value: '#1a1f2e' },
-          border: { value: '#1e2131' },
-          borderHover: { value: '#2d3748' },
+          primary: { value: '#ffcb2f' },
+          primaryHover: { value: '#e0a922' },
+          background: { value: '#0c0906' },
+          card: { value: '#271c11' },
+          cardHover: { value: '#211510' },
+          border: { value: '#3a3529' },
+          borderHover: { value: '#4d4637' },
+          osrsYellow: { value: '#ffcb2f' },
+          osrsGold: { value: '#ffcb2f' },
+          osrsBrown: { value: '#271c11' },
+          osrsDarkBrown: { value: '#211510' },
         },
       },
     },
@@ -24,19 +28,27 @@ const system = createSystem(defaultConfig, {
         variants: {
           variant: {
             primary: {
-              bg: "brand.primary",
-              color: "brand.background",
+              bg: "#ffcb2f",
+              color: "#211510",
+              border: "2px solid black",
+              boxShadow: "3px 3px 0 rgba(0,0,0,0.5)",
+              borderRadius: "sm",
               _hover: {
-                bg: "brand.primaryHover",
+                bg: "#e0a922",
+                transform: "translateY(1px)",
+                boxShadow: "1px 1px 0 rgba(0,0,0,0.5)",
               },
             },
             secondary: {
-              bg: "transparent",
-              color: "white",
-              border: "1px solid",
-              borderColor: "brand.border",
+              bg: "#271c11",
+              color: "#ffcb2f",
+              border: "2px solid black",
+              boxShadow: "3px 3px 0 rgba(0,0,0,0.5)",
+              borderRadius: "sm",
               _hover: {
-                bg: "brand.cardHover",
+                bg: "#211510",
+                transform: "translateY(1px)",
+                boxShadow: "1px 1px 0 rgba(0,0,0,0.5)",
               },
             },
           },
@@ -47,6 +59,13 @@ const system = createSystem(defaultConfig, {
           _hover: {
             textDecoration: "none",
           },
+        },
+      },
+      Heading: {
+        base: {
+          color: "white",
+          textShadow: "2px 2px 0 #000",
+          fontFamily: '"Roboto Slab", serif',
         },
       },
     },

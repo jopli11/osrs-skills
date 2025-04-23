@@ -12,7 +12,6 @@ import {
   Button,
   Grid,
   Input,
-  HStack,
   VStack,
   SimpleGrid,
   ButtonGroup,
@@ -21,7 +20,7 @@ import {
 import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
-import { trainingMethods, TrainingMethod } from "@/data/trainingMethods";
+import { trainingMethods } from "@/data/trainingMethods";
 
 // Experience table for levels 1-99
 const xpTable = [
@@ -153,14 +152,35 @@ export default function SkillPage({ params }: Props) {
   return (
     <Box>
       {/* Header */}
-      <Box borderBottom="1px solid" borderColor="brand.border" bg="brand.card">
+      <Box 
+        borderBottom="2px solid" 
+        borderColor="black" 
+        bg="#2a1e0f"
+        boxShadow="0 4px 6px rgba(0,0,0,0.6)"
+        position="relative"
+        _after={{
+          content: '""',
+          position: 'absolute',
+          bottom: '-2px',
+          left: 0,
+          right: 0,
+          height: '1px',
+          backgroundColor: 'rgba(255, 203, 47, 0.2)'
+        }}
+      >
         <Container maxW="7xl" py={4}>
           <Flex justify="center" align="center">
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <Heading as="h1" size="lg" fontWeight="bold">
-                <Text as="span" color="brand.primary">Pro</Text>
-                <Text as="span" color="white">bemas</Text>
-                <Text as="span" color="gray.400" ml={2} fontSize="sm">| {skillName}</Text>
+              <Heading 
+                as="h1" 
+                size="lg" 
+                fontWeight="bold" 
+                fontFamily="'Roboto Slab', serif"
+                textShadow="2px 2px 0px #000"
+              >
+                <Text as="span" color="#ffcb2f">OSRS</Text>
+                <Text as="span" color="white">Calculators</Text>
+                <Text as="span" color="#e0d0b0" ml={2} fontSize="sm" fontWeight="normal">| {skillName}</Text>
               </Heading>
             </Link>
           </Flex>
@@ -170,28 +190,57 @@ export default function SkillPage({ params }: Props) {
       {/* Main content */}
       <Container maxW="6xl" py={8}>
         {/* Hero Banner */}
-        <Box bg="brand.card" borderRadius="lg" p={6} mb={8} border="1px solid" borderColor="brand.border">
+        <Box 
+          bg="rgba(42, 30, 15, 0.85)" 
+          borderRadius="md" 
+          p={6} 
+          mb={8} 
+          border="2px solid black"
+          boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+          backdropFilter="blur(4px)"
+          position="relative"
+          _after={{
+            content: '""',
+            position: 'absolute',
+            top: '1px',
+            left: '1px',
+            right: '1px',
+            height: '1px',
+            backgroundColor: 'rgba(255, 203, 47, 0.2)'
+          }}
+        >
           <Flex align="center" justify="space-between" flexDir={{ base: "column", md: "row" }} gap={4}>
             <Flex align="center">
-              <Box mr={4}>
+              <Box 
+                mr={4}
+                p={2}
+                borderRadius="full"
+                bg="rgba(0,0,0,0.5)"
+                border="1px solid rgba(0,0,0,0.8)"
+                boxShadow="inset 0 0 5px rgba(0,0,0,0.5), 0 1px 2px rgba(255, 203, 47, 0.2)"
+              >
                 <SkillIcon skill={skillKey} size={56} />
               </Box>
               <Box>
-                <Heading size="lg" color="white" mb={1}>{skillName} Calculator</Heading>
-                <Text color="gray.400">
+                <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">{skillName} Calculator</Heading>
+                <Text color="#e0d0b0">
                   Plan your {skillName} training efficiently with live Grand Exchange prices.
                 </Text>
               </Box>
             </Flex>
             <Link href="/" style={{ textDecoration: 'none' }}>
               <Button
-                colorScheme="yellow"
-                variant="outline"
-                color="brand.primary" 
-                borderColor="brand.primary"
-                _hover={{ bg: "rgba(234, 181, 22, 0.1)" }}
+                bg="#ffcb2f"
+                color="#211305"
+                _hover={{ bg: '#e0a922', transform: 'translateY(1px)' }}
+                border="2px solid black"
+                boxShadow="3px 3px 0 rgba(0,0,0,0.5)"
+                fontWeight="bold"
+                fontSize="md"
+                borderRadius="sm"
+                leftIcon={<Text>←</Text>}
               >
-                ← Back to Skills
+                Back to Skills
               </Button>
             </Link>
           </Flex>
@@ -199,12 +248,29 @@ export default function SkillPage({ params }: Props) {
 
         {/* Calculator Inputs */}
         <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6}>
-          <Box bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
-            <Heading size="md" color="brand.primary" mb={4}>Input</Heading>
+          <Box 
+            bg="rgba(42, 30, 15, 0.75)" 
+            borderRadius="md" 
+            p={6} 
+            border="2px solid black"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            backdropFilter="blur(4px)"
+            position="relative"
+            _after={{
+              content: '""',
+              position: 'absolute',
+              top: '1px',
+              left: '1px',
+              right: '1px',
+              height: '1px',
+              backgroundColor: 'rgba(255, 203, 47, 0.2)'
+            }}
+          >
+            <Heading size="md" color="#ffcb2f" mb={4} fontFamily="'Roboto Slab', serif" textShadow="1px 1px 0px #000">Input</Heading>
             
             <VStack gap={4} align="stretch">
               <Box>
-                <Text mb={2} fontWeight="medium" color="white">
+                <Text mb={2} fontWeight="medium" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">
                   Current Level
                 </Text>
                 <Input
@@ -213,17 +279,18 @@ export default function SkillPage({ params }: Props) {
                   max={99}
                   value={currentLevel}
                   onChange={handleCurrentLevelChange}
-                  bg="#1a243b"
-                  border="1px solid"
-                  borderColor="brand.border"
+                  bg="rgba(0,0,0,0.3)"
+                  border="2px solid black"
                   borderRadius="md"
                   color="white"
-                  _focus={{ borderColor: "brand.primary", outline: "none" }}
+                  fontWeight="bold"
+                  height="12"
+                  _focus={{ borderColor: "#ffcb2f", outline: "none" }}
                 />
               </Box>
               
               <Box>
-                <Text mb={2} fontWeight="medium" color="white">
+                <Text mb={2} fontWeight="medium" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">
                   Target Level
                 </Text>
                 <Input
@@ -232,85 +299,132 @@ export default function SkillPage({ params }: Props) {
                   max={99}
                   value={targetLevel}
                   onChange={handleTargetLevelChange}
-                  bg="#1a243b"
-                  border="1px solid"
-                  borderColor="brand.border"
+                  bg="rgba(0,0,0,0.3)"
+                  border="2px solid black"
                   borderRadius="md"
                   color="white"
-                  _focus={{ borderColor: "brand.primary", outline: "none" }}
+                  fontWeight="bold"
+                  height="12"
+                  _focus={{ borderColor: "#ffcb2f", outline: "none" }}
                 />
               </Box>
             </VStack>
           </Box>
           
           {/* Results Panel */}
-          <Box bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
-            <Heading size="md" color="brand.primary" mb={4}>Summary</Heading>
+          <Box 
+            bg="rgba(42, 30, 15, 0.75)" 
+            borderRadius="md" 
+            p={6} 
+            border="2px solid black"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            backdropFilter="blur(4px)"
+            position="relative"
+            _after={{
+              content: '""',
+              position: 'absolute',
+              top: '1px',
+              left: '1px',
+              right: '1px',
+              height: '1px',
+              backgroundColor: 'rgba(255, 203, 47, 0.2)'
+            }}
+          >
+            <Heading size="md" color="#ffcb2f" mb={4} fontFamily="'Roboto Slab', serif" textShadow="1px 1px 0px #000">Summary</Heading>
             
             <VStack gap={5} align="stretch">
               <SimpleGrid columns={2} gap={4}>
                 <Box>
-                  <Text fontSize="sm" color="gray.400" mb={1}>Current XP</Text>
-                  <Text fontSize="lg" fontWeight="bold" color="white">{formatNumber(currentXp)}</Text>
+                  <Text fontSize="sm" color="#e0d0b0" mb={1}>Current XP</Text>
+                  <Text fontSize="lg" fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">{formatNumber(currentXp)}</Text>
                 </Box>
                 <Box>
-                  <Text fontSize="sm" color="gray.400" mb={1}>Needed XP</Text>
-                  <Text fontSize="lg" fontWeight="bold" color="white">{formatNumber(neededXp)}</Text>
+                  <Text fontSize="sm" color="#e0d0b0" mb={1}>Needed XP</Text>
+                  <Text fontSize="lg" fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">{formatNumber(neededXp)}</Text>
                 </Box>
               </SimpleGrid>
               
               <Box>
                 <Box 
                   h="8px" 
-                  bg="#1a243b" 
+                  bg="rgba(0,0,0,0.5)" 
                   borderRadius="full" 
                   overflow="hidden"
+                  border="1px solid rgba(0,0,0,0.8)"
                 >
                   <Box 
                     h="100%" 
                     w={`${progress}%`} 
-                    bg="#eab516" 
+                    bg="#ffcb2f" 
                     borderRadius="full"
                   ></Box>
                 </Box>
-                <Text fontSize="xs" color="gray.400" mt={1}>{progress.toFixed(1)}% Complete</Text>
+                <Text fontSize="xs" color="#e0d0b0" mt={1}>{progress.toFixed(1)}% Complete</Text>
               </Box>
             </VStack>
           </Box>
         </Grid>
         
         {/* Methods Table */}
-        <Box mt={8} bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
+        <Box 
+          mt={8} 
+          bg="rgba(42, 30, 15, 0.75)" 
+          borderRadius="md" 
+          p={6} 
+          border="2px solid black"
+          boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+          backdropFilter="blur(4px)"
+          position="relative"
+          _after={{
+            content: '""',
+            position: 'absolute',
+            top: '1px',
+            left: '1px',
+            right: '1px',
+            height: '1px',
+            backgroundColor: 'rgba(255, 203, 47, 0.2)'
+          }}
+        >
           <Flex justify="space-between" align="center" mb={4}>
-            <Heading size="md" color="brand.primary">Training Methods</Heading>
-            <ButtonGroup size="sm" attached variant="outline">
+            <Heading size="md" color="#ffcb2f" fontFamily="'Roboto Slab', serif" textShadow="1px 1px 0px #000">Training Methods</Heading>
+            <ButtonGroup size="sm" isAttached>
               <Button 
-                bg={sortOption === "xphr" ? "brand.primary" : "#1a243b"}
-                color={sortOption === "xphr" ? "brand.background" : "white"}
-                borderColor="brand.border" 
+                bg={sortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                color={sortOption === "xphr" ? "#211305" : "white"}
+                border="2px solid black"
                 borderLeftRadius="md" 
-                _hover={{ bg: "#222b43" }}
+                borderRightRadius="0"
+                _hover={{ bg: "#e0a922" }}
                 onClick={() => setSortOption("xphr")}
+                fontWeight="bold"
+                height="10"
               >
                 XP/hr
               </Button>
               <Button 
-                bg={sortOption === "gphr" ? "brand.primary" : "#1a243b"}
-                color={sortOption === "gphr" ? "brand.background" : "white"}
-                borderColor="brand.border" 
-                borderRadius="0" 
-                _hover={{ bg: "#222b43" }}
+                bg={sortOption === "gphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                color={sortOption === "gphr" ? "#211305" : "white"}
+                border="2px solid black"
+                borderRadius="0"
+                borderLeft="none" 
+                _hover={{ bg: "#e0a922" }}
                 onClick={() => setSortOption("gphr")}
+                fontWeight="bold"
+                height="10"
               >
                 GP/hr
               </Button>
               <Button 
-                bg={sortOption === "level" ? "brand.primary" : "#1a243b"}
-                color={sortOption === "level" ? "brand.background" : "white"}
-                borderColor="brand.border" 
-                borderRightRadius="md" 
-                _hover={{ bg: "#222b43" }}
+                bg={sortOption === "level" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                color={sortOption === "level" ? "#211305" : "white"}
+                border="2px solid black"
+                borderLeftRadius="0" 
+                borderRightRadius="md"
+                borderLeft="none"
+                _hover={{ bg: "#e0a922" }}
                 onClick={() => setSortOption("level")}
+                fontWeight="bold"
+                height="10"
               >
                 Level
               </Button>
@@ -319,22 +433,22 @@ export default function SkillPage({ params }: Props) {
           
           {methods.length === 0 ? (
             <Flex justify="center" align="center" py={8}>
-              <Text color="gray.400">
+              <Text color="#e0d0b0">
                 Training methods for {skillName} are coming soon. Check back later!
               </Text>
             </Flex>
           ) : (
             <Box overflowX="auto">
               <Box as="table" width="100%">
-                <Box as="thead" bg="#1a243b" borderBottom="1px solid" borderColor="brand.border">
+                <Box as="thead" bg="rgba(0,0,0,0.4)" borderBottom="2px solid black">
                   <Box as="tr">
-                    <Box as="th" px={4} py={3} textAlign="left" color="gray.400" fontWeight="medium" fontSize="sm">Method</Box>
-                    <Box as="th" px={4} py={3} textAlign="left" color="gray.400" fontWeight="medium" fontSize="sm">Level</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">XP/ea</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Actions</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Hours</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">GP/ea</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="gray.400" fontWeight="medium" fontSize="sm">Profit/Loss</Box>
+                    <Box as="th" px={4} py={3} textAlign="left" color="#e0d0b0" fontWeight="medium" fontSize="sm">Method</Box>
+                    <Box as="th" px={4} py={3} textAlign="left" color="#e0d0b0" fontWeight="medium" fontSize="sm">Level</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">XP/ea</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Actions</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Hours</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">GP/ea</Box>
+                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Profit/Loss</Box>
                   </Box>
                 </Box>
                 <Box as="tbody">
@@ -342,17 +456,16 @@ export default function SkillPage({ params }: Props) {
                     <Box 
                       key={method.id}
                       as="tr" 
-                      _hover={{ bg: "#1a243b" }} 
+                      _hover={{ bg: "rgba(0,0,0,0.2)" }} 
                       cursor="pointer" 
-                      borderBottom="1px solid" 
-                      borderColor="brand.border"
+                      borderBottom="1px solid rgba(0,0,0,0.4)"
                       title={method.notes}
                     >
                       <Box as="td" px={4} py={3} color="white">
                         <Flex align="center" gap={2}>
                           {method.name}
                           {method.isMembers && (
-                            <Badge bg="rgba(234, 181, 22, 0.1)" color="brand.primary" fontSize="xs">
+                            <Badge bg="rgba(0,0,0,0.4)" color="#ffcb2f" fontSize="xs" borderRadius="sm" px={1}>
                               P2P
                             </Badge>
                           )}
@@ -362,10 +475,10 @@ export default function SkillPage({ params }: Props) {
                       <Box as="td" px={4} py={3} textAlign="right" color="white">{method.xpEach}</Box>
                       <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
                       <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "green.500" : "red.500"}>
+                      <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "#00ff00" : "#ff6b6b"}>
                         {method.gpEach >= 0 ? `+${method.gpEach}` : method.gpEach}
                       </Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color={method.totalProfit >= 0 ? "green.500" : "red.500"}>
+                      <Box as="td" px={4} py={3} textAlign="right" color={method.totalProfit >= 0 ? "#00ff00" : "#ff6b6b"}>
                         {method.totalProfit >= 0 ? `+${formatNumber(method.totalProfit)}` : formatNumber(method.totalProfit)}
                       </Box>
                     </Box>
@@ -378,10 +491,27 @@ export default function SkillPage({ params }: Props) {
       </Container>
 
       {/* Footer */}
-      <Box as="footer" bg="brand.card" mt={16} py={8} borderTop="1px solid" borderColor="brand.border">
+      <Box 
+        as="footer" 
+        bg="rgba(42, 30, 15, 0.9)"
+        mt={16} 
+        py={8} 
+        borderTop="2px solid black"
+        backdropFilter="blur(2px)"
+        position="relative"
+        _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          backgroundColor: 'rgba(255, 203, 47, 0.15)'
+        }}
+      >
         <Container maxW="7xl" textAlign="center">
-          <Text fontSize="sm" color="gray.400">© {new Date().getFullYear()} Probemas | All game content is copyright Jagex Ltd.</Text>
-          <Text fontSize="sm" color="gray.400" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
+          <Text fontSize="sm" color="#e0d0b0">© {new Date().getFullYear()} OSRSCalculators | All game content is copyright Jagex Ltd.</Text>
+          <Text fontSize="sm" color="#e0d0b0" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
         </Container>
       </Box>
     </Box>
