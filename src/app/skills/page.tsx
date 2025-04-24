@@ -12,11 +12,11 @@ import {
   SimpleGrid,
   Button,
   HStack,
-  VStack
 } from "@chakra-ui/react";
 import SkillCard from "@/components/SkillCard";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
+import PlayerLookup from "@/components/PlayerLookup";
 
 export default function SkillsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,7 +43,7 @@ export default function SkillsPage() {
               </Link>
             </Flex>
             
-            <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
+            <HStack gap={8} display={{ base: 'none', md: 'flex' }}>
               <Link href="/" style={{ textDecoration: 'none' }}>
                 <Text fontWeight="medium" color="white" _hover={{ color: 'brand.primary' }}>Home</Text>
               </Link>
@@ -58,7 +58,7 @@ export default function SkillsPage() {
               </Link>
             </HStack>
             
-            <HStack spacing={3}>
+            <HStack gap={3}>
               <Link href="/login" style={{ textDecoration: 'none' }}>
                 <Text px={4} py={2} fontWeight="medium" color="white" _hover={{ color: 'brand.primary' }}>
                   Login
@@ -102,7 +102,13 @@ export default function SkillsPage() {
         </Flex>
         
         <Box bg="brand.card" borderRadius="lg" p={6} border="1px solid" borderColor="brand.border">
-          <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }} spacing={4}>
+          {/* Player Lookup component */}
+          <Box mb={5}>
+            <Heading size="md" color="brand.primary" mb={3}>Import Your Stats</Heading>
+            <PlayerLookup />
+          </Box>
+          
+          <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }} gap={4}>
             {filteredSkills.length > 0 ? (
               filteredSkills.map((skill: SkillName) => (
                 <SkillCard key={skill} skill={skill} />

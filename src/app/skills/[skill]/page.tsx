@@ -21,6 +21,8 @@ import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
 import { trainingMethods } from "@/data/trainingMethods";
+import { useCalculatorStore } from "@/lib/store";
+import SectionHeading from '@/components/SectionHeading';
 
 // Experience table for levels 1-99
 const xpTable = [
@@ -70,12 +72,16 @@ export default function SkillPage({ params }: Props) {
   // Get skill name from constants
   const skillName = SKILL_NAMES[skillKey];
   
+  // Get calculator inputs from store
+  const { calculatorInputs, updateCalculatorInput } = useCalculatorStore();
+  const storedInput = calculatorInputs[skillKey];
+  
   // State for calculator
-  const [currentLevel, setCurrentLevel] = useState(1);
-  const [targetLevel, setTargetLevel] = useState(99);
-  const [currentXp, setCurrentXp] = useState(0);
-  const [targetXp, setTargetXp] = useState(13034431);
-  const [neededXp, setNeededXp] = useState(13034431);
+  const [currentLevel, setCurrentLevel] = useState(storedInput.currentLevel);
+  const [targetLevel, setTargetLevel] = useState(storedInput.targetLevel);
+  const [currentXp, setCurrentXp] = useState(getXpForLevel(storedInput.currentLevel));
+  const [targetXp, setTargetXp] = useState(getXpForLevel(storedInput.targetLevel));
+  const [neededXp, setNeededXp] = useState(getXpForLevel(storedInput.targetLevel) - getXpForLevel(storedInput.currentLevel));
   const [progress, setProgress] = useState(0);
   const [sortOption, setSortOption] = useState<SortOption>("level");
   
@@ -121,6 +127,9 @@ export default function SkillPage({ params }: Props) {
       setCurrentLevel(value);
       const xp = getXpForLevel(value);
       setCurrentXp(xp);
+      
+      // Update store
+      updateCalculatorInput(skillKey, { currentLevel: value });
     }
   };
   
@@ -130,6 +139,9 @@ export default function SkillPage({ params }: Props) {
       setTargetLevel(value);
       const xp = getXpForLevel(value);
       setTargetXp(xp);
+      
+      // Update store
+      updateCalculatorInput(skillKey, { targetLevel: value });
     }
   };
   
@@ -266,7 +278,7 @@ export default function SkillPage({ params }: Props) {
               backgroundColor: 'rgba(255, 203, 47, 0.2)'
             }}
           >
-            <Heading size="md" color="#ffcb2f" mb={4} fontFamily="'Roboto Slab', serif" textShadow="1px 1px 0px #000">Input</Heading>
+            <SectionHeading mb={4}>Input</SectionHeading>
             
             <VStack gap={4} align="stretch">
               <Box>
@@ -330,7 +342,7 @@ export default function SkillPage({ params }: Props) {
               backgroundColor: 'rgba(255, 203, 47, 0.2)'
             }}
           >
-            <Heading size="md" color="#ffcb2f" mb={4} fontFamily="'Roboto Slab', serif" textShadow="1px 1px 0px #000">Summary</Heading>
+            <SectionHeading mb={4}>Summary</SectionHeading>
             
             <VStack gap={5} align="stretch">
               <SimpleGrid columns={2} gap={4}>
@@ -386,7 +398,7 @@ export default function SkillPage({ params }: Props) {
           }}
         >
           <Flex justify="space-between" align="center" mb={4}>
-            <Heading size="md" color="#ffcb2f" fontFamily="'Roboto Slab', serif" textShadow="1px 1px 0px #000">Training Methods</Heading>
+            <SectionHeading>Training Methods</SectionHeading>
             <ButtonGroup size="sm" isAttached>
               <Button 
                 bg={sortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}

@@ -4,6 +4,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CalculatorInput, SkillName } from "./types";
 
+// Type for player stats from OSRS highscores
+export interface PlayerStats {
+  username: string;
+  stats: Record<string, { rank: number; level: number; xp: number }>;
+}
+
 interface CalculatorState {
   // Active skill
   activeSkill: SkillName;
@@ -20,6 +26,20 @@ interface CalculatorState {
     sortDirection: "asc" | "desc";
   };
   updatePreferences: (prefs: Partial<CalculatorState["preferences"]>) => void;
+
+  // Player OSRS stats
+  playerStats: PlayerStats | null;
+  playerStatsLoading: boolean;
+  playerStatsError: string | null;
+  setPlayerStats: (stats: PlayerStats | null) => void;
+  setPlayerStatsLoading: (loading: boolean) => void;
+  setPlayerStatsError: (error: string | null) => void;
+  
+  // Load player stats from hiscores and update calculator inputs
+  lookupPlayerStats: (username: string) => Promise<void>;
+  
+  // Apply player's levels to calculator inputs
+  applyPlayerLevelsToCalculator: () => void;
 }
 
 // Default calculator input
@@ -35,7 +55,7 @@ const defaultCalculatorInput: CalculatorInput = {
 // Create the store with persistence
 export const useCalculatorStore = create<CalculatorState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Default to Cooking skill
       activeSkill: "cooking",
       setActiveSkill: (skill) => set({ activeSkill: skill }),
@@ -78,6 +98,82 @@ export const useCalculatorStore = create<CalculatorState>()(
             ...prefs,
           },
         })),
+        
+      // Player stats state
+      playerStats: null,
+      playerStatsLoading: false,
+      playerStatsError: null,
+      setPlayerStats: (stats) => set({ playerStats: stats }),
+      setPlayerStatsLoading: (loading) => set({ playerStatsLoading: loading }),
+      setPlayerStatsError: (error) => set({ playerStatsError: error }),
+      
+      // Lookup player stats from the API
+      lookupPlayerStats: async (username) => {
+        // Reset any previous error
+        set({ playerStatsLoading: true, playerStatsError: null });
+        
+        try {
+          const response = await fetch(`/api/hiscores?username=${encodeURIComponent(username)}`);
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to fetch player stats');
+          }
+          
+          const stats = await response.json();
+          set({ playerStats: stats, playerStatsLoading: false });
+          
+          // Automatically apply the player's levels to the calculator
+          const state = get();
+          if (stats && stats.stats) {
+            // For each skill in the calculator, apply the player's level if available
+            const updates: Record<SkillName, CalculatorInput> = { ...state.calculatorInputs };
+            
+            Object.keys(state.calculatorInputs).forEach((skillKey) => {
+              const skill = skillKey as SkillName;
+              
+              if (stats.stats[skill]) {
+                updates[skill] = {
+                  ...updates[skill],
+                  currentLevel: stats.stats[skill].level,
+                };
+              }
+            });
+            
+            set({ calculatorInputs: updates });
+          }
+        } catch (error) {
+          console.error('Error looking up player stats:', error);
+          set({ 
+            playerStatsError: error instanceof Error ? error.message : 'Unknown error', 
+            playerStatsLoading: false 
+          });
+        }
+      },
+      
+      // Apply player's current levels to all calculator inputs
+      applyPlayerLevelsToCalculator: () => {
+        const state = get();
+        const { playerStats } = state;
+        
+        if (!playerStats) return;
+        
+        // For each skill in the calculator, apply the player's level if available
+        const updates: Record<SkillName, CalculatorInput> = { ...state.calculatorInputs };
+        
+        Object.keys(state.calculatorInputs).forEach((skillKey) => {
+          const skill = skillKey as SkillName;
+          
+          if (playerStats.stats[skill]) {
+            updates[skill] = {
+              ...updates[skill],
+              currentLevel: playerStats.stats[skill].level,
+            };
+          }
+        });
+        
+        set({ calculatorInputs: updates });
+      }
     }),
     {
       name: "osrs-calculator-storage",

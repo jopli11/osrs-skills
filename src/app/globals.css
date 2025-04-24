@@ -1,8 +1,3 @@
-/* Import fonts */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap');
-
 /* Reset and base styles */
 
 *,
@@ -15,7 +10,7 @@ body,
 html {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 
@@ -38,9 +33,10 @@ html {
 
 html,
 body {
-    background-color: transparent !important;
+    background-color: var(--background) !important;
     color: var(--foreground);
-    background-image: url('/images/s0z89td7gz021.png') !important;
+    /* Low quality placeholder that loads immediately */
+    background-image: url('/images/optimized/bg-texture-placeholder.webp') !important;
     background-size: cover !important;
     background-attachment: fixed !important;
     background-position: center !important;
@@ -49,15 +45,61 @@ body {
     min-height: 100vh;
 }
 
+
+/* Use higher resolution images for different screen sizes */
+
+@media (max-width: 768px) {
+    html,
+    body {
+        background-image: url('/images/optimized/bg-texture-mobile.webp') !important;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1600px) {
+    html,
+    body {
+        background-image: url('/images/optimized/bg-texture-tablet.webp') !important;
+    }
+}
+
+@media (min-width: 1601px) {
+    html,
+    body {
+        background-image: url('/images/optimized/bg-texture.webp') !important;
+    }
+}
+
 .osrs-background {
-    background-color: transparent !important;
-    background-image: url('/images/s0z89td7gz021.png') !important;
+    background-color: var(--background) !important;
+    /* Low quality placeholder that loads immediately */
+    background-image: url('/images/optimized/bg-texture-placeholder.webp') !important;
     background-size: cover !important;
     background-attachment: fixed !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     position: relative;
     min-height: 100vh;
+}
+
+
+/* Use higher resolution images for different screen sizes */
+
+@media (max-width: 768px) {
+    .osrs-background {
+        background-image: url('/images/optimized/bg-texture-mobile.webp') !important;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1600px) {
+    .osrs-background {
+        background-image: url('/images/optimized/bg-texture-tablet.webp') !important;
+    }
+}
+
+@media (min-width: 1601px) {
+    .osrs-background {
+        background-image: url('/images/optimized/bg-texture.webp') !important;
+    }
 }
 
 html::before,
@@ -109,13 +151,13 @@ a {
 .logo {
     font-weight: 700;
     font-size: 1.5rem;
-    font-family: 'Roboto Slab', serif;
+    font-family: var(--font-roboto-slab), serif;
 }
 
 .logo-osrs {
     color: var(--osrs-yellow);
     text-shadow: 2px 2px 0 #000;
-    font-family: 'Roboto Slab', serif;
+    font-family: var(--font-roboto-slab), serif;
 }
 
 .nav-links {
@@ -205,7 +247,7 @@ a {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    font-family: 'Roboto Slab', serif;
+    font-family: var(--font-roboto-slab), serif;
     text-shadow: 2px 2px 0 #000;
 }
 
@@ -225,7 +267,7 @@ a {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    font-family: 'Roboto Slab', serif;
+    font-family: var(--font-roboto-slab), serif;
     color: var(--osrs-yellow);
     text-shadow: 1px 1px 0 #000;
 }
@@ -250,4 +292,15 @@ footer {
     color: #e0d0b0;
     font-size: 0.875rem;
     background-color: rgba(35, 19, 12, 0.8);
+}
+
+
+/* OSRS Style Headings */
+
+.osrs-heading {
+    font-family: 'Roboto Slab', serif;
+    color: #ffcb2f;
+    font-weight: 900;
+    letter-spacing: 0px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }

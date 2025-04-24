@@ -9,12 +9,17 @@ import { SKILL_NAMES } from "@/lib/constants";
 interface SkillCardProps {
   skill: SkillName;
   name?: string;
+  priorityLoad?: boolean;
+  index?: number;
 }
 
-export default function SkillCard({ skill, name }: SkillCardProps) {
+export default function SkillCard({ skill, name, priorityLoad = false, index = 0 }: SkillCardProps) {
   // Use provided name or get from constants
   const displayName = name || SKILL_NAMES[skill];
   
+  // Automatically prioritize the first 6 skills (visible above the fold on most screens)
+  const shouldPrioritize = priorityLoad || index < 6;
+
   return (
     <Link href={`/skills/${skill}`} style={{ textDecoration: 'none' }}>
       <Box
@@ -53,13 +58,12 @@ export default function SkillCard({ skill, name }: SkillCardProps) {
             border="1px solid rgba(0,0,0,0.8)"
             boxShadow="inset 0 0 5px rgba(0,0,0,0.5), 0 1px 2px rgba(255, 203, 47, 0.2)"
           >
-            <SkillIcon skill={skill} size={48} />
+            <SkillIcon skill={skill} size={48} priority={shouldPrioritize} />
           </Box>
           <Text
             textAlign="center"
             color="white"
             fontWeight="bold"
-            textShadow="1px 1px 0px #000"
             fontSize="sm"
           >
             {displayName}
