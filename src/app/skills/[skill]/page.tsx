@@ -74,7 +74,14 @@ export default function SkillPage({ params }: Props) {
   const skillName = SKILL_NAMES[skillKey];
   
   // Get calculator inputs from store
-  const { calculatorInputs, updateCalculatorInput } = useCalculatorStore();
+  const { 
+    calculatorInputs, 
+    playerStats
+  } = useCalculatorStore();
+  
+  // Direct access to store
+  const store = useCalculatorStore;
+  
   const storedInput = calculatorInputs[skillKey];
   
   // State for calculator
@@ -121,6 +128,38 @@ export default function SkillPage({ params }: Props) {
     };
   });
   
+  // Simpler notification function
+  const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    try {
+      store.setState({
+        notification: {
+          message,
+          type,
+          timestamp: Date.now()
+        }
+      });
+    } catch (err) {
+      console.error('Failed to set notification:', err);
+    }
+  };
+  
+  // Update calculator input directly
+  const updateInput = (skill: SkillName, input: Partial<typeof storedInput>) => {
+    try {
+      store.setState((state) => ({
+        calculatorInputs: {
+          ...state.calculatorInputs,
+          [skill]: {
+            ...state.calculatorInputs[skill],
+            ...input,
+          },
+        },
+      }));
+    } catch (err) {
+      console.error('Failed to update calculator input:', err);
+    }
+  };
+  
   // Handle level input changes
   const handleCurrentLevelChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -130,7 +169,7 @@ export default function SkillPage({ params }: Props) {
       setCurrentXp(xp);
       
       // Update store
-      updateCalculatorInput(skillKey, { currentLevel: value });
+      updateInput(skillKey, { currentLevel: value });
     }
   };
   
@@ -142,9 +181,25 @@ export default function SkillPage({ params }: Props) {
       setTargetXp(xp);
       
       // Update store
-      updateCalculatorInput(skillKey, { targetLevel: value });
+      updateInput(skillKey, { targetLevel: value });
     }
   };
+  
+  // Update current level when player stats change
+  useEffect(() => {
+    if (playerStats && playerStats.stats) {
+      // Map any alternate skill names
+      const lookupSkill = skillKey === 'runecraft' ? 'runecrafting' : skillKey;
+      
+      if (playerStats.stats[lookupSkill]) {
+        const level = playerStats.stats[lookupSkill].level;
+        setCurrentLevel(level);
+        setCurrentXp(getXpForLevel(level));
+        
+        // No need to call updateInput here as it's already done in the store
+      }
+    }
+  }, [playerStats, skillKey]);
   
   // Calculate needed XP and progress whenever levels or XP changes
   useEffect(() => {
@@ -258,27 +313,6 @@ export default function SkillPage({ params }: Props) {
           </Flex>
         </Box>
         
-        {/* Player Lookup Section */}
-        <Box mb={8}>
-          <Flex align="center" mb={3}>
-            <Badge 
-              bg="#361f0e" 
-              color="#ffcb2f" 
-              px={3} 
-              py={1.5} 
-              borderRadius="sm" 
-              mr={3}
-              fontWeight="medium"
-              border="1px solid black"
-              boxShadow="1px 1px 0 rgba(0,0,0,0.2)"
-            >
-              Import
-            </Badge>
-            <SectionHeading>Import Your Stats</SectionHeading>
-          </Flex>
-          <PlayerLookup />
-        </Box>
-        
         {/* Calculator Grid */}
         <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6}>
           <Box 
@@ -305,6 +339,19 @@ export default function SkillPage({ params }: Props) {
               <Box>
                 <Text mb={2} fontWeight="medium" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">
                   Current Level
+                  {playerStats && playerStats.stats && (
+                    <Badge 
+                      ml={2} 
+                      fontSize="xs"
+                      bg="#361f0e"
+                      color="#ffcb2f"
+                      borderRadius="sm"
+                      px={1}
+                      border="1px solid rgba(0,0,0,0.3)"
+                    >
+                      From {playerStats.username}
+                    </Badge>
+                  )}
                 </Text>
                 <Input
                   type="number"
@@ -319,6 +366,7 @@ export default function SkillPage({ params }: Props) {
                   fontWeight="bold"
                   height="12"
                   _focus={{ borderColor: "#ffcb2f", outline: "none" }}
+                  borderColor={playerStats ? "#ffcb2f" : "black"}
                 />
               </Box>
               
@@ -397,6 +445,80 @@ export default function SkillPage({ params }: Props) {
             </VStack>
           </Box>
         </Grid>
+        
+        {/* Player Lookup Section - Moved here as requested */}
+        <Box 
+          mt={8}
+          bg="rgba(42, 30, 15, 0.75)" 
+          borderRadius="md" 
+          p={6} 
+          border="2px solid black"
+          boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+          backdropFilter="blur(4px)"
+          position="relative"
+          _after={{
+            content: '""',
+            position: 'absolute',
+            top: '1px',
+            left: '1px',
+            right: '1px',
+            height: '1px',
+            backgroundColor: 'rgba(255, 203, 47, 0.2)'
+          }}
+        >
+          <Flex align="center" mb={3}>
+            <Badge 
+              bg="#361f0e" 
+              color="#ffcb2f" 
+              px={3} 
+              py={1.5} 
+              borderRadius="sm" 
+              mr={3}
+              fontWeight="medium"
+              border="1px solid black"
+              boxShadow="1px 1px 0 rgba(0,0,0,0.2)"
+            >
+              Import
+            </Badge>
+            <SectionHeading mb={0}>Import Your Stats</SectionHeading>
+          </Flex>
+          
+          <PlayerLookup />
+          
+          {playerStats && (
+            <Box mt={3}>
+              <Flex justify="flex-end">
+                <Button
+                  size="sm"
+                  bg="#361f0e"
+                  color="#ffcb2f"
+                  _hover={{ bg: '#4a2a15' }}
+                  borderWidth="1px"
+                  borderColor="black"
+                  boxShadow="2px 2px 0 rgba(0,0,0,0.3)"
+                  onClick={() => {
+                    // Map any alternate skill names
+                    const lookupSkill = skillKey === 'runecraft' ? 'runecrafting' : skillKey;
+                    
+                    if (playerStats.stats[lookupSkill]) {
+                      const level = playerStats.stats[lookupSkill].level;
+                      setCurrentLevel(level);
+                      setCurrentXp(getXpForLevel(level));
+                      
+                      // Update the store as well
+                      updateInput(skillKey, { currentLevel: level });
+                      
+                      // Show notification using our workaround function
+                      notify(`Level ${level} from ${playerStats.username} applied to ${skillName} calculator`);
+                    }
+                  }}
+                >
+                  Apply Level {playerStats.stats[skillKey === 'runecraft' ? 'runecrafting' : skillKey]?.level || '?'}
+                </Button>
+              </Flex>
+            </Box>
+          )}
+        </Box>
         
         {/* Methods Table */}
         <Box 

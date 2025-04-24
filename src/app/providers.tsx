@@ -8,6 +8,7 @@ import { useState } from "react";
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
+import Notification from '@/components/Notification';
 
 // Client-side cache, shared for the whole session of the user
 const createEmotionCache = () => {
@@ -37,6 +38,7 @@ export function Providers({ children }: { children: ReactNode }) {
             disableTransitionOnChange
           >
             {children}
+            <Notification />
             {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
           </ThemeProvider>
         </QueryClientProvider>

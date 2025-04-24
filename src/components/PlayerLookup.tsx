@@ -16,31 +16,72 @@ export default function PlayerLookup() {
   const [isUsernameInvalid, setIsUsernameInvalid] = useState(false);
   const [isDebouncing, setIsDebouncing] = useState(false);
   
+  // Instead of destructuring functions that might cause issues, get state only
   const {
     playerStats,
     playerStatsLoading,
-    playerStatsError,
-    lookupPlayerStats,
-    clearPlayerStats
+    playerStatsError
   } = useCalculatorStore();
+  
+  // Direct access to store methods
+  const store = useCalculatorStore;
+  
+  // Simple notification function
+  const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    try {
+      store.setState({
+        notification: {
+          message,
+          type,
+          timestamp: Date.now()
+        }
+      });
+    } catch (err) {
+      console.error('Failed to set notification:', err);
+    }
+  };
+  
+  // Clear player stats directly
+  const clearStats = () => {
+    try {
+      store.setState({
+        playerStats: null,
+        playerStatsLoading: false,
+        playerStatsError: null,
+        notification: null
+      });
+    } catch (err) {
+      console.error('Failed to clear player stats:', err);
+    }
+  };
 
   // Debounce the lookup to prevent excessive API calls
   const debouncedLookup = useCallback((username: string) => {
     setIsDebouncing(true);
     
     // Clear existing player data to prevent persistence issues
-    clearPlayerStats();
+    clearStats();
     
-    const timer = setTimeout(() => {
-      lookupPlayerStats(username);
-      setIsDebouncing(false);
+    const timer = setTimeout(async () => {
+      try {
+        // Add a try-catch block around the API call
+        await store.getState().lookupPlayerStats(username);
+      } catch (error) {
+        console.error('Error in debouncedLookup:', error);
+        // Set a more user-friendly error message
+        store.setState({
+          playerStatsError: "The OSRS Hiscores server might be busy. Please try again in a few moments."
+        });
+      } finally {
+        setIsDebouncing(false);
+      }
     }, 500); // 500ms debounce
     
     return () => {
       clearTimeout(timer);
       setIsDebouncing(false);
     };
-  }, [lookupPlayerStats, clearPlayerStats]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,6 +159,13 @@ export default function PlayerLookup() {
         >
           <Text fontWeight="bold">Error:</Text>
           <Text>{playerStatsError}</Text>
+          
+          <Box mt={2} pt={2} borderTop="1px solid rgba(255,255,255,0.1)">
+            <Text fontSize="xs" color="#e0d0b0">
+              Note: The OSRS Hiscores API can be unreliable at times. If you&apos;re sure the username 
+              is correct, please try again in a few minutes.
+            </Text>
+          </Box>
         </Box>
       )}
 
@@ -135,6 +183,27 @@ export default function PlayerLookup() {
           <Text fontSize="xs" color="#e0d0b0" textAlign="center" mt={2}>
             Your current levels have been applied to all skill calculators
           </Text>
+          
+          <Flex justify="space-between" mt={3}>
+            <Button
+              size="xs"
+              bg="#361f0e"
+              color="#ffcb2f"
+              borderWidth="1px"
+              borderColor="black"
+              _hover={{ bg: '#4a2a15' }}
+              onClick={() => {
+                clearStats();
+                notify("Stats cleared. Default values restored.", "info");
+              }}
+            >
+              Clear
+            </Button>
+            
+            <Text fontSize="xs" color="#e0d0b0">
+              Stats will be saved across all pages
+            </Text>
+          </Flex>
         </Box>
       )}
     </Box>

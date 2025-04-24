@@ -10,6 +10,13 @@ export interface PlayerStats {
   stats: Record<string, { rank: number; level: number; xp: number }>;
 }
 
+// Interface for notification
+export interface Notification {
+  message: string;
+  type: 'success' | 'error' | 'info';
+  timestamp: number;
+}
+
 interface CalculatorState {
   // Active skill
   activeSkill: SkillName;
@@ -34,6 +41,11 @@ interface CalculatorState {
   setPlayerStats: (stats: PlayerStats | null) => void;
   setPlayerStatsLoading: (loading: boolean) => void;
   setPlayerStatsError: (error: string | null) => void;
+  
+  // Notification for cross-page communication
+  notification: Notification | null;
+  setNotification: (notification: Notification | null) => void;
+  clearNotification: () => void;
   
   // Load player stats from hiscores and update calculator inputs
   lookupPlayerStats: (username: string) => Promise<void>;
@@ -106,6 +118,12 @@ export const useCalculatorStore = create<CalculatorState>()(
       playerStats: null,
       playerStatsLoading: false,
       playerStatsError: null,
+      
+      // Notification state
+      notification: null,
+      setNotification: (notification) => set({ notification }),
+      clearNotification: () => set({ notification: null }),
+      
       setPlayerStats: (stats) => set({ playerStats: stats }),
       setPlayerStatsLoading: (loading) => set({ playerStatsLoading: loading }),
       setPlayerStatsError: (error) => set({ playerStatsError: error }),
@@ -117,6 +135,9 @@ export const useCalculatorStore = create<CalculatorState>()(
           playerStatsLoading: false,
           playerStatsError: null
         });
+        
+        // Also clear any notifications
+        set({ notification: null });
       },
       
       // Lookup player stats from the API
@@ -156,7 +177,15 @@ export const useCalculatorStore = create<CalculatorState>()(
           }
           
           const stats = await response.json();
-          set({ playerStats: stats, playerStatsLoading: false });
+          set({ 
+            playerStats: stats, 
+            playerStatsLoading: false,
+            notification: {
+              message: `${username}'s stats have been imported and will apply to all skill pages`,
+              type: 'success',
+              timestamp: Date.now()
+            }
+          });
           
           // Automatically apply the player's levels to the calculator
           const state = get();
