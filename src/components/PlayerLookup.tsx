@@ -21,11 +21,16 @@ export default function PlayerLookup() {
     playerStatsLoading,
     playerStatsError,
     lookupPlayerStats,
+    clearPlayerStats
   } = useCalculatorStore();
 
   // Debounce the lookup to prevent excessive API calls
   const debouncedLookup = useCallback((username: string) => {
     setIsDebouncing(true);
+    
+    // Clear existing player data to prevent persistence issues
+    clearPlayerStats();
+    
     const timer = setTimeout(() => {
       lookupPlayerStats(username);
       setIsDebouncing(false);
@@ -35,7 +40,7 @@ export default function PlayerLookup() {
       clearTimeout(timer);
       setIsDebouncing(false);
     };
-  }, [lookupPlayerStats]);
+  }, [lookupPlayerStats, clearPlayerStats]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +65,7 @@ export default function PlayerLookup() {
     >
       <form onSubmit={handleSubmit}>
         <Box mb={4}>
-          <Text color="#ffcb2f" fontWeight="bold" mb={2}>
+          <Text color="#ffcb2f" fontWeight="bold" mb={2} textShadow="2px 2px 3px rgba(0,0,0,0.8)">
             Lookup your OSRS stats
           </Text>
           <Flex gap={3}>

@@ -45,6 +45,7 @@ export default function Home() {
                 size="lg" 
                 fontWeight="bold" 
                 fontFamily="'Roboto Slab', serif"
+                textShadow="2px 2px 3px rgba(0,0,0,0.8)"
               >
                 <Text as="span" color="#ffcb2f">OSRS</Text>
                 <Text as="span" color="white">Calculators</Text>
@@ -63,7 +64,7 @@ export default function Home() {
             p={{ base: 6, md: 8 }} 
             textAlign="center"
             border="2px solid black"
-            boxShadow="0 4px 6px rgba(0,0,0,0.3)"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
             backdropFilter="blur(4px)"
             position="relative"
             _after={{
@@ -82,6 +83,7 @@ export default function Home() {
                 <Heading 
                   size="2xl" 
                   fontFamily="'Roboto Slab', serif"
+                  textShadow="2px 2px 3px rgba(0,0,0,0.8)"
                 >
                   <Text as="span" color="#ffcb2f">OSRS</Text>
                   <Text as="span" color="white">Calculators</Text>
@@ -92,6 +94,7 @@ export default function Home() {
                 color="#e0d0b0" 
                 maxW="3xl" 
                 mx="auto"
+                textShadow="2px 2px 3px rgba(0,0,0,0.8)"
               >
                 Plan your Old School RuneScape journey with precision.
               </Text>
@@ -208,28 +211,28 @@ export default function Home() {
               <Flex align="start" gap={3}>
                 <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">Live Prices</Text>
+                  <Text fontWeight="bold" color="white" textShadow="2px 2px 3px rgba(0,0,0,0.8)">Live Prices</Text>
                   <Text fontSize="sm" color="#e0d0b0">Grand Exchange prices updated daily</Text>
                 </Box>
               </Flex>
               <Flex align="start" gap={3}>
                 <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">Mobile-First</Text>
+                  <Text fontWeight="bold" color="white" textShadow="2px 2px 3px rgba(0,0,0,0.8)">Mobile-First</Text>
                   <Text fontSize="sm" color="#e0d0b0">Responsive design works on all devices</Text>
                 </Box>
               </Flex>
               <Flex align="start" gap={3}>
                 <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">100% Accurate</Text>
+                  <Text fontWeight="bold" color="white" textShadow="2px 2px 3px rgba(0,0,0,0.8)">100% Accurate</Text>
                   <Text fontSize="sm" color="#e0d0b0">Mathematically accurate XP calculations</Text>
                 </Box>
               </Flex>
               <Flex align="start" gap={3}>
                 <Text color="#ffcb2f" fontWeight="bold" fontSize="lg">✓</Text>
                 <Box>
-                  <Text fontWeight="bold" color="white" textShadow="1px 1px 0px rgba(0,0,0,0.8)">Advanced Filtering</Text>
+                  <Text fontWeight="bold" color="white" textShadow="2px 2px 3px rgba(0,0,0,0.8)">Advanced Filtering</Text>
                   <Text fontSize="sm" color="#e0d0b0">Sort by XP efficiency, GP profit, or level</Text>
                 </Box>
               </Flex>

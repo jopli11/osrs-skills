@@ -23,6 +23,7 @@ import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
 import { trainingMethods } from "@/data/trainingMethods";
 import { useCalculatorStore } from "@/lib/store";
 import SectionHeading from '@/components/SectionHeading';
+import PlayerLookup from '@/components/PlayerLookup';
 
 // Experience table for levels 1-99
 const xpTable = [
@@ -200,7 +201,7 @@ export default function SkillPage({ params }: Props) {
       </Box>
 
       {/* Main content */}
-      <Container maxW="6xl" py={8}>
+      <Container maxW="6xl" mt={8} mb={20} p={{ base: 4, md: 8 }}>
         {/* Hero Banner */}
         <Box 
           bg="rgba(42, 30, 15, 0.85)" 
@@ -250,15 +251,35 @@ export default function SkillPage({ params }: Props) {
                 fontWeight="bold"
                 fontSize="md"
                 borderRadius="sm"
-                leftIcon={<Text>←</Text>}
               >
-                Back to Skills
+                ← Back to Skills
               </Button>
             </Link>
           </Flex>
         </Box>
-
-        {/* Calculator Inputs */}
+        
+        {/* Player Lookup Section */}
+        <Box mb={8}>
+          <Flex align="center" mb={3}>
+            <Badge 
+              bg="#361f0e" 
+              color="#ffcb2f" 
+              px={3} 
+              py={1.5} 
+              borderRadius="sm" 
+              mr={3}
+              fontWeight="medium"
+              border="1px solid black"
+              boxShadow="1px 1px 0 rgba(0,0,0,0.2)"
+            >
+              Import
+            </Badge>
+            <SectionHeading>Import Your Stats</SectionHeading>
+          </Flex>
+          <PlayerLookup />
+        </Box>
+        
+        {/* Calculator Grid */}
         <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6}>
           <Box 
             bg="rgba(42, 30, 15, 0.75)" 
@@ -399,7 +420,7 @@ export default function SkillPage({ params }: Props) {
         >
           <Flex justify="space-between" align="center" mb={4}>
             <SectionHeading>Training Methods</SectionHeading>
-            <ButtonGroup size="sm" isAttached>
+            <ButtonGroup size="sm">
               <Button 
                 bg={sortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
                 color={sortOption === "xphr" ? "#211305" : "white"}

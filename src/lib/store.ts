@@ -40,6 +40,9 @@ interface CalculatorState {
   
   // Apply player's levels to calculator inputs
   applyPlayerLevelsToCalculator: () => void;
+
+  // Clear all player stats and reset calculator to default state
+  clearPlayerStats: () => void;
 }
 
 // Default calculator input
@@ -107,17 +110,49 @@ export const useCalculatorStore = create<CalculatorState>()(
       setPlayerStatsLoading: (loading) => set({ playerStatsLoading: loading }),
       setPlayerStatsError: (error) => set({ playerStatsError: error }),
       
+      // Clear all player stats and reset calculator to default state
+      clearPlayerStats: () => {
+        set({
+          playerStats: null,
+          playerStatsLoading: false,
+          playerStatsError: null
+        });
+      },
+      
       // Lookup player stats from the API
       lookupPlayerStats: async (username) => {
-        // Reset any previous error
-        set({ playerStatsLoading: true, playerStatsError: null });
+        // Reset any previous error and clear old data
+        set({ 
+          playerStatsLoading: true, 
+          playerStatsError: null,
+          // Clear previous player stats to prevent persistence of old data
+          playerStats: null
+        });
         
         try {
-          const response = await fetch(`/api/hiscores?username=${encodeURIComponent(username)}`);
+          // First attempt
+          let response = await fetch(`/api/hiscores?username=${encodeURIComponent(username)}`);
+          
+          // If the first attempt fails with a 500 error (like a timeout), try once more
+          if (response.status === 500) {
+            set({ playerStatsError: "First attempt failed, trying again..." });
+            // Short delay before retry
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            response = await fetch(`/api/hiscores?username=${encodeURIComponent(username)}`);
+          }
           
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch player stats');
+            let errorMessage = errorData.error || 'Failed to fetch player stats';
+            
+            // Provide more user-friendly error messages
+            if (errorMessage.includes('504') || errorMessage.includes('timeout')) {
+              errorMessage = "The OSRS Hiscores server is taking too long to respond. This usually happens when their servers are busy. Please try again in a few moments.";
+            } else if (response.status === 404) {
+              errorMessage = `Player "${username}" not found in the OSRS Hiscores. Check the spelling or try another username.`;
+            }
+            
+            throw new Error(errorMessage);
           }
           
           const stats = await response.json();
@@ -132,10 +167,13 @@ export const useCalculatorStore = create<CalculatorState>()(
             Object.keys(state.calculatorInputs).forEach((skillKey) => {
               const skill = skillKey as SkillName;
               
-              if (stats.stats[skill]) {
+              // Map any alternate skill names
+              const lookupSkill = skill === 'runecraft' ? 'runecrafting' : skill;
+              
+              if (stats.stats[lookupSkill]) {
                 updates[skill] = {
                   ...updates[skill],
-                  currentLevel: stats.stats[skill].level,
+                  currentLevel: stats.stats[lookupSkill].level,
                 };
               }
             });
@@ -144,8 +182,19 @@ export const useCalculatorStore = create<CalculatorState>()(
           }
         } catch (error) {
           console.error('Error looking up player stats:', error);
+          
+          // Set a user-friendly error message
+          let errorMessage = error instanceof Error 
+            ? error.message 
+            : 'Unknown error occurred while fetching player stats';
+            
+          // If there are connection issues, provide a more helpful message
+          if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+            errorMessage = 'Connection issue when fetching player stats. Please check your internet connection and try again.';
+          }
+          
           set({ 
-            playerStatsError: error instanceof Error ? error.message : 'Unknown error', 
+            playerStatsError: errorMessage, 
             playerStatsLoading: false 
           });
         }
@@ -164,10 +213,13 @@ export const useCalculatorStore = create<CalculatorState>()(
         Object.keys(state.calculatorInputs).forEach((skillKey) => {
           const skill = skillKey as SkillName;
           
-          if (playerStats.stats[skill]) {
+          // Map any alternate skill names - same as in lookupPlayerStats
+          const lookupSkill = skill === 'runecraft' ? 'runecrafting' : skill;
+          
+          if (playerStats.stats[lookupSkill]) {
             updates[skill] = {
               ...updates[skill],
-              currentLevel: playerStats.stats[skill].level,
+              currentLevel: playerStats.stats[lookupSkill].level,
             };
           }
         });
