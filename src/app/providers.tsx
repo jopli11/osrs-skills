@@ -5,15 +5,9 @@ import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
+import { CacheProvider } from '@chakra-ui/next-js';
+import { ChakraProvider } from '@chakra-ui/react';
 import Notification from '@/components/Notification';
-
-// Client-side cache, shared for the whole session of the user
-const createEmotionCache = () => {
-  return createCache({ key: 'css', prepend: true });
-};
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({
@@ -25,11 +19,9 @@ export function Providers({ children }: { children: ReactNode }) {
     },
   }));
 
-  const emotionCache = createEmotionCache();
-
   return (
-    <CacheProvider value={emotionCache}>
-      <ChakraProvider value={defaultSystem}>
+    <CacheProvider>
+      <ChakraProvider>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider
             attribute="data-theme"

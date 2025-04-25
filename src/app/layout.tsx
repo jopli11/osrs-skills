@@ -109,7 +109,7 @@ export default function RootLayout({
           `
         }} />
       </head>
-      <body className="osrs-background">
+      <body className="osrs-background" suppressHydrationWarning>
         <Providers>
           {children}
         </Providers>

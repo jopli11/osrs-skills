@@ -47,8 +47,8 @@ export default function Home() {
                 fontFamily="'Roboto Slab', serif"
                 textShadow="2px 2px 3px rgba(0,0,0,0.8)"
               >
-                <Text as="span" color="#ffcb2f">OSRS</Text>
-                <Text as="span" color="white">Calculators</Text>
+                <Box as="span" color="#ffcb2f">OSRS</Box>
+                <Box as="span" color="white">Calculators</Box>
               </Heading>
             </Link>
           </Flex>
@@ -85,8 +85,8 @@ export default function Home() {
                   fontFamily="'Roboto Slab', serif"
                   textShadow="2px 2px 3px rgba(0,0,0,0.8)"
                 >
-                  <Text as="span" color="#ffcb2f">OSRS</Text>
-                  <Text as="span" color="white">Calculators</Text>
+                  <Box as="span" color="#ffcb2f">OSRS</Box>
+                  <Box as="span" color="white">Calculators</Box>
                 </Heading>
               </Box>
               <Text 
