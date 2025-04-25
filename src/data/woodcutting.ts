@@ -27,6 +27,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 25,
     gpEach: 25,
+    itemId: 1511,
     isMembers: false,
     outputItems: [
       { id: 1511, name: "Logs", quantity: 1 }
@@ -39,6 +40,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 37.5,
     gpEach: 37,
+    itemId: 1521,
     isMembers: false,
     outputItems: [
       { id: 1521, name: "Oak logs", quantity: 1 }
@@ -51,6 +53,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 67.5,
     gpEach: 22,
+    itemId: 1519,
     isMembers: false,
     outputItems: [
       { id: 1519, name: "Willow logs", quantity: 1 }
@@ -63,6 +66,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 45,
     xpEach: 100,
     gpEach: 32,
+    itemId: 1517,
     isMembers: false,
     outputItems: [
       { id: 1517, name: "Maple logs", quantity: 1 }
@@ -75,6 +79,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 60,
     xpEach: 175,
     gpEach: 272,
+    itemId: 1515,
     isMembers: false,
     outputItems: [
       { id: 1515, name: "Yew logs", quantity: 1 }
@@ -89,6 +94,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 35,
     xpEach: 85,
     gpEach: 55,
+    itemId: 6333,
     isMembers: true,
     outputItems: [
       { id: 6333, name: "Teak logs", quantity: 1 }
@@ -121,6 +127,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 50,
     xpEach: 125,
     gpEach: 282,
+    itemId: 6332,
     isMembers: true,
     outputItems: [
       { id: 6332, name: "Mahogany logs", quantity: 1 }
@@ -133,6 +140,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 75,
     xpEach: 250,
     gpEach: 1008,
+    itemId: 1513,
     isMembers: true,
     outputItems: [
       { id: 1513, name: "Magic logs", quantity: 1 }
@@ -155,6 +163,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 65,
     xpEach: 127,
     gpEach: 150,
+    itemId: 21350,
     isMembers: true,
     outputItems: [
       { id: 21350, name: "Sulliuscep cap", quantity: 0.3 },
@@ -168,6 +177,7 @@ export const woodcuttingMethods: MethodRow[] = [
     levelReq: 90,
     xpEach: 380,
     gpEach: 212,
+    itemId: 19669,
     isMembers: true,
     outputItems: [
       { id: 19669, name: "Redwood logs", quantity: 1 }

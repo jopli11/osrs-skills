@@ -12,6 +12,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 6.25,
     gpEach: -68,
+    itemId: 436,
     isMembers: false,
     inputItems: [
       { id: 436, name: "Copper ore", quantity: 1 },
@@ -28,6 +29,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 12.5,
     gpEach: -98,
+    itemId: 440,
     isMembers: false,
     inputItems: [
       { id: 440, name: "Iron ore", quantity: 1 }
@@ -43,6 +45,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 17.5,
     gpEach: -250,
+    itemId: 440,
     isMembers: false,
     inputItems: [
       { id: 440, name: "Iron ore", quantity: 1 },
@@ -59,6 +62,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 18,
     xpEach: 62.5,
     gpEach: -390,
+    itemId: 2349,
     isMembers: false,
     inputItems: [
       { id: 2349, name: "Bronze bar", quantity: 5 }
@@ -74,6 +78,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 33,
     xpEach: 125,
     gpEach: -490,
+    itemId: 2351,
     isMembers: false,
     inputItems: [
       { id: 2351, name: "Iron bar", quantity: 5 }
@@ -89,6 +94,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 48,
     xpEach: 187.5,
     gpEach: -690,
+    itemId: 2353,
     isMembers: false,
     inputItems: [
       { id: 2353, name: "Steel bar", quantity: 5 }
@@ -106,6 +112,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 56.2,
     gpEach: -250,
+    itemId: 444,
     isMembers: true,
     inputItems: [
       { id: 444, name: "Gold ore", quantity: 1 }
@@ -121,6 +128,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 68,
     xpEach: 250,
     gpEach: -995,
+    itemId: 2359,
     isMembers: true,
     inputItems: [
       { id: 2359, name: "Mithril bar", quantity: 5 }
@@ -136,6 +144,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 88,
     xpEach: 312.5,
     gpEach: -1450,
+    itemId: 2361,
     isMembers: true,
     inputItems: [
       { id: 2361, name: "Adamantite bar", quantity: 5 }
@@ -151,6 +160,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 99,
     xpEach: 375,
     gpEach: -3900,
+    itemId: 2363,
     isMembers: true,
     inputItems: [
       { id: 2363, name: "Runite bar", quantity: 5 }
@@ -166,6 +176,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 56.2,
     gpEach: -200,
+    itemId: 444,
     isMembers: true,
     inputItems: [
       { id: 444, name: "Gold ore", quantity: 1 },
@@ -182,6 +193,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 17.5,
     gpEach: -95,
+    itemId: 440,
     isMembers: true,
     inputItems: [
       { id: 440, name: "Iron ore", quantity: 1 },
@@ -198,6 +210,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 50,
     xpEach: 30,
     gpEach: -170,
+    itemId: 447,
     isMembers: true,
     inputItems: [
       { id: 447, name: "Mithril ore", quantity: 1 },
@@ -214,6 +227,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 70,
     xpEach: 37.5,
     gpEach: -340,
+    itemId: 449,
     isMembers: true,
     inputItems: [
       { id: 449, name: "Adamantite ore", quantity: 1 },
@@ -230,6 +244,7 @@ export const smithingMethods: MethodRow[] = [
     levelReq: 85,
     xpEach: 50,
     gpEach: -720,
+    itemId: 451,
     isMembers: true,
     inputItems: [
       { id: 451, name: "Runite ore", quantity: 1 },
@@ -252,6 +267,70 @@ export const smithingMethods: MethodRow[] = [
     ],
     outputItems: [
       { id: 821, name: "Steel dart tip", quantity: 10 }
+    ]
+  },
+  {
+    id: "smithing_steel_dart_tips",
+    name: "Steel Dart Tips",
+    skill: "smithing",
+    levelReq: 33,
+    xpEach: 25,
+    gpEach: -150,
+    itemId: 2353,
+    isMembers: true,
+    inputItems: [
+      { id: 2353, name: "Steel bar", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 886, name: "Steel dart tip", quantity: 10 }
+    ]
+  },
+  {
+    id: "smithing_mithril_dart_tips",
+    name: "Mithril Dart Tips",
+    skill: "smithing",
+    levelReq: 54,
+    xpEach: 50,
+    gpEach: -150,
+    itemId: 2359,
+    isMembers: true,
+    inputItems: [
+      { id: 2359, name: "Mithril bar", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 888, name: "Mithril dart tip", quantity: 10 }
+    ]
+  },
+  {
+    id: "smithing_adamant_dart_tips",
+    name: "Adamant Dart Tips",
+    skill: "smithing",
+    levelReq: 74,
+    xpEach: 62.5,
+    gpEach: -150,
+    itemId: 2361,
+    isMembers: true,
+    inputItems: [
+      { id: 2361, name: "Adamantite bar", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 890, name: "Adamant dart tip", quantity: 10 }
+    ]
+  },
+  {
+    id: "smithing_rune_dart_tips",
+    name: "Rune Dart Tips",
+    skill: "smithing",
+    levelReq: 89,
+    xpEach: 75,
+    gpEach: -150,
+    itemId: 2363,
+    isMembers: true,
+    inputItems: [
+      { id: 2363, name: "Runite bar", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 892, name: "Rune dart tip", quantity: 10 }
     ]
   }
 ]; 

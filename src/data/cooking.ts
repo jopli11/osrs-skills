@@ -11,6 +11,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 30,
     gpEach: -21,
+    itemId: 317,
     inputItems: [
       { id: 317, name: "Raw shrimp", quantity: 1 }
     ],
@@ -26,6 +27,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 30,
     gpEach: -30,
+    itemId: 2138,
     inputItems: [
       { id: 2138, name: "Raw chicken", quantity: 1 }
     ],
@@ -41,6 +43,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 40,
     gpEach: -16,
+    itemId: 327,
     inputItems: [
       { id: 327, name: "Raw sardine", quantity: 1 }
     ],
@@ -56,6 +59,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 70,
     gpEach: 7,
+    itemId: 335,
     inputItems: [
       { id: 335, name: "Raw trout", quantity: 1 }
     ],
@@ -71,6 +75,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 25,
     xpEach: 90,
     gpEach: 10,
+    itemId: 331,
     inputItems: [
       { id: 331, name: "Raw salmon", quantity: 1 }
     ],
@@ -86,6 +91,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 100,
     gpEach: -15,
+    itemId: 359,
     inputItems: [
       { id: 359, name: "Raw tuna", quantity: 1 }
     ],
@@ -101,6 +107,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 120,
     gpEach: -20,
+    itemId: 377,
     inputItems: [
       { id: 377, name: "Raw lobster", quantity: 1 }
     ],
@@ -116,6 +123,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 45,
     xpEach: 140,
     gpEach: -30,
+    itemId: 371,
     inputItems: [
       { id: 371, name: "Raw swordfish", quantity: 1 }
     ],
@@ -131,6 +139,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 62,
     xpEach: 150,
     gpEach: -25,
+    itemId: 7944,
     inputItems: [
       { id: 7944, name: "Raw monkfish", quantity: 1 }
     ],
@@ -146,6 +155,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 80,
     xpEach: 210,
     gpEach: -100,
+    itemId: 383,
     inputItems: [
       { id: 383, name: "Raw shark", quantity: 1 }
     ],
@@ -161,6 +171,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 84,
     xpEach: 230,
     gpEach: -150,
+    itemId: 13439,
     inputItems: [
       { id: 13439, name: "Raw anglerfish", quantity: 1 }
     ],
@@ -176,6 +187,7 @@ export const cookingMethods: MethodRow[] = [
     levelReq: 90,
     xpEach: 215,
     gpEach: -200,
+    itemId: 11934,
     inputItems: [
       { id: 11934, name: "Raw dark crab", quantity: 1 }
     ],

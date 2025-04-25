@@ -12,6 +12,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 40,
     gpEach: -159,
+    itemId: 1511,
     isMembers: false,
     inputItems: [
       { id: 1511, name: "Logs", quantity: 1 },
@@ -26,6 +27,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 60,
     gpEach: -52,
+    itemId: 1521,
     isMembers: false,
     inputItems: [
       { id: 1521, name: "Oak logs", quantity: 1 }
@@ -39,6 +41,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 90,
     gpEach: -72,
+    itemId: 1519,
     isMembers: false,
     inputItems: [
       { id: 1519, name: "Willow logs", quantity: 1 }
@@ -52,6 +55,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 45,
     xpEach: 135,
     gpEach: -23,
+    itemId: 1517,
     isMembers: false,
     inputItems: [
       { id: 1517, name: "Maple logs", quantity: 1 }
@@ -65,6 +69,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 60,
     xpEach: 202.5,
     gpEach: -258,
+    itemId: 1515,
     isMembers: false,
     inputItems: [
       { id: 1515, name: "Yew logs", quantity: 1 }
@@ -80,6 +85,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 50,
     gpEach: -198,
+    itemId: 6332,
     isMembers: true,
     inputItems: [
       { id: 6332, name: "White logs", quantity: 1 }
@@ -93,6 +99,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 35,
     xpEach: 105,
     gpEach: -299,
+    itemId: 6333,
     isMembers: true,
     inputItems: [
       { id: 6333, name: "Teak logs", quantity: 1 }
@@ -106,6 +113,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 42,
     xpEach: 125,
     gpEach: -442,
+    itemId: 10810,
     isMembers: true,
     inputItems: [
       { id: 10810, name: "Arctic pine logs", quantity: 1 }
@@ -119,6 +127,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 50,
     xpEach: 157.5,
     gpEach: -443,
+    itemId: 6332,
     isMembers: true,
     inputItems: [
       { id: 6332, name: "Mahogany logs", quantity: 1 }
@@ -132,6 +141,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 75,
     xpEach: 303.8,
     gpEach: -1000,
+    itemId: 1513,
     isMembers: true,
     inputItems: [
       { id: 1513, name: "Magic logs", quantity: 1 }
@@ -145,6 +155,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 90,
     xpEach: 350,
     gpEach: -674,
+    itemId: 19669,
     isMembers: true,
     inputItems: [
       { id: 19669, name: "Redwood logs", quantity: 1 }
@@ -171,6 +182,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 5,
     xpEach: 80,
     gpEach: -200,
+    itemId: 1511,
     isMembers: true,
     inputItems: [
       { id: 1511, name: "Logs", quantity: 1 },
@@ -187,6 +199,7 @@ export const firemakingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 13.3,
     gpEach: -159,
+    itemId: 1511,
     isMembers: true,
     inputItems: [
       { id: 1511, name: "Logs", quantity: 1 }

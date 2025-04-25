@@ -11,6 +11,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 10,
     gpEach: 25,
+    itemId: 317,
     isMembers: false,
     outputItems: [
       { id: 317, name: "Raw shrimps", quantity: 0.7 },
@@ -24,6 +25,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 20,
     xpEach: 70,
     gpEach: 20,
+    itemId: 335,
     isMembers: false,
     inputItems: [
       { id: 314, name: "Feather", quantity: 1 }
@@ -52,6 +54,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 62,
     xpEach: 120,
     gpEach: 300,
+    itemId: 7944,
     isMembers: true,
     outputItems: [
       { id: 7944, name: "Raw monkfish", quantity: 1 }
@@ -64,6 +67,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 65,
     xpEach: 105,
     gpEach: 800,
+    itemId: 3142,
     isMembers: true,
     outputItems: [
       { id: 3142, name: "Raw karambwan", quantity: 1 }
@@ -76,6 +80,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 82,
     xpEach: 26,
     gpEach: 110,
+    itemId: 383,
     isMembers: true,
     outputItems: [
       { id: 383, name: "Raw shark (from minnows)", quantity: 0.0625 }
@@ -97,6 +102,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 87,
     xpEach: 105,
     gpEach: 350,
+    itemId: 11942,
     isMembers: true
   },
   {
@@ -106,6 +112,7 @@ export const fishingMethods: MethodRow[] = [
     levelReq: 82,
     xpEach: 120,
     gpEach: 1200,
+    itemId: 13439,
     isMembers: true,
     outputItems: [
       { id: 13439, name: "Raw anglerfish", quantity: 1 }

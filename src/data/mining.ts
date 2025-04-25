@@ -12,6 +12,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 17.5,
     gpEach: 15,
+    itemId: 436,
     outputItems: [
       { id: 436, name: "Copper ore", quantity: 0.5 },
       { id: 438, name: "Tin ore", quantity: 0.5 }
@@ -25,6 +26,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 35,
     gpEach: 25,
+    itemId: 440,
     outputItems: [
       { id: 440, name: "Iron ore", quantity: 1 }
     ],
@@ -47,6 +49,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 50,
     gpEach: 85,
+    itemId: 453,
     outputItems: [
       { id: 453, name: "Coal", quantity: 1 }
     ],
@@ -59,6 +62,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 85,
     xpEach: 125,
     gpEach: 10000,
+    itemId: 451,
     outputItems: [
       { id: 451, name: "Runite ore", quantity: 1 }
     ],
@@ -147,6 +151,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 65,
     gpEach: 600, // Average profit per gem
+    itemId: 1625,
     outputItems: [
       { id: 1625, name: "Uncut sapphire", quantity: 0.2 },
       { id: 1627, name: "Uncut emerald", quantity: 0.1 },
@@ -162,6 +167,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 65,
     gpEach: 600, // Average profit per gem
+    itemId: 1625,
     outputItems: [
       { id: 1625, name: "Uncut sapphire", quantity: 0.2 },
       { id: 1627, name: "Uncut emerald", quantity: 0.1 },
@@ -253,6 +259,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 85,
     xpEach: 125,
     gpEach: 10000,
+    itemId: 451,
     outputItems: [
       { id: 451, name: "Runite ore", quantity: 1 }
     ],
@@ -265,6 +272,7 @@ export const miningMethods: MethodRow[] = [
     levelReq: 92,
     xpEach: 240,
     gpEach: 1500,
+    itemId: 21347,
     outputItems: [
       { id: 21347, name: "Amethyst", quantity: 1 }
     ],

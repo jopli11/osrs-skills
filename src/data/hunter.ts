@@ -24,6 +24,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 5,
     xpEach: 280,
     gpEach: 500, // Approximate profit
+    itemId: 1511, // Logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 1511, name: "Logs", quantity: 1 },
@@ -42,6 +43,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 14,
     xpEach: 420,
     gpEach: 600, // Approximate profit
+    itemId: 1521, // Oak logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 1521, name: "Oak logs", quantity: 1 },
@@ -60,6 +62,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 24,
     xpEach: 560,
     gpEach: 700, // Approximate profit
+    itemId: 1519, // Willow logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 1519, name: "Willow logs", quantity: 1 },
@@ -78,6 +81,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 34,
     xpEach: 700,
     gpEach: 800, // Approximate profit
+    itemId: 6333, // Teak logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 6333, name: "Teak logs", quantity: 1 },
@@ -96,6 +100,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 44,
     xpEach: 820,
     gpEach: 900, // Approximate profit
+    itemId: 1517, // Maple logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 1517, name: "Maple logs", quantity: 1 },
@@ -114,6 +119,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 49,
     xpEach: 960,
     gpEach: 1000, // Approximate profit
+    itemId: 6332, // Mahogany logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 6332, name: "Mahogany logs", quantity: 1 },
@@ -132,6 +138,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 59,
     xpEach: 1020,
     gpEach: 1100, // Approximate profit
+    itemId: 1515, // Yew logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 1515, name: "Yew logs", quantity: 1 },
@@ -150,6 +157,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 74,
     xpEach: 1140,
     gpEach: 1200, // Approximate profit
+    itemId: 1513, // Magic logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 1513, name: "Magic logs", quantity: 1 },
@@ -168,6 +176,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 89,
     xpEach: 1200,
     gpEach: 1300, // Approximate profit
+    itemId: 19669, // Redwood logs ID
     inputItems: [
       { id: 8792, name: "Clockwork", quantity: 1 },
       { id: 19669, name: "Redwood logs", quantity: 1 },
@@ -220,6 +229,7 @@ export const hunterMethods: MethodRow[] = [
     levelReq: 29,
     xpEach: 152,
     gpEach: 300, // Approximate profit
+    itemId: 10149, // Swamp lizard ID
     inputItems: [
       { id: 303, name: "Small fishing net", quantity: 1 },
       { id: 954, name: "Rope", quantity: 1 }
@@ -250,7 +260,8 @@ export const hunterMethods: MethodRow[] = [
     skill: "hunter",
     levelReq: 49,
     xpEach: 348,
-    gpEach: 100, // Approximate profit
+    gpEach: 20, // Approx value of bones
+    itemId: 526, // Bones ID
     inputItems: [
       { id: 10150, name: "Box trap", quantity: 1 }
     ],
@@ -265,7 +276,8 @@ export const hunterMethods: MethodRow[] = [
     skill: "hunter",
     levelReq: 60,
     xpEach: 272,
-    gpEach: 0, // No profit
+    gpEach: 600,
+    itemId: 10147, // Red salamander ID
     inputItems: [
       { id: 303, name: "Small fishing net", quantity: 1 },
       { id: 954, name: "Rope", quantity: 1 }
@@ -278,8 +290,9 @@ export const hunterMethods: MethodRow[] = [
     name: "Black Salamanders",
     skill: "hunter",
     levelReq: 67,
-    xpEach: 319,
-    gpEach: 0, // No profit
+    xpEach: 304,
+    gpEach: 800,
+    itemId: 10148, // Black salamander ID
     inputItems: [
       { id: 303, name: "Small fishing net", quantity: 1 },
       { id: 954, name: "Rope", quantity: 1 }
@@ -293,7 +306,8 @@ export const hunterMethods: MethodRow[] = [
     skill: "hunter",
     levelReq: 73,
     xpEach: 315,
-    gpEach: 1500, // Approximate profit
+    gpEach: 2000,
+    itemId: 11959, // Black chinchompa ID
     inputItems: [
       { id: 10150, name: "Box trap", quantity: 1 }
     ],
@@ -325,7 +339,8 @@ export const hunterMethods: MethodRow[] = [
     skill: "hunter",
     levelReq: 47,
     xpEach: 224,
-    gpEach: 0, // No profit
+    gpEach: 400,
+    itemId: 10146, // Orange salamander ID
     inputItems: [
       { id: 303, name: "Small fishing net", quantity: 1 },
       { id: 954, name: "Rope", quantity: 1 }
@@ -352,7 +367,8 @@ export const hunterMethods: MethodRow[] = [
     skill: "hunter",
     levelReq: 63,
     xpEach: 265,
-    gpEach: 800, // Approximate profit
+    gpEach: 1500,
+    itemId: 10034, // Red chinchompa ID
     inputItems: [
       { id: 10150, name: "Box trap", quantity: 1 }
     ],
@@ -366,8 +382,8 @@ export const hunterMethods: MethodRow[] = [
     name: "Herbiboar",
     skill: "hunter",
     levelReq: 80,
-    xpEach: 700, // Average XP per catch
-    gpEach: 1200, // Approximate profit
+    xpEach: 1000, // Average XP per run
+    gpEach: 3000, // Average profit per run
     inputItems: [],
     outputItems: [
       { id: 21232, name: "Grimy herbs", quantity: 3 },

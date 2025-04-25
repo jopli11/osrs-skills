@@ -104,6 +104,7 @@ export const slayerMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 25000,
     gpEach: -80000,
+    itemId: 2,
     isMembers: true,
     inputItems: [
       { id: 2, name: "Cannonballs", quantity: 1000 },
@@ -118,6 +119,7 @@ export const slayerMethods: MethodRow[] = [
     levelReq: 85,
     xpEach: 30000,
     gpEach: -90000,
+    itemId: 2,
     isMembers: true,
     inputItems: [
       { id: 2, name: "Cannonballs", quantity: 1000 },

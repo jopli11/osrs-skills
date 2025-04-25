@@ -26,6 +26,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 120,
     gpEach: -528,
     isMembers: true,
+    itemId: 8778,
     inputItems: [
       { id: 8778, name: "Oak plank", quantity: 2 }
     ],
@@ -39,6 +40,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 480,
     gpEach: -2112,
     isMembers: true,
+    itemId: 8778,
     inputItems: [
       { id: 8778, name: "Oak plank", quantity: 8 }
     ],
@@ -52,6 +54,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 370,
     gpEach: -1584,
     isMembers: true,
+    itemId: 8778,
     inputItems: [
       { id: 8778, name: "Oak plank", quantity: 3 },
       { id: 22114, name: "Mythical cape", quantity: 1 }
@@ -68,6 +71,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 540,
     gpEach: -2304,
     isMembers: true,
+    itemId: 8780,
     inputItems: [
       { id: 8780, name: "Teak plank", quantity: 6 }
     ],
@@ -83,6 +87,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 600,
     gpEach: -2112,
     isMembers: true,
+    itemId: 8778,
     inputItems: [
       { id: 8778, name: "Oak plank", quantity: 10 }
     ],
@@ -98,6 +103,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 840,
     gpEach: -12750,
     isMembers: true,
+    itemId: 8782,
     inputItems: [
       { id: 8782, name: "Mahogany plank", quantity: 6 }
     ],
@@ -111,6 +117,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 2800,
     gpEach: -5000,
     isMembers: true,
+    itemId: 960,
     inputItems: [
       { id: 960, name: "Planks & supplies", quantity: 10 }
     ],
@@ -126,6 +133,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 7000,
     gpEach: -10000,
     isMembers: true,
+    itemId: 8778,
     inputItems: [
       { id: 8778, name: "Oak planks & supplies", quantity: 20 }
     ],
@@ -141,6 +149,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 20000,
     gpEach: -20000,
     isMembers: true,
+    itemId: 8780,
     inputItems: [
       { id: 8780, name: "Teak planks & supplies", quantity: 20 }
     ],
@@ -156,6 +165,7 @@ export const constructionMethods: MethodRow[] = [
     xpEach: 40000,
     gpEach: -37500,
     isMembers: true,
+    itemId: 8782,
     inputItems: [
       { id: 8782, name: "Mahogany planks & supplies", quantity: 20 }
     ],

@@ -12,6 +12,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 13.8,
     gpEach: -35,
+    itemId: 1741,
     isMembers: false,
     inputItems: [
       { id: 1741, name: "Leather", quantity: 1 },
@@ -28,6 +29,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 5,
     xpEach: 15,
     gpEach: -45,
+    itemId: 2357,
     isMembers: false,
     inputItems: [
       { id: 2357, name: "Gold bar", quantity: 1 }
@@ -43,6 +45,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 6,
     xpEach: 20,
     gpEach: -60,
+    itemId: 2357,
     isMembers: false,
     inputItems: [
       { id: 2357, name: "Gold bar", quantity: 1 }
@@ -58,6 +61,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 20,
     xpEach: 40,
     gpEach: -175,
+    itemId: 1607,
     isMembers: false,
     inputItems: [
       { id: 1635, name: "Gold ring", quantity: 1 },
@@ -74,6 +78,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 22,
     xpEach: 55,
     gpEach: -200,
+    itemId: 1607,
     isMembers: false,
     inputItems: [
       { id: 1654, name: "Gold necklace", quantity: 1 },
@@ -90,6 +95,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 27,
     xpEach: 55,
     gpEach: -225,
+    itemId: 1605,
     isMembers: false,
     inputItems: [
       { id: 1635, name: "Gold ring", quantity: 1 },
@@ -106,6 +112,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 70,
     gpEach: -250,
+    itemId: 1603,
     isMembers: false,
     inputItems: [
       { id: 1635, name: "Gold ring", quantity: 1 },
@@ -122,6 +129,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 43,
     xpEach: 85,
     gpEach: -300,
+    itemId: 1601,
     isMembers: false,
     inputItems: [
       { id: 1635, name: "Gold ring", quantity: 1 },
@@ -138,6 +146,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 16,
     xpEach: 50,
     gpEach: -80,
+    itemId: 2355,
     isMembers: false,
     inputItems: [
       { id: 2357, name: "Silver bar", quantity: 1 }
@@ -153,6 +162,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 23,
     xpEach: 52.5,
     gpEach: -75,
+    itemId: 2355,
     isMembers: false,
     inputItems: [
       { id: 2357, name: "Silver bar", quantity: 1 }
@@ -170,6 +180,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 46,
     xpEach: 52.5,
     gpEach: -90,
+    itemId: 1775,
     isMembers: true,
     inputItems: [
       { id: 1775, name: "Molten glass", quantity: 1 }
@@ -185,6 +196,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 49,
     xpEach: 55,
     gpEach: -100,
+    itemId: 1775,
     isMembers: true,
     inputItems: [
       { id: 1775, name: "Molten glass", quantity: 1 }
@@ -200,6 +212,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 20,
     gpEach: -35,
+    itemId: 1781,
     isMembers: true,
     inputItems: [
       { id: 1783, name: "Soda ash", quantity: 1 },
@@ -216,6 +229,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 63,
     xpEach: 186,
     gpEach: -450,
+    itemId: 1745,
     isMembers: true,
     inputItems: [
       { id: 1745, name: "Green dragon leather", quantity: 3 },
@@ -232,6 +246,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 71,
     xpEach: 210,
     gpEach: -650,
+    itemId: 2505,
     isMembers: true,
     inputItems: [
       { id: 2505, name: "Blue dragon leather", quantity: 3 },
@@ -248,6 +263,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 77,
     xpEach: 234,
     gpEach: -900,
+    itemId: 2507,
     isMembers: true,
     inputItems: [
       { id: 2507, name: "Red dragon leather", quantity: 3 },
@@ -264,6 +280,7 @@ export const craftingMethods: MethodRow[] = [
     levelReq: 84,
     xpEach: 258,
     gpEach: -1200,
+    itemId: 2509,
     isMembers: true,
     inputItems: [
       { id: 2509, name: "Black dragon leather", quantity: 3 },

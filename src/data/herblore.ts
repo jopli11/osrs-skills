@@ -24,6 +24,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 3,
     xpEach: 2.5,
     gpEach: 15, // Approximate profit
+    itemId: 199,
     inputItems: [
       { id: 199, name: "Grimy guam leaf", quantity: 1 }
     ],
@@ -39,6 +40,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 5,
     xpEach: 3.8,
     gpEach: 20, // Approximate profit
+    itemId: 201,
     inputItems: [
       { id: 201, name: "Grimy marrentill", quantity: 1 }
     ],
@@ -54,6 +56,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 25,
     xpEach: 7.5,
     gpEach: 50, // Approximate profit
+    itemId: 207,
     inputItems: [
       { id: 207, name: "Grimy ranarr weed", quantity: 1 }
     ],
@@ -69,6 +72,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 75,
     xpEach: 15,
     gpEach: 80, // Approximate profit
+    itemId: 219,
     inputItems: [
       { id: 219, name: "Grimy torstol", quantity: 1 }
     ],
@@ -86,6 +90,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 3,
     xpEach: 25,
     gpEach: -150, // Approximate loss
+    itemId: 249,
     inputItems: [
       { id: 249, name: "Clean guam leaf", quantity: 1 },
       { id: 221, name: "Eye of newt", quantity: 1 },
@@ -103,6 +108,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 5,
     xpEach: 37.5,
     gpEach: -200, // Approximate loss
+    itemId: 251,
     inputItems: [
       { id: 251, name: "Clean marrentill", quantity: 1 },
       { id: 235, name: "Unicorn horn dust", quantity: 1 },
@@ -120,6 +126,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 12,
     xpEach: 50,
     gpEach: -250, // Approximate loss
+    itemId: 253,
     inputItems: [
       { id: 253, name: "Clean tarromin", quantity: 1 },
       { id: 225, name: "Limpwurt root", quantity: 1 },
@@ -139,6 +146,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 38,
     xpEach: 87.5,
     gpEach: -300, // Approximate loss
+    itemId: 257,
     inputItems: [
       { id: 257, name: "Clean ranarr weed", quantity: 1 },
       { id: 231, name: "Snape grass", quantity: 1 },
@@ -156,6 +164,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 45,
     xpEach: 100,
     gpEach: -400, // Approximate loss
+    itemId: 259,
     inputItems: [
       { id: 259, name: "Clean irit leaf", quantity: 1 },
       { id: 221, name: "Eye of newt", quantity: 1 },
@@ -173,6 +182,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 55,
     xpEach: 125,
     gpEach: -450, // Approximate loss
+    itemId: 263,
     inputItems: [
       { id: 263, name: "Clean kwuarm", quantity: 1 },
       { id: 225, name: "Limpwurt root", quantity: 1 },
@@ -192,6 +202,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 63,
     xpEach: 142.5,
     gpEach: -500, // Approximate loss
+    itemId: 3000,
     inputItems: [
       { id: 3000, name: "Clean snapdragon", quantity: 1 },
       { id: 223, name: "Red spiders' eggs", quantity: 1 },
@@ -209,6 +220,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 81,
     xpEach: 180,
     gpEach: -600, // Approximate loss
+    itemId: 267,
     inputItems: [
       { id: 267, name: "Clean toadflax", quantity: 1 },
       { id: 6693, name: "Crushed nest", quantity: 1 },
@@ -226,6 +238,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 90,
     xpEach: 150,
     gpEach: -800, // Approximate loss
+    itemId: 269,
     inputItems: [
       { id: 269, name: "Clean torstol", quantity: 1 },
       { id: 145, name: "Super attack(3)", quantity: 1 },
@@ -246,6 +259,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 60,
     xpEach: 137.5,
     gpEach: -350, // Approximate loss
+    itemId: 263,
     inputItems: [
       { id: 263, name: "Clean kwuarm", quantity: 1 },
       { id: 241, name: "Dragon scale dust", quantity: 1 },
@@ -263,6 +277,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 77,
     xpEach: 25.5,
     gpEach: -700, // Approximate loss
+    itemId: 3016, // Super energy(4)
     inputItems: [
       { id: 3016, name: "Super energy(4)", quantity: 1 },
       { id: 12640, name: "Amylase crystal", quantity: 4 }
@@ -281,6 +296,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 18,
     xpEach: 59.5,
     gpEach: -150, // Approximate loss
+    itemId: 1980, // Cup of hot water
     inputItems: [
       { id: 1980, name: "Cup of hot water", quantity: 1 },
       { id: 249, name: "Clean guam leaf", quantity: 1 },
@@ -301,6 +317,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 19,
     xpEach: 30,
     gpEach: -100, // Approximate loss
+    itemId: 249, // Clean guam leaf
     inputItems: [
       { id: 249, name: "Clean guam leaf", quantity: 1 },
       { id: 1939, name: "Swamp tar", quantity: 15 }
@@ -317,6 +334,7 @@ export const herbloreMethods: MethodRow[] = [
     levelReq: 31,
     xpEach: 42.5,
     gpEach: -120, // Approximate loss
+    itemId: 251, // Clean marrentill
     inputItems: [
       { id: 251, name: "Clean marrentill", quantity: 1 },
       { id: 1939, name: "Swamp tar", quantity: 15 }

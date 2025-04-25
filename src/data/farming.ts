@@ -24,6 +24,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 31,
     gpEach: -1712,
+    itemId: 8458,
     isMembers: true,
     inputItems: [
       { id: 8458, name: "Bagged plant 1", quantity: 1 }
@@ -37,6 +38,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 40,
     gpEach: -50,
+    itemId: 5318,
     isMembers: true,
     inputItems: [
       { id: 5318, name: "Potato seed", quantity: 3 }
@@ -52,6 +54,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 481,
     gpEach: -1900,
+    itemId: 5370,
     isMembers: true,
     inputItems: [
       { id: 5370, name: "Oak sapling", quantity: 1 },
@@ -66,6 +69,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 1481,
     gpEach: -2840,
+    itemId: 5371,
     isMembers: true,
     inputItems: [
       { id: 5371, name: "Willow sapling", quantity: 1 },
@@ -80,6 +84,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 45,
     xpEach: 3448,
     gpEach: -6980,
+    itemId: 5372,
     isMembers: true,
     inputItems: [
       { id: 5372, name: "Maple sapling", quantity: 1 },
@@ -94,6 +99,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 27,
     xpEach: 1200,
     gpEach: -4000,
+    itemId: 5478,
     isMembers: true,
     inputItems: [
       { id: 5478, name: "Fruit tree sapling", quantity: 1 },
@@ -110,6 +116,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 60,
     xpEach: 7150,
     gpEach: -12400,
+    itemId: 5373,
     isMembers: true,
     inputItems: [
       { id: 5373, name: "Yew sapling", quantity: 1 },
@@ -124,6 +131,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 68,
     xpEach: 10500,
     gpEach: -34200,
+    itemId: 5502,
     isMembers: true,
     inputItems: [
       { id: 5502, name: "Palm tree sapling", quantity: 1 },
@@ -138,6 +146,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 75,
     xpEach: 13768,
     gpEach: -102400,
+    itemId: 5374,
     isMembers: true,
     inputItems: [
       { id: 5374, name: "Magic sapling", quantity: 1 },
@@ -152,6 +161,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 9,
     xpEach: 120,
     gpEach: 1500,
+    itemId: 5291,
     isMembers: true,
     inputItems: [
       { id: 5291, name: "Herb seed", quantity: 1 }
@@ -195,6 +205,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 35,
     xpEach: 3450,
     gpEach: -4650,
+    itemId: 22866,
     isMembers: true,
     inputItems: [
       { id: 22866, name: "Teak sapling", quantity: 1 }
@@ -208,6 +219,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 55,
     xpEach: 7150,
     gpEach: -10800,
+    itemId: 21488,
     isMembers: true,
     inputItems: [
       { id: 21488, name: "Mahogany sapling", quantity: 1 }
@@ -221,6 +233,7 @@ export const farmingMethods: MethodRow[] = [
     levelReq: 72,
     xpEach: 12516,
     gpEach: -2100,
+    itemId: 5503,
     isMembers: true,
     inputItems: [
       { id: 5503, name: "Calquat sapling", quantity: 1 },

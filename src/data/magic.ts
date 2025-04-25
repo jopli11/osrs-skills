@@ -242,6 +242,7 @@ export const magicMethods: MethodRow[] = [
     levelReq: 4,
     xpEach: 9,
     gpEach: -491, // Approximate cost per cast
+    itemId: 877, // Opal bolts ID
     inputItems: [
       { id: 556, name: "Air rune", quantity: 2 },
       { id: 564, name: "Cosmic rune", quantity: 1 },
@@ -259,6 +260,7 @@ export const magicMethods: MethodRow[] = [
     levelReq: 7,
     xpEach: 17,
     gpEach: -914, // Approximate cost per cast
+    itemId: 9337, // Sapphire bolts ID
     inputItems: [
       { id: 555, name: "Water rune", quantity: 1 },
       { id: 558, name: "Mind rune", quantity: 1 },
@@ -277,6 +279,7 @@ export const magicMethods: MethodRow[] = [
     levelReq: 49,
     xpEach: 59,
     gpEach: -1768, // Approximate cost per cast
+    itemId: 9339, // Ruby bolts ID
     inputItems: [
       { id: 554, name: "Fire rune", quantity: 5 },
       { id: 565, name: "Blood rune", quantity: 1 },

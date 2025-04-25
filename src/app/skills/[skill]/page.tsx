@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useMemo } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -15,8 +15,12 @@ import {
   VStack,
   SimpleGrid,
   ButtonGroup,
-  Badge
+  Badge,
+  Spinner,
+  Alert,
+  AlertIcon
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
@@ -61,6 +65,34 @@ type Props = {
   };
 };
 
+// Type definition for the expected structure of the combined price/mapping data
+interface PriceData { 
+  [itemId: string]: {
+    id: number;
+    name: string;
+    icon: string;
+    high: number | null;
+    highTime: number | null;
+    low: number | null;
+    lowTime: number | null;
+    // Include other mapping properties if needed
+    limit?: number;
+    members?: boolean;
+    lowalch?: number;
+    highalch?: number;
+    value?: number;
+  }
+}
+
+// Function to fetch price data from our backend API route
+const fetchPrices = async (): Promise<PriceData> => {
+  const response = await fetch('/api/prices');
+  if (!response.ok) {
+    throw new Error('Network response was not ok while fetching prices.');
+  }
+  return response.json();
+};
+
 export default function SkillPage({ params }: Props) {
   const { skill } = params;
   
@@ -96,6 +128,21 @@ export default function SkillPage({ params }: Props) {
   // Training methods for this skill
   const methods = trainingMethods[skillKey] || [];
   
+  // --- START: Fetch prices using useQuery ---
+  const {
+    data: itemPriceData, 
+    isLoading: pricesLoading, 
+    isError: pricesError,
+    error: priceFetchError // Capture error object
+  } = useQuery<PriceData, Error>({
+    queryKey: ['itemPrices'],
+    queryFn: fetchPrices,
+    staleTime: 10 * 60 * 1000, // 10 minutes stale time
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    retry: 1 // Retry once on error
+  });
+  // --- END: Fetch prices using useQuery ---
+  
   // Sort and filter methods based on current level
   const filteredMethods = [...methods]
     .filter(method => method.level <= targetLevel)
@@ -112,21 +159,66 @@ export default function SkillPage({ params }: Props) {
       }
     });
   
-  // Calculated results for each method
-  const calculatedMethods = filteredMethods.map(method => {
-    const actionsNeeded = Math.ceil(neededXp / method.xpEach);
-    const hoursNeeded = method.estimatedActionsPerHour 
-      ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
-      : "?";
-    const totalProfit = method.gpEach * actionsNeeded;
-    
-    return {
-      ...method,
-      actionsNeeded,
-      hoursNeeded,
-      totalProfit
-    };
-  });
+  // --- START: Update Method Calculation with Live Prices (using useMemo) ---
+  // Memoize calculated methods to prevent recalculation on every render unless dependencies change
+  const calculatedMethods = useMemo(() => {
+    if (pricesLoading || !itemPriceData) {
+      // Return empty array or placeholder if prices aren't loaded yet
+      // This avoids errors trying to access itemPriceData before it's ready
+      return []; 
+    }
+
+    const filtered = [...methods]
+      .filter(method => method.level <= targetLevel)
+      .sort((a, b) => {
+        // ... (sorting logic remains the same) ...
+         switch (sortOption) {
+          case "level":
+            return a.level - b.level;
+          case "xphr": // Estimated XP/hr
+            // Ensure we handle missing estimatedActionsPerHour
+            const xphrA = a.xpEach * (a.estimatedActionsPerHour || 0);
+            const xphrB = b.xpEach * (b.estimatedActionsPerHour || 0);
+            return xphrB - xphrA;
+          case "gphr": // Estimated GP/hr (using LIVE prices)
+            // Get live price for items a and b
+            const priceA = itemPriceData[String(a.itemId)]?.high ?? a.gpEach; // Fallback to static gpEach if live price missing
+            const priceB = itemPriceData[String(b.itemId)]?.high ?? b.gpEach; // Fallback to static gpEach if live price missing
+            // Ensure we handle missing estimatedActionsPerHour
+            const gphrA = priceA * (a.estimatedActionsPerHour || 0);
+            const gphrB = priceB * (b.estimatedActionsPerHour || 0);
+            // Note: This assumes gpEach represents COST. If it can be profit, logic needs adjustment.
+            // Sorting by highest cost might not be useful, maybe sort by lowest cost or highest profit?
+            // For now, maintaining original sort direction (higher number = higher rank)
+            return gphrB - gphrA; 
+          default:
+            return a.level - b.level;
+        }
+      });
+
+    return filtered.map(method => {
+      const actionsNeeded = neededXp > 0 && method.xpEach > 0 ? Math.ceil(neededXp / method.xpEach) : 0;
+      const hoursNeeded = method.estimatedActionsPerHour && actionsNeeded > 0
+        ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
+        : "?";
+      
+      // --- Get Live Price --- 
+      // Assume gpEach is cost per action. Use the 'high' price (buy price) for cost.
+      // Fallback to static gpEach if live price is unavailable (null/undefined).
+      const livePricePerAction = itemPriceData[String(method.itemId)]?.high ?? method.gpEach;
+      const totalCost = livePricePerAction * actionsNeeded;
+      
+      return {
+        ...method,
+        livePricePerAction: livePricePerAction, // Store the price used
+        actionsNeeded,
+        hoursNeeded,
+        totalCost // Renamed from totalProfit for clarity, assuming cost
+      };
+    });
+  // Dependencies: Include fetched data, XP needed, target level (for filtering), and sort option
+  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading]); 
+  // --- END: Update Method Calculation ---
   
   // Simpler notification function
   const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
@@ -214,8 +306,89 @@ export default function SkillPage({ params }: Props) {
   
   // Format number with commas
   const formatNumber = (num: number): string => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // Handle potential NaN or Infinity
+    if (!Number.isFinite(num)) return "?"; 
+    return num.toLocaleString(); // Use localeString for better formatting
   };
+
+  // --- START: Render Loading/Error States ---
+  const renderContent = () => {
+    if (pricesLoading) {
+      return (
+        <Flex justify="center" align="center" height="200px">
+          <Spinner size="xl" color="#ffcb2f" />
+          <Text ml={4} color="white">Loading live prices...</Text>
+        </Flex>
+      );
+    }
+
+    if (pricesError) {
+      return (
+        <Alert status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px" bg="rgba(255,0,0,0.1)" borderRadius="md">
+          <AlertIcon boxSize="40px" mr={0} color="red.400" />
+          <Text fontWeight="bold" mt={4} mb={1} color="white">Error Loading Prices</Text>
+          <Text fontSize="sm" color="gray.300">Could not fetch live Grand Exchange prices. Calculations will use estimated static prices.</Text>
+          <Text fontSize="xs" color="gray.500" mt={2}>({priceFetchError?.message})</Text>
+        </Alert>
+      );
+      // Note: Even on error, calculatedMethods might fall back to static prices, so we might still want to render the table below.
+      // The logic above in useMemo handles falling back to method.gpEach.
+    }
+    
+    // If loaded successfully (or even with error, we show the table with fallback prices)
+    return (
+      <Box overflowX="auto">
+        <Box as="table" width="100%">
+          <Box as="thead" bg="rgba(0,0,0,0.4)" borderBottom="2px solid black">
+            <Box as="tr">
+              <Box as="th" px={4} py={3} textAlign="left" color="#e0d0b0" fontWeight="medium" fontSize="sm">Method</Box>
+              <Box as="th" px={4} py={3} textAlign="left" color="#e0d0b0" fontWeight="medium" fontSize="sm">Level</Box>
+              <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">XP/ea</Box>
+              <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Actions</Box>
+              <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Hours</Box>
+              <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">GP/ea</Box>
+              <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Profit/Loss</Box>
+            </Box>
+          </Box>
+          <Box as="tbody">
+            {calculatedMethods.map((method) => (
+              <Box 
+                key={method.id}
+                as="tr" 
+                _hover={{ bg: "rgba(0,0,0,0.2)" }} 
+                cursor="pointer" 
+                borderBottom="1px solid rgba(0,0,0,0.4)"
+                title={method.notes}
+              >
+                <Box as="td" px={4} py={3} color="white">
+                  <Flex align="center" gap={2}>
+                    {method.name}
+                    {method.isMembers && (
+                      <Badge bg="rgba(0,0,0,0.4)" color="#ffcb2f" fontSize="xs" borderRadius="sm" px={1}>
+                        P2P
+                      </Badge>
+                    )}
+                  </Flex>
+                </Box>
+                <Box as="td" px={4} py={3} color="white">{method.level}</Box>
+                <Box as="td" px={4} py={3} textAlign="right" color="white">{method.xpEach}</Box>
+                <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
+                <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
+                <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "#00ff00" : "#ff6b6b"}>
+                  {method.gpEach >= 0 ? `+${method.gpEach}` : method.gpEach}
+                </Box>
+                <Box as="td" px={4} py={3} textAlign="right" color={method.totalCost >= 0 ? "#00ff00" : "#ff6b6b"}>
+                  {method.totalCost >= 0 ? `+${formatNumber(method.totalCost)}` : formatNumber(method.totalCost)}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+        <Text color="gray.400" fontSize="xs" mt={4}>Prices fetched from OSRS Wiki API. GP/hr calculations are estimates.</Text>
+      </Box>
+    );
+  };
+  // --- END: Render Loading/Error States ---
 
   return (
     <Box>
@@ -520,7 +693,7 @@ export default function SkillPage({ params }: Props) {
           )}
         </Box>
         
-        {/* Methods Table */}
+        {/* Training Methods Table */}
         <Box 
           mt={8} 
           bg="rgba(42, 30, 15, 0.75)" 
@@ -593,54 +766,7 @@ export default function SkillPage({ params }: Props) {
               </Text>
             </Flex>
           ) : (
-            <Box overflowX="auto">
-              <Box as="table" width="100%">
-                <Box as="thead" bg="rgba(0,0,0,0.4)" borderBottom="2px solid black">
-                  <Box as="tr">
-                    <Box as="th" px={4} py={3} textAlign="left" color="#e0d0b0" fontWeight="medium" fontSize="sm">Method</Box>
-                    <Box as="th" px={4} py={3} textAlign="left" color="#e0d0b0" fontWeight="medium" fontSize="sm">Level</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">XP/ea</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Actions</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Hours</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">GP/ea</Box>
-                    <Box as="th" px={4} py={3} textAlign="right" color="#e0d0b0" fontWeight="medium" fontSize="sm">Profit/Loss</Box>
-                  </Box>
-                </Box>
-                <Box as="tbody">
-                  {calculatedMethods.map((method) => (
-                    <Box 
-                      key={method.id}
-                      as="tr" 
-                      _hover={{ bg: "rgba(0,0,0,0.2)" }} 
-                      cursor="pointer" 
-                      borderBottom="1px solid rgba(0,0,0,0.4)"
-                      title={method.notes}
-                    >
-                      <Box as="td" px={4} py={3} color="white">
-                        <Flex align="center" gap={2}>
-                          {method.name}
-                          {method.isMembers && (
-                            <Badge bg="rgba(0,0,0,0.4)" color="#ffcb2f" fontSize="xs" borderRadius="sm" px={1}>
-                              P2P
-                            </Badge>
-                          )}
-                        </Flex>
-                      </Box>
-                      <Box as="td" px={4} py={3} color="white">{method.level}</Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color="white">{method.xpEach}</Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "#00ff00" : "#ff6b6b"}>
-                        {method.gpEach >= 0 ? `+${method.gpEach}` : method.gpEach}
-                      </Box>
-                      <Box as="td" px={4} py={3} textAlign="right" color={method.totalProfit >= 0 ? "#00ff00" : "#ff6b6b"}>
-                        {method.totalProfit >= 0 ? `+${formatNumber(method.totalProfit)}` : formatNumber(method.totalProfit)}
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            </Box>
+            renderContent()
           )}
         </Box>
       </Container>

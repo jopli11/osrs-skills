@@ -18,6 +18,7 @@ export interface MethodRow {
   levelReq: number;     // Level required
   xpEach: number;       // XP gained per action
   gpEach: number;       // GP cost/profit per action (from API)
+  itemId?: number;      // OSRS Item ID (Optional)
   inputItems?: {        // Optional input items
     id: number;
     name: string;

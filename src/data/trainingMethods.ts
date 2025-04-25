@@ -32,6 +32,7 @@ export interface TrainingMethod {
   level: number;        // Level required
   xpEach: number;       // XP gained per action
   gpEach: number;       // GP cost/profit per action (negative = cost, positive = profit)
+  itemId?: number;      // OSRS Item ID (Optional)
   isMembers: boolean;   // Whether this method is members-only
   inputItems?: {        // Optional input items required
     name: string;
@@ -146,6 +147,7 @@ function convertMethodRowsToTrainingMethods(methods: MethodRow[]): TrainingMetho
       level: method.levelReq,
       xpEach: method.xpEach,
       gpEach: method.gpEach,
+      itemId: method.itemId,
       isMembers: method.isMembers,
       inputItems: method.inputItems?.map(item => ({
         name: item.name,

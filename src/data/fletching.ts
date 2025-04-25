@@ -12,6 +12,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 5,
     gpEach: -10,
+    itemId: 1511, // Logs ID
     isMembers: false,
     inputItems: [
       { id: 1511, name: "Logs", quantity: 1 }
@@ -27,6 +28,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 1,
     gpEach: -2,
+    itemId: 314, // Feather ID
     isMembers: false,
     inputItems: [
       { id: 52, name: "Arrow shaft", quantity: 1 },
@@ -43,6 +45,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 1,
     xpEach: 1.3,
     gpEach: -3,
+    itemId: 39, // Bronze arrowtips ID
     isMembers: false,
     inputItems: [
       { id: 53, name: "Headless arrow", quantity: 1 },
@@ -59,6 +62,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 15,
     xpEach: 2.5,
     gpEach: -5,
+    itemId: 40, // Iron arrowtips ID
     isMembers: false,
     inputItems: [
       { id: 53, name: "Headless arrow", quantity: 1 },
@@ -75,6 +79,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 30,
     xpEach: 5,
     gpEach: -8,
+    itemId: 41, // Steel arrowtips ID
     isMembers: false,
     inputItems: [
       { id: 53, name: "Headless arrow", quantity: 1 },
@@ -93,6 +98,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 5,
     xpEach: 5,
     gpEach: -15,
+    itemId: 1511, // Logs ID
     isMembers: true,
     inputItems: [
       { id: 1511, name: "Logs", quantity: 1 },
@@ -109,6 +115,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 10,
     xpEach: 10,
     gpEach: -15,
+    itemId: 1511, // Logs ID
     isMembers: true,
     inputItems: [
       { id: 1511, name: "Logs", quantity: 1 },
@@ -125,6 +132,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 20,
     xpEach: 16.5,
     gpEach: -20,
+    itemId: 1521, // Oak logs ID
     isMembers: true,
     inputItems: [
       { id: 1521, name: "Oak logs", quantity: 1 },
@@ -141,6 +149,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 25,
     xpEach: 25,
     gpEach: -20,
+    itemId: 1521, // Oak logs ID
     isMembers: true,
     inputItems: [
       { id: 1521, name: "Oak logs", quantity: 1 },
@@ -157,6 +166,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 35,
     xpEach: 33.3,
     gpEach: -25,
+    itemId: 1519, // Willow logs ID
     isMembers: true,
     inputItems: [
       { id: 1519, name: "Willow logs", quantity: 1 },
@@ -173,6 +183,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 40,
     xpEach: 41.5,
     gpEach: -25,
+    itemId: 1519, // Willow logs ID
     isMembers: true,
     inputItems: [
       { id: 1519, name: "Willow logs", quantity: 1 },
@@ -189,6 +200,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 50,
     xpEach: 50,
     gpEach: -30,
+    itemId: 1517, // Maple logs ID
     isMembers: true,
     inputItems: [
       { id: 1517, name: "Maple logs", quantity: 1 },
@@ -205,6 +217,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 55,
     xpEach: 58.3,
     gpEach: -30,
+    itemId: 1517, // Maple logs ID
     isMembers: true,
     inputItems: [
       { id: 1517, name: "Maple logs", quantity: 1 },
@@ -221,6 +234,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 65,
     xpEach: 67.5,
     gpEach: -50,
+    itemId: 1515, // Yew logs ID
     isMembers: true,
     inputItems: [
       { id: 1515, name: "Yew logs", quantity: 1 },
@@ -237,6 +251,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 70,
     xpEach: 75,
     gpEach: -50,
+    itemId: 1515, // Yew logs ID
     isMembers: true,
     inputItems: [
       { id: 1515, name: "Yew logs", quantity: 1 },
@@ -253,6 +268,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 80,
     xpEach: 83.3,
     gpEach: -120,
+    itemId: 1513, // Magic logs ID
     isMembers: true,
     inputItems: [
       { id: 1513, name: "Magic logs", quantity: 1 },
@@ -269,6 +285,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 85,
     xpEach: 91.5,
     gpEach: -120,
+    itemId: 1513, // Magic logs ID
     isMembers: true,
     inputItems: [
       { id: 1513, name: "Magic logs", quantity: 1 },
@@ -287,6 +304,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 9,
     xpEach: 0.5,
     gpEach: -2,
+    itemId: 9375, // Bronze bolts (unf) ID
     isMembers: true,
     inputItems: [
       { id: 9375, name: "Bronze bolts (unf)", quantity: 1 },
@@ -303,6 +321,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 67,
     xpEach: 7.5,
     gpEach: -30,
+    itemId: 823, // Adamant dart tip ID
     isMembers: true,
     inputItems: [
       { id: 823, name: "Adamant dart tip", quantity: 1 },
@@ -319,6 +338,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 57,
     xpEach: 4,
     gpEach: -20,
+    itemId: 822, // Mithril dart tip ID
     isMembers: true,
     inputItems: [
       { id: 822, name: "Mithril dart tip", quantity: 1 },
@@ -335,6 +355,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 95,
     xpEach: 25,
     gpEach: -300,
+    itemId: 11232, // Dragon dart tip ID
     isMembers: true,
     inputItems: [
       { id: 11232, name: "Dragon dart tip", quantity: 1 },
@@ -353,6 +374,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 55,
     xpEach: 58.3,
     gpEach: -20,
+    itemId: 62, // Maple longbow (u) ID
     isMembers: true,
     inputItems: [
       { id: 62, name: "Maple longbow (u)", quantity: 1 },
@@ -369,6 +391,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 70,
     xpEach: 75,
     gpEach: -25,
+    itemId: 66, // Yew longbow (u) ID
     isMembers: true,
     inputItems: [
       { id: 66, name: "Yew longbow (u)", quantity: 1 },
@@ -385,6 +408,7 @@ export const fletchingMethods: MethodRow[] = [
     levelReq: 85,
     xpEach: 91.5,
     gpEach: -30,
+    itemId: 70, // Magic longbow (u) ID
     isMembers: true,
     inputItems: [
       { id: 70, name: "Magic longbow (u)", quantity: 1 },
