@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,61 +15,50 @@ export default function PlayerLookup() {
   const [username, setUsername] = useState('');
   const [isUsernameInvalid, setIsUsernameInvalid] = useState(false);
   const [isDebouncing, setIsDebouncing] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   
-  // Instead of destructuring functions that might cause issues, get state only
+  // Get state and methods from store
   const {
     playerStats,
     playerStatsLoading,
-    playerStatsError
+    playerStatsError,
+    lookupPlayerStats, // Get lookup function directly
+    clearPlayerStats, // Get clear function directly
+    setNotification // Get notification function directly
   } = useCalculatorStore();
   
-  // Direct access to store methods
-  const store = useCalculatorStore;
+  // Direct access to store methods - Not needed if we destructure them above
+  // const store = useCalculatorStore;
   
-  // Simple notification function
-  const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
-    try {
-      store.setState({
-        notification: {
-          message,
-          type,
-          timestamp: Date.now()
-        }
-      });
-    } catch (err) {
-      console.error('Failed to set notification:', err);
-    }
-  };
+  // Simple notification function - Use setNotification from store directly
+  const notify = useCallback((message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setNotification({
+      message,
+      type,
+      timestamp: Date.now()
+    });
+  }, [setNotification]); // Depend on setNotification
   
-  // Clear player stats directly - wrapped in useCallback
+  // Clear player stats directly - Use clearPlayerStats from store directly
   const clearStats = useCallback(() => {
-    try {
-      store.setState({
-        playerStats: null,
-        playerStatsLoading: false,
-        playerStatsError: null,
-        notification: null
-      });
-    } catch (err) {
-      console.error('Failed to clear player stats:', err);
-    }
-  }, [store]); // Added store as dependency
+      clearPlayerStats(); // Call the function from the store
+  }, [clearPlayerStats]); // Depend on clearPlayerStats
 
   // Debounce the lookup to prevent excessive API calls
   const debouncedLookup = useCallback((username: string) => {
     setIsDebouncing(true);
     
-    // Clear existing player data to prevent persistence issues
+    // Clear existing player data
     clearStats();
     
     const timer = setTimeout(async () => {
       try {
-        // Add a try-catch block around the API call
-        await store.getState().lookupPlayerStats(username);
+        // Call lookupPlayerStats directly from the destructured store methods
+        await lookupPlayerStats(username);
       } catch (error) {
         console.error('Error in debouncedLookup:', error);
-        // Set a more user-friendly error message
-        store.setState({
+        // Set error state using the store's setter (if available or set directly)
+        useCalculatorStore.setState({
           playerStatsError: "The OSRS Hiscores server might be busy. Please try again in a few moments."
         });
       } finally {
@@ -81,7 +70,12 @@ export default function PlayerLookup() {
       clearTimeout(timer);
       setIsDebouncing(false);
     };
-  }, [clearStats, store]);
+  }, [clearStats, lookupPlayerStats]); // Update dependencies
+
+  // Set mounted state after initial render on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,70 +135,79 @@ export default function PlayerLookup() {
         </Box>
       </form>
 
-      {playerStatsLoading && (
+      {/* Conditionally render dynamic content only when mounted */}
+      {!isMounted ? (
         <Flex justify="center" my={4}>
-          <Spinner color="#ffcb2f" />
+          <Spinner color="#ffcb2f" size="sm" />
         </Flex>
-      )}
+      ) : (
+        <>
+          {playerStatsLoading && (
+            <Flex justify="center" my={4}>
+              <Spinner color="#ffcb2f" />
+            </Flex>
+          )}
 
-      {playerStatsError && (
-        <Box 
-          mt={4} 
-          p={3} 
-          bg="#3b2914"
-          color="white" 
-          borderRadius="md"
-          borderWidth="1px"
-          borderColor="#211305"
-        >
-          <Text fontWeight="bold">Error:</Text>
-          <Text>{playerStatsError}</Text>
-          
-          <Box mt={2} pt={2} borderTop="1px solid rgba(255,255,255,0.1)">
-            <Text fontSize="xs" color="#e0d0b0">
-              Note: The OSRS Hiscores API can be unreliable at times. If you&apos;re sure the username 
-              is correct, please try again in a few minutes.
-            </Text>
-          </Box>
-        </Box>
-      )}
-
-      {playerStats && !playerStatsLoading && !playerStatsError && (
-        <Box mt={4}>
-          <Flex justify="space-between" align="center">
-            <Text color="#ffcb2f" fontWeight="bold">
-              {playerStats.username}
-            </Text>
-            <Text color="#e0d0b0">
-              Total Level: {playerStats.stats.overall?.level || 'N/A'}
-            </Text>
-          </Flex>
-          
-          <Text fontSize="xs" color="#e0d0b0" textAlign="center" mt={2}>
-            Your current levels have been applied to all skill calculators
-          </Text>
-          
-          <Flex justify="space-between" mt={3}>
-            <Button
-              size="xs"
-              bg="#361f0e"
-              color="#ffcb2f"
+          {playerStatsError && (
+            <Box 
+              mt={4} 
+              p={3} 
+              bg="#3b2914"
+              color="white" 
+              borderRadius="md"
               borderWidth="1px"
-              borderColor="black"
-              _hover={{ bg: '#4a2a15' }}
-              onClick={() => {
-                clearStats();
-                notify("Stats cleared. Default values restored.", "info");
-              }}
+              borderColor="#211305"
             >
-              Clear
-            </Button>
-            
-            <Text fontSize="xs" color="#e0d0b0">
-              Stats will be saved across all pages
-            </Text>
-          </Flex>
-        </Box>
+              <Text fontWeight="bold">Error:</Text>
+              <Text>{playerStatsError}</Text>
+              
+              <Box mt={2} pt={2} borderTop="1px solid rgba(255,255,255,0.1)">
+                <Text fontSize="xs" color="#e0d0b0">
+                  Note: The OSRS Hiscores API can be unreliable at times. If you&apos;re sure the username 
+                  is correct, please try again in a few minutes.
+                </Text>
+              </Box>
+            </Box>
+          )}
+
+          {playerStats && !playerStatsLoading && !playerStatsError && (
+            <Box mt={4}>
+              <Flex justify="space-between" align="center">
+                <Text color="#ffcb2f" fontWeight="bold">
+                  {playerStats.username}
+                </Text>
+                <Text color="#e0d0b0">
+                  Total Level: {playerStats.stats.overall?.level || 'N/A'}
+                </Text>
+              </Flex>
+              
+              <Text fontSize="xs" color="#e0d0b0" textAlign="center" mt={2}>
+                Your current levels have been applied to all skill calculators
+              </Text>
+              
+              <Flex justify="space-between" mt={3}>
+                <Button
+                  size="xs"
+                  bg="#361f0e"
+                  color="#ffcb2f"
+                  borderWidth="1px"
+                  borderColor="black"
+                  _hover={{ bg: '#4a2a15' }}
+                  onClick={() => {
+                    clearStats();
+                    notify("Stats cleared. Default values restored.", "info");
+                  }}
+                >
+                  Clear
+                </Button>
+                
+                <Text fontSize="xs" color="#e0d0b0">
+                  Stats will be saved across all pages
+                </Text>
+              </Flex>
+            </Box>
+          )}
+        </>
       )}
     </Box>
   );

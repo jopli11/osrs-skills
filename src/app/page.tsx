@@ -51,6 +51,17 @@ export default function Home() {
                 <Box as="span" color="white">Calculators</Box>
               </Heading>
             </Link>
+            {/* Add Combat Calc Link */}
+            <Link href="/combat-calculator" style={{ textDecoration: 'none', marginLeft: '2rem' }}>
+              <Text 
+                color="#e0d0b0"
+                fontSize="lg"
+                fontWeight="medium"
+                _hover={{ color: '#ffcb2f' }}
+              >
+                Combat Calc
+              </Text>
+            </Link>
           </Flex>
         </Container>
       </Box>
