@@ -55,6 +55,7 @@ const skillApiNameMap: { [key: string]: keyof CombatLevels } = {
 
 export default function CombatCalculatorPage() {
   const { playerStats } = useCalculatorStore(); // Get player stats from store
+  const [isMounted, setIsMounted] = useState(false); // Add isMounted state
   
   // Initialize levels based on playerStats if available, otherwise use defaults
   const initialLevels = useMemo(() => {
@@ -77,6 +78,11 @@ export default function CombatCalculatorPage() {
 
   const [levels, setLevels] = useState<CombatLevels>(initialLevels);
   const [combatLevel, setCombatLevel] = useState<number>(3); // Initial combat level calculation will be done in useEffect
+
+  // Set mounted state after initial render on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleLevelChange = (skill: keyof CombatLevels, valueAsString: string, valueAsNumber: number) => {
     setLevels(prevLevels => ({
@@ -257,8 +263,8 @@ export default function CombatCalculatorPage() {
                   >
                     <SkillIcon skill={name as SkillName} size={16} />
                     <Text ml={1.5}>{label}</Text>
-                    {/* Add Badge if level is from player stats */}
-                    {playerStats && playerStats.stats[name] && playerStats.stats[name].level === levels[name] && (
+                    {/* Add Badge if level is from player stats - ONLY WHEN MOUNTED */}
+                    {isMounted && playerStats && playerStats.stats[name] && playerStats.stats[name].level === levels[name] && (
                        <Badge 
                          ml={1.5} 
                          fontSize="xs"
@@ -276,11 +282,13 @@ export default function CombatCalculatorPage() {
                     id={name}
                     min={name === 'hitpoints' ? 10 : 1} // HP min level is 10
                     max={99}
-                    value={levels[name]}
+                    // Only show actual level value when mounted, otherwise show default
+                    value={isMounted ? levels[name] : (name === 'hitpoints' ? 10 : 1)}
                     onChange={(valueAsString, valueAsNumber) => handleLevelChange(name, valueAsString, valueAsNumber)}
                     allowMouseWheel
                     bg="rgba(0,0,0,0.3)"
-                    borderColor={playerStats && playerStats.stats[name] && playerStats.stats[name].level === levels[name] ? "#ffcb2f" : "black"} // Highlight if from stats
+                    // Only apply conditional border when mounted
+                    borderColor={isMounted && playerStats && playerStats.stats[name] && playerStats.stats[name].level === levels[name] ? "#ffcb2f" : "black"}
                     borderRadius="md"
                     focusBorderColor="#ffcb2f"
                     variant="outline"
@@ -295,10 +303,10 @@ export default function CombatCalculatorPage() {
                       },
                       '.chakra-numberinput__stepper-group': { borderLeft: '2px solid black', borderColor: 'black' },
                       '.chakra-numberinput__stepper': { 
-                        color: '#e0d0b0', // Ensure arrows are visible
+                        color: '#e0d0b0', 
                         borderColor: 'black', 
                         bg: 'rgba(0,0,0,0.4)',
-                        _hover: { bg: 'rgba(255, 203, 47, 0.1)', color: 'white' }, // Slightly lighten arrows on hover 
+                        _hover: { bg: 'rgba(255, 203, 47, 0.1)', color: 'white' }, 
                         _active: { bg: 'rgba(255, 203, 47, 0.2)' },
                         _first: { borderTopRightRadius: 'md', borderBottom: '1px solid black' }, 
                         _last: { borderBottomRightRadius: 'md' }
@@ -307,8 +315,14 @@ export default function CombatCalculatorPage() {
                   >
                     <NumberInputField />
                     <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
+                      <NumberIncrementStepper 
+                        color="#e0d0b0" 
+                        _hover={{ color: 'white' }}
+                      />
+                      <NumberDecrementStepper 
+                        color="#e0d0b0" 
+                        _hover={{ color: 'white' }}
+                      />
                     </NumberInputStepper>
                   </NumberInput>
                 </FormControl>
@@ -340,7 +354,8 @@ export default function CombatCalculatorPage() {
                 color="#ffcb2f"
                 textShadow="3px 3px 0px rgba(0,0,0,0.6)"
               >
-                {combatLevel}
+                {/* Only show calculated level when mounted */}
+                {isMounted ? combatLevel : '...'}
               </StatNumber>
               <StatHelpText color="gray.400">
                 Based on the levels provided.

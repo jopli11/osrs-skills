@@ -18,7 +18,8 @@ import {
   Badge,
   Spinner,
   Alert,
-  AlertIcon
+  AlertIcon,
+  HStack
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { SkillIcon } from "@/components/SkillIcon";
@@ -394,7 +395,7 @@ export default function SkillPage({ params }: Props) {
         }}
       >
         <Container maxW="7xl" py={4}>
-          <Flex justify="center" align="center">
+          <Flex justify="space-between" align="center">
             <Link href="/" style={{ textDecoration: 'none' }}>
               <Heading 
                 as="h1" 
@@ -408,6 +409,29 @@ export default function SkillPage({ params }: Props) {
                 <Text as="span" color="#e0d0b0" ml={2} fontSize="sm" fontWeight="normal">| {skillName}</Text>
               </Heading>
             </Link>
+
+            <HStack spacing={6}>
+              <Link href="/#skills" style={{ textDecoration: 'none' }}>
+                <Text 
+                  color="#e0d0b0"
+                  fontSize="md"
+                  fontWeight="medium"
+                  _hover={{ color: '#ffcb2f' }}
+                >
+                  All Skills
+                </Text>
+              </Link>
+              <Link href="/combat-calculator" style={{ textDecoration: 'none' }}>
+                <Text 
+                  color="#e0d0b0"
+                  fontSize="md"
+                  fontWeight="medium"
+                  _hover={{ color: '#ffcb2f' }}
+                >
+                  Combat Calc
+                </Text>
+              </Link>
+            </HStack>
           </Flex>
         </Container>
       </Box>

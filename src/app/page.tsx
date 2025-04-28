@@ -9,7 +9,8 @@ import {
   Heading, 
   Button, 
   SimpleGrid,
-  Badge
+  Badge,
+  HStack
 } from '@chakra-ui/react';
 import SkillCard from '@/components/SkillCard';
 import { SkillName } from '@/lib/types';
@@ -38,7 +39,7 @@ export default function Home() {
         }}
       >
         <Container maxW="7xl" py={4}>
-          <Flex justify="center" align="center">
+          <Flex justify="space-between" align="center">
             <Link href="/" style={{ textDecoration: 'none' }}>
               <Heading 
                 as="h1" 
@@ -51,17 +52,29 @@ export default function Home() {
                 <Box as="span" color="white">Calculators</Box>
               </Heading>
             </Link>
-            {/* Add Combat Calc Link */}
-            <Link href="/combat-calculator" style={{ textDecoration: 'none', marginLeft: '2rem' }}>
-              <Text 
-                color="#e0d0b0"
-                fontSize="lg"
-                fontWeight="medium"
-                _hover={{ color: '#ffcb2f' }}
-              >
-                Combat Calc
-              </Text>
-            </Link>
+            
+            <HStack spacing={6}>
+              <Link href="/#skills" style={{ textDecoration: 'none' }}>
+                 <Text 
+                   color="#e0d0b0"
+                   fontSize="md"
+                   fontWeight="medium"
+                   _hover={{ color: '#ffcb2f' }}
+                 >
+                   Skills
+                 </Text>
+              </Link>
+              <Link href="/combat-calculator" style={{ textDecoration: 'none' }}>
+                <Text 
+                  color="#e0d0b0"
+                  fontSize="md"
+                  fontWeight="medium"
+                  _hover={{ color: '#ffcb2f' }}
+                >
+                  Combat Calc
+                </Text>
+              </Link>
+            </HStack>
           </Flex>
         </Container>
       </Box>
