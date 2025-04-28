@@ -74,8 +74,17 @@ const nextConfig = {
                     lib: {
                         test: /[\\/]node_modules[\\/]/,
                         name(module) {
-                            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                            return `npm.${packageName.replace('@', '')}`;
+                            // Safely attempt to match the package name
+                            const match = module.context && module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+                            // Ensure match and captured group exist before accessing
+                            if (match && match[1]) {
+                                const packageName = match[1];
+                                return `npm.${packageName.replace('@', '')}`;
+                            }
+                            // Return false or a default name if no match,
+                            // preventing the module from being incorrectly assigned or causing errors.
+                            // Returning false excludes it from this specific cache group.
+                            return false;
                         },
                         priority: 30,
                         minChunks: 1,

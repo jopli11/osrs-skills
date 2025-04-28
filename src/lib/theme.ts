@@ -1,75 +1,40 @@
-import { createSystem, defaultConfig } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 
-const system = createSystem(defaultConfig, {
-  theme: {
-    tokens: {
-      fonts: {
-        body: { value: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif' },
-        heading: { value: '"Roboto Slab", serif' },
-      },
-      colors: {
-        brand: {
-          primary: { value: '#ffcb2f' },
-          primaryHover: { value: '#e0a922' },
-          background: { value: '#0c0906' },
-          card: { value: '#271c11' },
-          cardHover: { value: '#211510' },
-          border: { value: '#3a3529' },
-          borderHover: { value: '#4d4637' },
-          osrsYellow: { value: '#ffcb2f' },
-          osrsGold: { value: '#ffcb2f' },
-          osrsBrown: { value: '#271c11' },
-          osrsDarkBrown: { value: '#211510' },
-        },
-      },
+// Define the theme configuration
+const config: ThemeConfig = {
+  initialColorMode: 'system',
+  useSystemColorMode: true,
+};
+
+// Extend the default Chakra UI theme
+const theme = extendTheme({
+  config, // Apply the config here
+  // Add your custom colors, fonts, component styles, etc. directly
+  colors: {
+    brand: {
+      50: '#e6f2ff', // Example brand color palette
+      100: '#cce4ff',
+      // ... add other shades 50-900
+      500: '#007bff',
+      900: '#00264d',
     },
-    recipes: {
-      Button: {
-        variants: {
-          variant: {
-            primary: {
-              bg: "#ffcb2f",
-              color: "#211510",
-              border: "2px solid black",
-              boxShadow: "3px 3px 0 rgba(0,0,0,0.5)",
-              borderRadius: "sm",
-              _hover: {
-                bg: "#e0a922",
-                transform: "translateY(1px)",
-                boxShadow: "1px 1px 0 rgba(0,0,0,0.5)",
-              },
-            },
-            secondary: {
-              bg: "#271c11",
-              color: "#ffcb2f",
-              border: "2px solid black",
-              boxShadow: "3px 3px 0 rgba(0,0,0,0.5)",
-              borderRadius: "sm",
-              _hover: {
-                bg: "#211510",
-                transform: "translateY(1px)",
-                boxShadow: "1px 1px 0 rgba(0,0,0,0.5)",
-              },
-            },
-          },
-        },
-      },
-      Link: {
-        base: {
-          _hover: {
-            textDecoration: "none",
-          },
-        },
-      },
-      Heading: {
-        base: {
-          color: "white",
-          textShadow: "2px 2px 0 #000",
-          fontFamily: '"Roboto Slab", serif',
-        },
-      },
-    },
+    // Add other custom color palettes if needed
+    // Example:
+    // osrsYellow: '#ffcb2f',
   },
+  fonts: {
+    // heading: "'Your Heading Font', sans-serif",
+    // body: "'Your Body Font', sans-serif",
+  },
+  // Add other theme extensions like component styles, breakpoints, etc.
+  // Example:
+  // components: {
+  //   Button: {
+  //     baseStyle: {
+  //       fontWeight: 'bold',
+  //     },
+  //   },
+  // },
 });
 
-export default system; 
+export default theme; 

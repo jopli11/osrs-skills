@@ -125,8 +125,8 @@ export default function SkillPage({ params }: Props) {
   const [progress, setProgress] = useState(0);
   const [sortOption, setSortOption] = useState<SortOption>("level");
   
-  // Training methods for this skill
-  const methods = trainingMethods[skillKey] || [];
+  // Training methods for this skill - Memoized based on skillKey
+  const methods = useMemo(() => trainingMethods[skillKey] || [], [skillKey]);
   
   // --- START: Fetch prices using useQuery ---
   const {
@@ -142,22 +142,6 @@ export default function SkillPage({ params }: Props) {
     retry: 1 // Retry once on error
   });
   // --- END: Fetch prices using useQuery ---
-  
-  // Sort and filter methods based on current level
-  const filteredMethods = [...methods]
-    .filter(method => method.level <= targetLevel)
-    .sort((a, b) => {
-      switch (sortOption) {
-        case "level":
-          return a.level - b.level;
-        case "xphr":
-          return (b.xpEach * (b.estimatedActionsPerHour || 0)) - (a.xpEach * (a.estimatedActionsPerHour || 0));
-        case "gphr":
-          return (b.gpEach * (b.estimatedActionsPerHour || 0)) - (a.gpEach * (a.estimatedActionsPerHour || 0));
-        default:
-          return a.level - b.level;
-      }
-    });
   
   // --- START: Update Method Calculation with Live Prices (using useMemo) ---
   // Memoize calculated methods to prevent recalculation on every render unless dependencies change

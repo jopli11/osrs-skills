@@ -1,5 +1,28 @@
 import { NextResponse } from 'next/server';
 
+// Define interfaces for the data structures
+interface PriceData {
+  high: number | null;
+  highTime: number | null;
+  low: number | null;
+  lowTime: number | null;
+}
+
+interface MappingItem {
+  id: number;
+  name: string;
+  members: boolean;
+  lowalch: number | null;
+  highalch: number | null;
+  limit: number | null;
+  value: number;
+  icon: string;
+  examine: string;
+  // Add other potential properties from mapping if known
+}
+
+interface CombinedItemData extends MappingItem, PriceData {}
+
 // Define a descriptive User-Agent as required by the OSRS Wiki API
 const USER_AGENT = 'OSRSCalculators.com Project - Fetching latest prices (contact: joel@runeraffle.com)'; 
 // TODO: Replace placeholder contact info in USER_AGENT
@@ -7,13 +30,13 @@ const USER_AGENT = 'OSRSCalculators.com Project - Fetching latest prices (contac
 const OSRS_API_BASE = 'https://prices.runescape.wiki/api/v1/osrs';
 const CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes cache duration
 
-// Simple in-memory cache
-let cache = {
-  data: null as Record<string, any> | null, // Will hold the combined data keyed by item ID
+// Simple in-memory cache - Use const as the object reference itself doesn't change
+const cache = {
+  data: null as Record<string, CombinedItemData> | null, // Use specific type
   timestamp: 0,
 };
 
-async function fetchAndCombineData() {
+async function fetchAndCombineData(): Promise<Record<string, CombinedItemData> | null> {
   console.log('API Route: Fetching fresh data from OSRS Wiki API');
   try {
     const [latestPriceResponse, mappingResponse] = await Promise.all([
@@ -34,19 +57,23 @@ async function fetchAndCombineData() {
       throw new Error('Failed to fetch required data from OSRS Wiki API');
     }
 
-    const latestPriceResult = await latestPriceResponse.json();
-    const mappingResult = await mappingResponse.json();
+    // Type the expected API responses
+    const latestPriceResult: { data: Record<string, PriceData> } = await latestPriceResponse.json();
+    const mappingResult: MappingItem[] = await mappingResponse.json();
+    
     const prices = latestPriceResult.data || {}; // Prices are nested under 'data'
     const mapping = Array.isArray(mappingResult) ? mappingResult : []; // Mapping is an array
 
     // Combine mapping and price data into a single object keyed by item ID
-    const combinedData: Record<string, any> = {};
-    mapping.forEach((item: any) => {
+    const combinedData: Record<string, CombinedItemData> = {};
+    mapping.forEach((item: MappingItem) => { // Use specific type
       if (item && item.id) {
         const itemId = String(item.id); // Use string ID as key
-        const priceInfo = prices[itemId] || { high: null, low: null, highTime: null, lowTime: null };
+        // Provide default structure matching PriceData
+        const priceInfo: PriceData = prices[itemId] || { high: null, low: null, highTime: null, lowTime: null };
         combinedData[itemId] = {
-          ...item, // Spread mapping properties (name, icon, limit, etc.)
+          ...item, // Spread mapping properties
+          // Explicitly add price properties
           high: priceInfo.high,
           highTime: priceInfo.highTime,
           low: priceInfo.low,

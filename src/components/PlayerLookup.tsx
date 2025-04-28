@@ -41,8 +41,8 @@ export default function PlayerLookup() {
     }
   };
   
-  // Clear player stats directly
-  const clearStats = () => {
+  // Clear player stats directly - wrapped in useCallback
+  const clearStats = useCallback(() => {
     try {
       store.setState({
         playerStats: null,
@@ -53,7 +53,7 @@ export default function PlayerLookup() {
     } catch (err) {
       console.error('Failed to clear player stats:', err);
     }
-  };
+  }, [store]); // Added store as dependency
 
   // Debounce the lookup to prevent excessive API calls
   const debouncedLookup = useCallback((username: string) => {
@@ -81,7 +81,7 @@ export default function PlayerLookup() {
       clearTimeout(timer);
       setIsDebouncing(false);
     };
-  }, []);
+  }, [clearStats, store]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
