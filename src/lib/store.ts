@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CalculatorInput, SkillName } from "./types";
+import { track } from '@vercel/analytics';
 
 // Type for player stats from OSRS highscores
 export interface PlayerStats {
@@ -177,6 +178,7 @@ export const useCalculatorStore = create<CalculatorState>()(
           }
           
           const stats = await response.json();
+          track('PlayerLookup_Success', { username });
           set({ 
             playerStats: stats, 
             playerStatsLoading: false,
@@ -217,6 +219,13 @@ export const useCalculatorStore = create<CalculatorState>()(
             ? error.message 
             : 'Unknown error occurred while fetching player stats';
             
+          // Track different errors
+          if (errorMessage.includes('404') || errorMessage.toLowerCase().includes('not found')) {
+            track('PlayerLookup_NotFound', { username });
+          } else {
+            track('PlayerLookup_Error', { username, error: errorMessage });
+          }
+
           // If there are connection issues, provide a more helpful message
           if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
             errorMessage = 'Connection issue when fetching player stats. Please check your internet connection and try again.';

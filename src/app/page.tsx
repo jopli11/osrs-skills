@@ -17,6 +17,7 @@ import { SkillName } from '@/lib/types';
 import { ALL_SKILLS } from '@/lib/constants';
 import PlayerLookup from '@/components/PlayerLookup';
 import OsrsHeading from '@/components/OsrsHeading';
+import { track } from '@vercel/analytics';
 
 export default function Home() {
   return (
@@ -54,7 +55,7 @@ export default function Home() {
             </Link>
             
             <HStack spacing={6}>
-              <Link href="/#skills" style={{ textDecoration: 'none' }}>
+              <Link href="/#skills" style={{ textDecoration: 'none' }} onClick={() => track('Navigate_To_Skills', { from: '/' })}>
                  <Text 
                    color="#e0d0b0"
                    fontSize="md"
@@ -64,7 +65,7 @@ export default function Home() {
                    Skills
                  </Text>
               </Link>
-              <Link href="/combat-calculator" style={{ textDecoration: 'none' }}>
+              <Link href="/combat-calculator" style={{ textDecoration: 'none' }} onClick={() => track('Navigate_To_CombatCalc', { from: '/' })}>
                 <Text 
                   color="#e0d0b0"
                   fontSize="md"
@@ -197,11 +198,12 @@ export default function Home() {
             
             <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }} gap={4} width="100%">
               {ALL_SKILLS.map((skill: SkillName, index: number) => (
-                <SkillCard 
-                  key={skill} 
-                  skill={skill}
-                  index={index}
-                />
+                <Box key={skill} onClick={() => track('Navigate_To_SkillPage', { skill: skill })} cursor="pointer">
+                  <SkillCard 
+                    skill={skill}
+                    index={index}
+                  />
+                </Box>
               ))}
             </SimpleGrid>
           </Flex>

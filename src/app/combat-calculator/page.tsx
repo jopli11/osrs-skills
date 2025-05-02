@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from '@vercel/analytics'; // Added import
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link'; // Added for Header/Footer links
 import {
@@ -85,10 +86,12 @@ export default function CombatCalculatorPage() {
   }, []);
 
   const handleLevelChange = (skill: keyof CombatLevels, valueAsString: string, valueAsNumber: number) => {
+    const cleanValue = isNaN(valueAsNumber) ? 1 : Math.max(1, Math.min(99, valueAsNumber));
     setLevels(prevLevels => ({
       ...prevLevels,
-      [skill]: isNaN(valueAsNumber) ? 1 : Math.max(1, Math.min(99, valueAsNumber)),
+      [skill]: cleanValue,
     }));
+    track('CombatCalc_StatChanged', { stat: skill, level: cleanValue }); // Added tracking
   };
 
   // Update levels state IF playerStats change AFTER initial load
@@ -220,7 +223,7 @@ export default function CombatCalculatorPage() {
                 </Text>
               </Box>
             </Flex>
-            <Link href="/" style={{ textDecoration: 'none' }}>
+            <Link href="/" style={{ textDecoration: 'none' }} onClick={() => track('Navigate_To_Skills', { from: '/combat-calculator' })}>
               <Button
                 bg="#ffcb2f"
                 color="#211305"
