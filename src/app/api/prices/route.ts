@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { kv } from '@vercel/kv'; // Import KV
 
 // Define interfaces for the data structures
 interface PriceData {
@@ -28,52 +29,39 @@ const USER_AGENT = 'OSRSCalculators.com Project - Fetching latest prices (contac
 // TODO: Replace placeholder contact info in USER_AGENT
 
 const OSRS_API_BASE = 'https://prices.runescape.wiki/api/v1/osrs';
-const CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes cache duration
+const PRICES_KV_KEY = 'osrs_prices_v1'; // Use the same key as the update route
 
-// Simple in-memory cache - Use const as the object reference itself doesn't change
-const cache = {
-  data: null as Record<string, CombinedItemData> | null, // Use specific type
-  timestamp: 0,
-};
+// Remove the old in-memory cache
+// const cache = { ... }; 
+// const CACHE_DURATION_MS = ...;
 
 async function fetchAndCombineData(): Promise<Record<string, CombinedItemData> | null> {
-  console.log('API Route: Fetching fresh data from OSRS Wiki API');
+  console.log('API Route: Fetching fresh data from OSRS Wiki API (KV Cache Miss/Error)');
   try {
     const [latestPriceResponse, mappingResponse] = await Promise.all([
-      fetch(`${OSRS_API_BASE}/latest`, {
-        headers: { 'User-Agent': USER_AGENT },
-        next: { revalidate: 0 } // Ensure fresh data is fetched, don't rely on Next.js default fetch cache here
-      }),
-      fetch(`${OSRS_API_BASE}/mapping`, {
-        headers: { 'User-Agent': USER_AGENT },
-        next: { revalidate: 0 } // Ensure fresh data is fetched
-      })
+      fetch(`${OSRS_API_BASE}/latest`, { headers: { 'User-Agent': USER_AGENT }, next: { revalidate: 0 } }),
+      fetch(`${OSRS_API_BASE}/mapping`, { headers: { 'User-Agent': USER_AGENT }, next: { revalidate: 0 } })
     ]);
 
     if (!latestPriceResponse.ok || !mappingResponse.ok) {
-      // Log specific errors for easier debugging
-      if (!latestPriceResponse.ok) console.error(`Failed to fetch latest prices: ${latestPriceResponse.status} ${latestPriceResponse.statusText}`);
-      if (!mappingResponse.ok) console.error(`Failed to fetch mapping data: ${mappingResponse.status} ${mappingResponse.statusText}`);
+      if (!latestPriceResponse.ok) console.error(`Prices API: Failed to fetch latest prices: ${latestPriceResponse.status} ${latestPriceResponse.statusText}`);
+      if (!mappingResponse.ok) console.error(`Prices API: Failed to fetch mapping data: ${mappingResponse.status} ${mappingResponse.statusText}`);
       throw new Error('Failed to fetch required data from OSRS Wiki API');
     }
 
-    // Type the expected API responses
     const latestPriceResult: { data: Record<string, PriceData> } = await latestPriceResponse.json();
     const mappingResult: MappingItem[] = await mappingResponse.json();
     
-    const prices = latestPriceResult.data || {}; // Prices are nested under 'data'
-    const mapping = Array.isArray(mappingResult) ? mappingResult : []; // Mapping is an array
+    const prices = latestPriceResult.data || {};
+    const mapping = Array.isArray(mappingResult) ? mappingResult : [];
 
-    // Combine mapping and price data into a single object keyed by item ID
     const combinedData: Record<string, CombinedItemData> = {};
-    mapping.forEach((item: MappingItem) => { // Use specific type
+    mapping.forEach((item: MappingItem) => {
       if (item && item.id) {
-        const itemId = String(item.id); // Use string ID as key
-        // Provide default structure matching PriceData
+        const itemId = String(item.id);
         const priceInfo: PriceData = prices[itemId] || { high: null, low: null, highTime: null, lowTime: null };
         combinedData[itemId] = {
-          ...item, // Spread mapping properties
-          // Explicitly add price properties
+          ...item,
           high: priceInfo.high,
           highTime: priceInfo.highTime,
           low: priceInfo.low,
@@ -81,17 +69,13 @@ async function fetchAndCombineData(): Promise<Record<string, CombinedItemData> |
         };
       }
     });
-
-    // Update cache
-    cache.data = combinedData;
-    cache.timestamp = Date.now();
-    console.log(`API Route: Successfully fetched and cached data for ${Object.keys(combinedData).length} items.`);
-
-    return cache.data;
+    console.log(`Prices API: Successfully fetched fresh data for ${Object.keys(combinedData).length} items.`);
+    // Optionally, update KV cache here as a fallback if needed?
+    // await kv.set(PRICES_KV_KEY, combinedData); 
+    return combinedData;
 
   } catch (error) {
-    console.error('API Route: Error during fetchAndCombineData:', error);
-    // Don't update cache on error, return null or re-throw
+    console.error('Prices API: Error during fetchAndCombineData:', error);
     return null; 
   }
 }
@@ -99,26 +83,42 @@ async function fetchAndCombineData(): Promise<Record<string, CombinedItemData> |
 export async function GET() {
   console.log('API Route: /api/prices called');
 
-  // Check cache validity
-  if (cache.data && (Date.now() - cache.timestamp < CACHE_DURATION_MS)) {
-    console.log('API Route: Returning cached data.');
-    // Return a *copy* to prevent accidental mutation if needed, though NextResponse.json likely handles this
-    return NextResponse.json(cache.data); 
+  // 1. Try fetching from Vercel KV first
+  let cachedData: Record<string, CombinedItemData> | null = null;
+  try {
+    cachedData = await kv.get(PRICES_KV_KEY);
+    if (cachedData) {
+      console.log(`API Route: Returning cached data from KV (${Object.keys(cachedData).length} items).`);
+      return NextResponse.json(cachedData);
+    }
+    console.log('API Route: KV cache miss.');
+  } catch (error) {
+    console.error('API Route: Error fetching data from Vercel KV:', error);
+    // Don't necessarily fail the request, just proceed to live fetch
   }
 
-  console.log('API Route: Cache stale or empty, fetching new data...');
+  // 2. If KV fails or cache miss, fetch live data
+  console.log('API Route: Fetching live data as fallback...');
   const freshData = await fetchAndCombineData();
 
   if (freshData) {
+    // Optionally update cache even on fallback?
+    try {
+      await kv.set(PRICES_KV_KEY, freshData);
+      console.log('API Route: Updated KV cache after live fetch fallback.');
+    } catch (kvError) {
+       console.error('API Route: Failed to update KV cache after live fetch:', kvError);
+    }
     return NextResponse.json(freshData);
   } else {
-    // If fetching failed, return an error response
+    // If fetching live also failed, return an error response
+    console.error('API Route: Failed to fetch live data after cache miss/error.');
     return NextResponse.json(
-      { error: 'Failed to fetch or process external price data.' },
-      { status: 502 } // 502 Bad Gateway might be appropriate here
+      { error: 'Failed to fetch price data from cache and live source.' },
+      { status: 502 }
     );
   }
 }
 
-// Ensure the route is treated dynamically to respect our custom caching
+// Ensure the route is treated dynamically
 export const dynamic = 'force-dynamic'; 

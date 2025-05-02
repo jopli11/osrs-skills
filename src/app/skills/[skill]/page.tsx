@@ -359,8 +359,8 @@ export default function SkillPage({ params }: Props) {
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.xpEach}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
-                <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.gpEach > 0 ? `+${method.gpEach}` : method.gpEach}
+                <Box as="td" px={4} py={3} textAlign="right" color={method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b"}>
+                  {method.livePricePerAction > 0 ? `+${formatNumber(method.livePricePerAction)}` : formatNumber(method.livePricePerAction)}
                 </Box>
                 <Box as="td" px={4} py={3} textAlign="right" color={method.totalCost >= 0 ? "#00ff00" : "#ff6b6b"}>
                   {method.totalCost > 0 ? `+${formatNumber(method.totalCost)}` : formatNumber(method.totalCost)}
