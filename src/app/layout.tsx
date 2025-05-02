@@ -3,7 +3,7 @@ import { Providers } from "@/app/providers";
 import "./globals.css";
 import "./styles.css";
 import { Inter, Roboto_Slab } from 'next/font/google';
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 
 // Load fonts with next/font
 const inter = Inter({
