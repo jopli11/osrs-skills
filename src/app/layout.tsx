@@ -3,6 +3,7 @@ import { Providers } from "@/app/providers";
 import "./globals.css";
 import "./styles.css";
 import { Inter, Roboto_Slab } from 'next/font/google';
+import { Analytics } from "@vercel/analytics/react";
 
 // Load fonts with next/font
 const inter = Inter({
@@ -166,6 +167,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

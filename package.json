@@ -19,6 +19,7 @@
         "@emotion/styled": "^11.14.0",
         "@tanstack/react-query": "^5.74.4",
         "@tanstack/react-query-devtools": "^5.74.4",
+        "@vercel/analytics": "^1.5.0",
         "framer-motion": "^12.9.1",
         "inter-ui": "^3.19.3",
         "next": "^14.0.0",
