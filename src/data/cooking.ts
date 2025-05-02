@@ -195,5 +195,47 @@ export const cookingMethods: MethodRow[] = [
       { id: 11936, name: "Dark crab", quantity: 1 }
     ],
     isMembers: true
+  },
+  {
+    id: 'poison-karambwan',
+    name: 'Poison Karambwan',
+    skill: 'cooking',
+    levelReq: 1,
+    xpEach: 80,
+    gpEach: -100,
+    itemId: 3142,
+    inputItems: [{ id: 3142, name: "Raw karambwan", quantity: 1 }],
+    outputItems: [{ id: 3144, name: "Cooked karambwan", quantity: 1 }],
+    isMembers: true,
+    estimatedActionsPerHour: 5000,
+    notes: 'Fastest early XP but high burn rate. Requires 1-tick method for max XP/hr.'
+  },
+  {
+    id: 'cooked-karambwan-1t',
+    name: 'Cooked Karambwan (1-Tick)',
+    skill: 'cooking',
+    levelReq: 30,
+    xpEach: 190,
+    gpEach: -200,
+    itemId: 3142,
+    inputItems: [{ id: 3142, name: "Raw karambwan", quantity: 1 }],
+    outputItems: [{ id: 3144, name: "Cooked karambwan", quantity: 1 }],
+    isMembers: true,
+    estimatedActionsPerHour: 5200,
+    notes: 'Requires Tai Bwo Wannai Trio quest. Fastest overall cooking XP. Requires precise 1-tick method.'
+  },
+  {
+    id: 'cooked-karambwan-afk',
+    name: 'Cooked Karambwan (AFK)',
+    skill: 'cooking',
+    levelReq: 30,
+    xpEach: 190,
+    gpEach: -200,
+    itemId: 3142,
+    inputItems: [{ id: 3142, name: "Raw karambwan", quantity: 1 }],
+    outputItems: [{ id: 3144, name: "Cooked karambwan", quantity: 1 }],
+    isMembers: true,
+    estimatedActionsPerHour: 1400,
+    notes: 'Requires Tai Bwo Wannai Trio quest. Decent AFK XP rates. Best at Hosidius kitchen (<96) or Rogues Den.'
   }
 ]; 

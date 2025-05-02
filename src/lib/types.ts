@@ -18,7 +18,7 @@ export interface MethodRow {
   levelReq: number;     // Level required
   xpEach: number;       // XP gained per action
   gpEach: number;       // GP cost/profit per action (from API)
-  itemId?: number;      // OSRS Item ID (Optional)
+  itemId?: number | null;
   inputItems?: {        // Optional input items
     id: number;
     name: string;
@@ -30,6 +30,8 @@ export interface MethodRow {
     quantity: number;
   }[];
   isMembers: boolean;   // P2P or F2P method
+  notes?: string;       // Optional notes
+  estimatedActionsPerHour?: number; // Optional actions/hr
 }
 
 /**
