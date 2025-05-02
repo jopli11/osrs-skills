@@ -32,17 +32,15 @@ export interface TrainingMethod {
   level: number;        // Level required
   xpEach: number;       // XP gained per action
   gpEach: number;       // GP cost/profit per action (negative = cost, positive = profit)
-  itemId?: number;      // OSRS Item ID (Optional)
+  itemId?: number | null; // OSRS Item ID (Optional)
   isMembers: boolean;   // Whether this method is members-only
   inputItems?: {        // Optional input items required
     name: string;
     quantity: number;
-    price?: number;
   }[];
   outputItems?: {       // Optional output items produced
     name: string;
     quantity: number;
-    price?: number;
   }[];
   notes: string;        // Optional notes about the method
   estimatedActionsPerHour?: number;  // Estimated actions per hour for XP/hr calculations
