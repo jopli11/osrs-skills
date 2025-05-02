@@ -1,2 +1,6 @@
+# Allow all web crawlers access to all content
 User-agent: *
-Disallow: / 
+Allow: /
+
+# Sitemap location (Update URL if different)
+Sitemap: https://www.osrscalculators.com/sitemap.xml 

@@ -19,11 +19,64 @@ const robotoSlab = Roboto_Slab({
   weight: ['400', '500', '600', '700'],
 });
 
+// <<< Define metadataBase >>>
+const siteUrl = 'https://www.osrscalculators.com'; // <<< --- UPDATE THIS WITH YOUR ACTUAL DOMAIN --- >>>
+
 export const metadata: Metadata = {
-  title: "OSRS Calculators | Old School RuneScape Skill Calculators",
+  // <<< Add metadataBase >>>
+  metadataBase: new URL(siteUrl),
+  // <<< Add title template >>>
+  title: {
+    default: "OSRS Calculators | Old School RuneScape Skill Calculators",
+    template: `%s | OSRS Calculators`,
+  },
   description: "Mobile-first OSRS skill calculators with accurate XP data and live Grand Exchange prices",
-  keywords: "osrs, old school runescape, skill calculators, grand exchange, xp calculator, osrscalculators",
-  authors: [{ name: "OSRSCalculators.com" }],
+  // keywords: "...", // <<< Remove keywords >>>
+  authors: [{ name: "OSRSCalculators.com", url: siteUrl }], // Add URL
+  // <<< Add Open Graph Metadata >>>
+  openGraph: {
+    title: "OSRS Calculators | Old School RuneScape Skill Calculators",
+    description: "Mobile-first OSRS skill calculators with accurate XP data and live Grand Exchange prices",
+    url: siteUrl,
+    siteName: 'OSRS Calculators',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: '/images/og-image.png', // <<< --- UPDATE OR CREATE THIS IMAGE --- >>>
+        width: 1200,
+        height: 630,
+        alt: 'OSRS Calculators Logo',
+      },
+    ],
+  },
+  // <<< Add Twitter Card Metadata >>>
+  twitter: {
+    card: 'summary_large_image',
+    title: "OSRS Calculators | Old School RuneScape Skill Calculators",
+    description: "Mobile-first OSRS skill calculators with accurate XP data and live Grand Exchange prices",
+    // Add creator handle if you have one
+    // creator: '@yourTwitterHandle',
+    images: ['/images/og-image.png'], // <<< --- Needs the same image as og:image --- >>>
+  },
+  // Add robots tag for indexing control (optional, complements robots.txt)
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  // Add icons (favicon, apple-touch-icon)
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = {
