@@ -360,10 +360,10 @@ export default function SkillPage({ params }: Props) {
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color={method.gpEach >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.gpEach >= 0 ? `+${method.gpEach}` : method.gpEach}
+                  {method.gpEach > 0 ? `+${method.gpEach}` : method.gpEach}
                 </Box>
                 <Box as="td" px={4} py={3} textAlign="right" color={method.totalCost >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.totalCost >= 0 ? `+${formatNumber(method.totalCost)}` : formatNumber(method.totalCost)}
+                  {method.totalCost > 0 ? `+${formatNumber(method.totalCost)}` : formatNumber(method.totalCost)}
                 </Box>
               </Box>
             ))}
