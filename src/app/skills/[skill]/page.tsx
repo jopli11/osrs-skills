@@ -25,7 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
-import { trainingMethods } from "@/data/trainingMethods";
+import { trainingMethods, TrainingMethod } from "@/data/trainingMethods";
 import { useCalculatorStore } from "@/lib/store";
 import SectionHeading from '@/components/SectionHeading';
 import PlayerLookup from '@/components/PlayerLookup';
@@ -166,16 +166,10 @@ export default function SkillPage({ params }: Props) {
             const xphrB = b.xpEach * (b.estimatedActionsPerHour || 0);
             return xphrB - xphrA;
           case "gphr": // Estimated GP/hr (using LIVE prices)
-            // Get live price for items a and b
-            const priceA = itemPriceData[String(a.itemId)]?.high ?? a.gpEach; // Fallback to static gpEach if live price missing
-            const priceB = itemPriceData[String(b.itemId)]?.high ?? b.gpEach; // Fallback to static gpEach if live price missing
-            // Ensure we handle missing estimatedActionsPerHour
-            const gphrA = priceA * (a.estimatedActionsPerHour || 0);
-            const gphrB = priceB * (b.estimatedActionsPerHour || 0);
-            // Note: This assumes gpEach represents COST. If it can be profit, logic needs adjustment.
-            // Sorting by highest cost might not be useful, maybe sort by lowest cost or highest profit?
-            // For now, maintaining original sort direction (higher number = higher rank)
-            return gphrB - gphrA; 
+            // Calculate actual profit per action for each method
+            const profitA = calculateNetProfit(a, itemPriceData) * (a.estimatedActionsPerHour || 0);
+            const profitB = calculateNetProfit(b, itemPriceData) * (b.estimatedActionsPerHour || 0);
+            return profitB - profitA;
           default:
             return a.level - b.level;
         }
@@ -187,23 +181,49 @@ export default function SkillPage({ params }: Props) {
         ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
         : "?";
       
-      // --- Get Live Price --- 
-      // Assume gpEach is cost per action. Use the 'high' price (buy price) for cost.
-      // Fallback to static gpEach if live price is unavailable (null/undefined).
-      const livePricePerAction = itemPriceData[String(method.itemId)]?.high ?? method.gpEach;
-      const totalCost = livePricePerAction * actionsNeeded;
+      // Calculate net profit per action
+      const profitPerAction = calculateNetProfit(method, itemPriceData);
+      
+      // Calculate total profit/loss for all actions needed
+      // If profit per action is negative, total should be negative too
+      // Ensure the calculation respects the sign of profitPerAction
+      const totalProfit = profitPerAction * actionsNeeded;
       
       return {
         ...method,
-        livePricePerAction: livePricePerAction, // Store the price used
+        livePricePerAction: profitPerAction,
         actionsNeeded,
         hoursNeeded,
-        totalCost // Renamed from totalProfit for clarity, assuming cost
+        totalCost: totalProfit
       };
     });
   // Dependencies: Include fetched data, XP needed, target level (for filtering), and sort option
   }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading]); 
   // --- END: Update Method Calculation ---
+  
+  // Helper function to calculate net profit per action
+  const calculateNetProfit = (method: TrainingMethod, priceData: PriceData): number => {
+    // Calculate input costs (using high prices since we're buying)
+    let totalInputCost = 0;
+    if (method.inputItems && method.inputItems.length > 0) {
+      for (const item of method.inputItems) {
+        const itemPrice = priceData[String(item.id)]?.high ?? 0;
+        totalInputCost += itemPrice * item.quantity;
+      }
+    }
+
+    // Calculate output values (using low prices since we're selling)
+    let totalOutputValue = 0;
+    if (method.outputItems && method.outputItems.length > 0) {
+      for (const item of method.outputItems) {
+        const itemPrice = priceData[String(item.id)]?.low ?? 0;
+        totalOutputValue += itemPrice * item.quantity;
+      }
+    }
+
+    // Net profit is output value minus input cost
+    return totalOutputValue - totalInputCost;
+  };
   
   // Simpler notification function
   const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
@@ -360,10 +380,14 @@ export default function SkillPage({ params }: Props) {
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color={method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.livePricePerAction > 0 ? `+${formatNumber(method.livePricePerAction)}` : formatNumber(method.livePricePerAction)}
+                  {method.livePricePerAction >= 0 ? 
+                    `+${formatNumber(method.livePricePerAction)}` : 
+                    formatNumber(method.livePricePerAction)}
                 </Box>
-                <Box as="td" px={4} py={3} textAlign="right" color={method.totalCost >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.totalCost > 0 ? `+${formatNumber(method.totalCost)}` : formatNumber(method.totalCost)}
+                <Box as="td" px={4} py={3} textAlign="right" color={method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b"}>
+                  {method.livePricePerAction >= 0 ? 
+                    `+${formatNumber(method.totalCost)}` : 
+                    formatNumber(method.totalCost)}
                 </Box>
               </Box>
             ))}

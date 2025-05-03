@@ -35,10 +35,12 @@ export interface TrainingMethod {
   itemId?: number | null; // OSRS Item ID (Optional)
   isMembers: boolean;   // Whether this method is members-only
   inputItems?: {        // Optional input items required
+    id: number;         // OSRS Item ID
     name: string;
     quantity: number;
   }[];
   outputItems?: {       // Optional output items produced
+    id: number;         // OSRS Item ID
     name: string;
     quantity: number;
   }[];
@@ -148,10 +150,12 @@ function convertMethodRowsToTrainingMethods(methods: MethodRow[]): TrainingMetho
       itemId: method.itemId,
       isMembers: method.isMembers,
       inputItems: method.inputItems?.map(item => ({
+        id: item.id,
         name: item.name,
         quantity: item.quantity,
       })),
       outputItems: method.outputItems?.map(item => ({
+        id: item.id,
         name: item.name,
         quantity: item.quantity,
       })),
