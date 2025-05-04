@@ -153,11 +153,16 @@ export default function SkillPage({ params }: Props) {
       return []; 
     }
 
-    const filtered = [...methods]
+    // First calculate profit for all methods to avoid reference errors
+    const methodsWithProfit = methods.map(method => {
+      const profitPerAction = calculateNetProfit(method, itemPriceData);
+      return { ...method, profitPerAction };
+    });
+
+    const filtered = [...methodsWithProfit]
       .filter(method => method.level <= targetLevel)
       .sort((a, b) => {
-        // ... (sorting logic remains the same) ...
-         switch (sortOption) {
+        switch (sortOption) {
           case "level":
             return a.level - b.level;
           case "xphr": // Estimated XP/hr
@@ -166,9 +171,9 @@ export default function SkillPage({ params }: Props) {
             const xphrB = b.xpEach * (b.estimatedActionsPerHour || 0);
             return xphrB - xphrA;
           case "gphr": // Estimated GP/hr (using LIVE prices)
-            // Calculate actual profit per action for each method
-            const profitA = calculateNetProfit(a, itemPriceData) * (a.estimatedActionsPerHour || 0);
-            const profitB = calculateNetProfit(b, itemPriceData) * (b.estimatedActionsPerHour || 0);
+            // Use the pre-calculated profit per action for each method
+            const profitA = a.profitPerAction * (a.estimatedActionsPerHour || 0);
+            const profitB = b.profitPerAction * (b.estimatedActionsPerHour || 0);
             return profitB - profitA;
           default:
             return a.level - b.level;
@@ -181,12 +186,10 @@ export default function SkillPage({ params }: Props) {
         ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
         : "?";
       
-      // Calculate net profit per action
-      const profitPerAction = calculateNetProfit(method, itemPriceData);
+      // Use the pre-calculated profit per action
+      const profitPerAction = method.profitPerAction;
       
       // Calculate total profit/loss for all actions needed
-      // If profit per action is negative, total should be negative too
-      // Ensure the calculation respects the sign of profitPerAction
       const totalProfit = profitPerAction * actionsNeeded;
       
       return {
