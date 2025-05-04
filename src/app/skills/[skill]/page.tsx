@@ -25,7 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
 import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
-import { trainingMethods, TrainingMethod } from "@/data/trainingMethods";
+import { trainingMethods } from "@/data/trainingMethods";
 import { useCalculatorStore } from "@/lib/store";
 import SectionHeading from '@/components/SectionHeading';
 import PlayerLookup from '@/components/PlayerLookup';
@@ -94,6 +94,8 @@ const fetchPrices = async (): Promise<PriceData> => {
   return response.json();
 };
 
+// TrainingMethod type is imported for type checking the methods array from trainingMethods
+
 export default function SkillPage({ params }: Props) {
   const { skill } = params;
   
@@ -147,86 +149,115 @@ export default function SkillPage({ params }: Props) {
   // --- START: Update Method Calculation with Live Prices (using useMemo) ---
   // Memoize calculated methods to prevent recalculation on every render unless dependencies change
   const calculatedMethods = useMemo(() => {
+    // If prices aren't loaded yet, return empty array
     if (pricesLoading || !itemPriceData) {
-      // Return empty array or placeholder if prices aren't loaded yet
-      // This avoids errors trying to access itemPriceData before it's ready
-      return []; 
+      return [];
     }
 
-    // First calculate profit for all methods to avoid reference errors
-    const methodsWithProfit = methods.map(method => {
-      const profitPerAction = calculateNetProfit(method, itemPriceData);
-      return { ...method, profitPerAction };
-    });
+    try {
+      // Process methods safely with proper error handling
+      const safeMethodsWithPrices = methods.map(method => {
+        // Pre-calculate profit safely
+        let profitPerAction = 0;
+        try {
+          // Calculate input costs (using high prices since we're buying)
+          let totalInputCost = 0;
+          if (method.inputItems && method.inputItems.length > 0) {
+            for (const item of method.inputItems) {
+              // Safely access item data with fallbacks
+              const itemId = String(item.id);
+              const itemData = itemPriceData[itemId];
+              const itemPrice = itemData && itemData.high !== null ? itemData.high : 0;
+              totalInputCost += itemPrice * (item.quantity || 1);
+            }
+          }
 
-    const filtered = [...methodsWithProfit]
-      .filter(method => method.level <= targetLevel)
-      .sort((a, b) => {
+          // Calculate output values (using low prices since we're selling)
+          let totalOutputValue = 0;
+          if (method.outputItems && method.outputItems.length > 0) {
+            for (const item of method.outputItems) {
+              // Safely access item data with fallbacks
+              const itemId = String(item.id);
+              const itemData = itemPriceData[itemId];
+              const itemPrice = itemData && itemData.low !== null ? itemData.low : 0;
+              totalOutputValue += itemPrice * (item.quantity || 1);
+            }
+          }
+
+          // Get GP per action from method or calculate based on items
+          if (method.gpEach !== undefined) {
+            profitPerAction = method.gpEach;
+          } else {
+            // Net profit is output value minus input cost
+            profitPerAction = totalOutputValue - totalInputCost;
+          }
+        } catch (err) {
+          console.error('Error calculating profit for method:', method.name, err);
+          // Use static GP estimate if provided, otherwise 0
+          profitPerAction = method.gpEach !== undefined ? method.gpEach : 0;
+        }
+
+        return {
+          ...method,
+          profitPerAction
+        };
+      });
+
+      // Filter methods based on level
+      const filteredMethods = safeMethodsWithPrices.filter(method => 
+        method.level <= targetLevel
+      );
+
+      // Sort methods based on selected option
+      const sortedMethods = [...filteredMethods].sort((a, b) => {
         switch (sortOption) {
           case "level":
             return a.level - b.level;
-          case "xphr": // Estimated XP/hr
-            // Ensure we handle missing estimatedActionsPerHour
-            const xphrA = a.xpEach * (a.estimatedActionsPerHour || 0);
-            const xphrB = b.xpEach * (b.estimatedActionsPerHour || 0);
-            return xphrB - xphrA;
-          case "gphr": // Estimated GP/hr (using LIVE prices)
-            // Use the pre-calculated profit per action for each method
-            const profitA = a.profitPerAction * (a.estimatedActionsPerHour || 0);
-            const profitB = b.profitPerAction * (b.estimatedActionsPerHour || 0);
-            return profitB - profitA;
+          case "xphr": {
+            // Handle missing estimatedActionsPerHour
+            const aActions = a.estimatedActionsPerHour || 0;
+            const bActions = b.estimatedActionsPerHour || 0;
+            return (b.xpEach * bActions) - (a.xpEach * aActions);
+          }
+          case "gphr": {
+            // Use pre-calculated profit
+            const aActions = a.estimatedActionsPerHour || 0;
+            const bActions = b.estimatedActionsPerHour || 0;
+            return (b.profitPerAction * bActions) - (a.profitPerAction * aActions);
+          }
           default:
             return a.level - b.level;
         }
       });
 
-    return filtered.map(method => {
-      const actionsNeeded = neededXp > 0 && method.xpEach > 0 ? Math.ceil(neededXp / method.xpEach) : 0;
-      const hoursNeeded = method.estimatedActionsPerHour && actionsNeeded > 0
-        ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
-        : "?";
-      
-      // Use the pre-calculated profit per action
-      const profitPerAction = method.profitPerAction;
-      
-      // Calculate total profit/loss for all actions needed
-      const totalProfit = profitPerAction * actionsNeeded;
-      
-      return {
-        ...method,
-        livePricePerAction: profitPerAction,
-        actionsNeeded,
-        hoursNeeded,
-        totalCost: totalProfit
-      };
-    });
-  // Dependencies: Include fetched data, XP needed, target level (for filtering), and sort option
-  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading]); 
+      // Final calculation for display
+      return sortedMethods.map(method => {
+        // Calculate actions needed
+        const safeXpEach = method.xpEach > 0 ? method.xpEach : 1;
+        const actionsNeeded = neededXp > 0 ? Math.ceil(neededXp / safeXpEach) : 0;
+        
+        // Calculate hours needed
+        const hoursNeeded = method.estimatedActionsPerHour && actionsNeeded > 0
+          ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
+          : "?";
+        
+        // Calculate total profit/loss
+        const totalProfit = method.profitPerAction * actionsNeeded;
+        
+        return {
+          ...method,
+          livePricePerAction: method.profitPerAction,
+          actionsNeeded,
+          hoursNeeded,
+          totalCost: totalProfit
+        };
+      });
+    } catch (err) {
+      console.error('Error in training methods calculation:', err);
+      return [];
+    }
+  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading]);
   // --- END: Update Method Calculation ---
-  
-  // Helper function to calculate net profit per action
-  const calculateNetProfit = (method: TrainingMethod, priceData: PriceData): number => {
-    // Calculate input costs (using high prices since we're buying)
-    let totalInputCost = 0;
-    if (method.inputItems && method.inputItems.length > 0) {
-      for (const item of method.inputItems) {
-        const itemPrice = priceData[String(item.id)]?.high ?? 0;
-        totalInputCost += itemPrice * item.quantity;
-      }
-    }
-
-    // Calculate output values (using low prices since we're selling)
-    let totalOutputValue = 0;
-    if (method.outputItems && method.outputItems.length > 0) {
-      for (const item of method.outputItems) {
-        const itemPrice = priceData[String(item.id)]?.low ?? 0;
-        totalOutputValue += itemPrice * item.quantity;
-      }
-    }
-
-    // Net profit is output value minus input cost
-    return totalOutputValue - totalInputCost;
-  };
   
   // Simpler notification function
   const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
