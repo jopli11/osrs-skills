@@ -127,6 +127,7 @@ export default function SkillPage({ params }: Props) {
   const [neededXp, setNeededXp] = useState(getXpForLevel(storedInput.targetLevel) - getXpForLevel(storedInput.currentLevel));
   const [progress, setProgress] = useState(0);
   const [sortOption, setSortOption] = useState<SortOption>("level");
+  const [showOnlyAvailable, setShowOnlyAvailable] = useState(false);
   
   // Training methods for this skill - Memoized based on skillKey
   const methods = useMemo(() => trainingMethods[skillKey] || [], [skillKey]);
@@ -191,10 +192,22 @@ export default function SkillPage({ params }: Props) {
             // Net profit is output value minus input cost
             profitPerAction = totalOutputValue - totalInputCost;
           }
+          
+          // Special case for construction - always ensure it's a cost
+          if (skillKey === 'construction' && profitPerAction > 0) {
+            // For Construction, costs should always be negative or zero
+            // If somehow we calculated a profit, use the absolute value as a cost
+            profitPerAction = -Math.abs(profitPerAction);
+          }
         } catch (err) {
           console.error('Error calculating profit for method:', method.name, err);
           // Use static GP estimate if provided, otherwise 0
           profitPerAction = method.gpEach !== undefined ? method.gpEach : 0;
+          
+          // Ensure construction shows costs
+          if (skillKey === 'construction' && profitPerAction > 0) {
+            profitPerAction = -Math.abs(profitPerAction);
+          }
         }
 
         return {
@@ -204,9 +217,18 @@ export default function SkillPage({ params }: Props) {
       });
 
       // Filter methods based on level
-      const filteredMethods = safeMethodsWithPrices.filter(method => 
-        method.level <= targetLevel
-      );
+      const filteredMethods = safeMethodsWithPrices.filter(method => {
+        // Always filter by target level
+        const meetsTargetLevel = method.level <= targetLevel;
+        
+        // If showing only available methods, filter by current level too
+        if (showOnlyAvailable) {
+          return meetsTargetLevel && method.level <= currentLevel;
+        }
+        
+        // Otherwise just use target level
+        return meetsTargetLevel;
+      });
 
       // Sort methods based on selected option
       const sortedMethods = [...filteredMethods].sort((a, b) => {
@@ -256,7 +278,7 @@ export default function SkillPage({ params }: Props) {
       console.error('Error in training methods calculation:', err);
       return [];
     }
-  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading]);
+  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading, showOnlyAvailable, currentLevel, skillKey]);
   // --- END: Update Method Calculation ---
   
   // Simpler notification function
@@ -413,15 +435,19 @@ export default function SkillPage({ params }: Props) {
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.xpEach}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
-                <Box as="td" px={4} py={3} textAlign="right" color={method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.livePricePerAction >= 0 ? 
-                    `+${formatNumber(method.livePricePerAction)}` : 
-                    formatNumber(method.livePricePerAction)}
+                <Box as="td" px={4} py={3} textAlign="right" color={skillKey === 'construction' ? "#ff6b6b" : (method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b")}>
+                  {skillKey === 'construction' && method.livePricePerAction <= 0 ? 
+                    formatNumber(method.livePricePerAction) : 
+                    method.livePricePerAction >= 0 ? 
+                      `+${formatNumber(method.livePricePerAction)}` : 
+                      formatNumber(method.livePricePerAction)}
                 </Box>
-                <Box as="td" px={4} py={3} textAlign="right" color={method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b"}>
-                  {method.livePricePerAction >= 0 ? 
-                    `+${formatNumber(method.totalCost)}` : 
-                    formatNumber(method.totalCost)}
+                <Box as="td" px={4} py={3} textAlign="right" color={skillKey === 'construction' ? "#ff6b6b" : (method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b")}>
+                  {skillKey === 'construction' && method.totalCost <= 0 ? 
+                    formatNumber(method.totalCost) : 
+                    method.livePricePerAction >= 0 ? 
+                      `+${formatNumber(method.totalCost)}` : 
+                      formatNumber(method.totalCost)}
                 </Box>
               </Box>
             ))}
@@ -781,48 +807,64 @@ export default function SkillPage({ params }: Props) {
         >
           <Flex justify="space-between" align="center" mb={4}>
             <SectionHeading>Training Methods</SectionHeading>
-            <ButtonGroup size="sm">
-              <Button 
-                bg={sortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                color={sortOption === "xphr" ? "#211305" : "white"}
-                border="2px solid black"
-                borderLeftRadius="md" 
-                borderRightRadius="0"
-                _hover={{ bg: "#e0a922" }}
-                onClick={() => setSortOption("xphr")}
-                fontWeight="bold"
-                height="10"
-              >
-                XP/hr
-              </Button>
-              <Button 
-                bg={sortOption === "gphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                color={sortOption === "gphr" ? "#211305" : "white"}
-                border="2px solid black"
-                borderRadius="0"
-                borderLeft="none" 
-                _hover={{ bg: "#e0a922" }}
-                onClick={() => setSortOption("gphr")}
-                fontWeight="bold"
-                height="10"
-              >
-                GP/hr
-              </Button>
-              <Button 
-                bg={sortOption === "level" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                color={sortOption === "level" ? "#211305" : "white"}
-                border="2px solid black"
-                borderLeftRadius="0" 
-                borderRightRadius="md"
-                borderLeft="none"
-                _hover={{ bg: "#e0a922" }}
-                onClick={() => setSortOption("level")}
-                fontWeight="bold"
-                height="10"
-              >
-                Level
-              </Button>
-            </ButtonGroup>
+            <Flex gap={4}>
+              <Box>
+                <Button
+                  size="sm"
+                  bg={showOnlyAvailable ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                  color={showOnlyAvailable ? "#211305" : "white"}
+                  border="2px solid black"
+                  _hover={{ bg: "#e0a922" }}
+                  onClick={() => setShowOnlyAvailable(!showOnlyAvailable)}
+                  fontWeight="bold"
+                  height="10"
+                >
+                  {showOnlyAvailable ? "Showing Available" : "Show All Methods"}
+                </Button>
+              </Box>
+              <ButtonGroup size="sm">
+                <Button 
+                  bg={sortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                  color={sortOption === "xphr" ? "#211305" : "white"}
+                  border="2px solid black"
+                  borderLeftRadius="md" 
+                  borderRightRadius="0"
+                  _hover={{ bg: "#e0a922" }}
+                  onClick={() => setSortOption("xphr")}
+                  fontWeight="bold"
+                  height="10"
+                >
+                  XP/hr
+                </Button>
+                <Button 
+                  bg={sortOption === "gphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                  color={sortOption === "gphr" ? "#211305" : "white"}
+                  border="2px solid black"
+                  borderRadius="0"
+                  borderLeft="none" 
+                  _hover={{ bg: "#e0a922" }}
+                  onClick={() => setSortOption("gphr")}
+                  fontWeight="bold"
+                  height="10"
+                >
+                  GP/hr
+                </Button>
+                <Button 
+                  bg={sortOption === "level" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+                  color={sortOption === "level" ? "#211305" : "white"}
+                  border="2px solid black"
+                  borderLeftRadius="0" 
+                  borderRightRadius="md"
+                  borderLeft="none"
+                  _hover={{ bg: "#e0a922" }}
+                  onClick={() => setSortOption("level")}
+                  fontWeight="bold"
+                  height="10"
+                >
+                  Level
+                </Button>
+              </ButtonGroup>
+            </Flex>
           </Flex>
           
           {methods.length === 0 ? (
