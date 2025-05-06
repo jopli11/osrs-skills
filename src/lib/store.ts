@@ -35,6 +35,14 @@ interface CalculatorState {
   };
   updatePreferences: (prefs: Partial<CalculatorState["preferences"]>) => void;
 
+  // Sort option for training methods
+  sortOption: "level" | "xphr" | "gphr";
+  setSortOption: (option: "level" | "xphr" | "gphr") => void;
+
+  // Filter to show only methods available at current level
+  showOnlyAvailable: boolean;
+  setShowOnlyAvailable: (value: boolean) => void;
+
   // Player OSRS stats
   playerStats: PlayerStats | null;
   playerStatsLoading: boolean;
@@ -114,6 +122,14 @@ export const useCalculatorStore = create<CalculatorState>()(
             ...prefs,
           },
         })),
+        
+      // Sort option for training methods
+      sortOption: "level",
+      setSortOption: (option) => set({ sortOption: option }),
+        
+      // Filter to show only methods available at current level
+      showOnlyAvailable: false,
+      setShowOnlyAvailable: (value) => set({ showOnlyAvailable: value }),
         
       // Player stats state
       playerStats: null,

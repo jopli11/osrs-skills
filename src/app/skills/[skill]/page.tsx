@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent, useMemo } from "react";
+import { useState, useEffect, ChangeEvent, useMemo, useCallback } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -29,6 +29,8 @@ import { trainingMethods } from "@/data/trainingMethods";
 import { useCalculatorStore } from "@/lib/store";
 import SectionHeading from '@/components/SectionHeading';
 import PlayerLookup from '@/components/PlayerLookup';
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 // Experience table for levels 1-99
 const xpTable = [
@@ -96,6 +98,150 @@ const fetchPrices = async (): Promise<PriceData> => {
 
 // TrainingMethod type is imported for type checking the methods array from trainingMethods
 
+// Simple ClientOnly wrapper component to handle hydration properly
+const ClientOnly = ({ children }: { children: React.ReactNode }) => {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  if (!mounted) return null;
+  
+  return <>{children}</>;
+};
+
+// Create client-only components for the problematic parts
+const SortButtons = dynamic(() => Promise.resolve(({ localSortOption, setLocalSortOption }: { localSortOption: SortOption, setLocalSortOption: (option: SortOption) => void }) => {
+  return (
+    <ButtonGroup size="sm">
+      <Button 
+        bg={localSortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+        color={localSortOption === "xphr" ? "#211305" : "white"}
+        border="2px solid black"
+        borderLeftRadius="md" 
+        borderRightRadius="0"
+        _hover={{ bg: "#e0a922" }}
+        onClick={() => setLocalSortOption("xphr")}
+        fontWeight="bold"
+        height="10"
+      >
+        XP/hr
+      </Button>
+      <Button 
+        bg={localSortOption === "gphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+        color={localSortOption === "gphr" ? "#211305" : "white"}
+        border="2px solid black"
+        borderRadius="0"
+        borderLeft="none" 
+        _hover={{ bg: "#e0a922" }}
+        onClick={() => setLocalSortOption("gphr")}
+        fontWeight="bold"
+        height="10"
+      >
+        GP/hr
+      </Button>
+      <Button 
+        bg={localSortOption === "level" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+        color={localSortOption === "level" ? "#211305" : "white"}
+        border="2px solid black"
+        borderLeftRadius="0" 
+        borderRightRadius="md"
+        borderLeft="none"
+        _hover={{ bg: "#e0a922" }}
+        onClick={() => setLocalSortOption("level")}
+        fontWeight="bold"
+        height="10"
+      >
+        Level
+      </Button>
+    </ButtonGroup>
+  );
+}), { ssr: false });
+
+// Simple Toggle Button component 
+function ToggleButton() {
+  // Get this from the store instead of using store methods directly in render
+  const { showOnlyAvailable, setShowOnlyAvailable } = useCalculatorStore();
+  const { currentLevel } = useCalculatorStore.getState().calculatorInputs[
+    useCalculatorStore.getState().activeSkill
+  ];
+  
+  // Create notification function
+  const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    useCalculatorStore.setState({
+      notification: {
+        message,
+        type,
+        timestamp: Date.now()
+      }
+    });
+  };
+  
+  // Handle toggle with notification
+  const handleToggle = () => {
+    const newValue = !showOnlyAvailable;
+    setShowOnlyAvailable(newValue);
+    
+    // Show notification based on new state
+    if (newValue) {
+      notify(`Showing only methods available at level ${currentLevel}`);
+    } else {
+      notify('Showing all training methods up to level 99', 'info');
+    }
+  };
+  
+  return (
+    <Button 
+      bg={showOnlyAvailable ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
+      color={showOnlyAvailable ? "#211305" : "white"}
+      border="2px solid black"
+      borderRadius="md"
+      _hover={{ bg: showOnlyAvailable ? "#e0a922" : "rgba(0,0,0,0.5)" }}
+      onClick={handleToggle}
+      fontWeight="bold"
+      height="10"
+    >
+      {showOnlyAvailable ? "My Level Only" : "Show All Methods"}
+    </Button>
+  );
+}
+
+// Client-side component for displaying "No Methods Available" message
+const NoMethodsAvailable = dynamic(() => Promise.resolve(({ currentLevel }: { currentLevel: number }) => {
+  const store = useCalculatorStore();
+  
+  return (
+    <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px" bg="rgba(0,0,0,0.3)" borderRadius="md">
+      <Box 
+        boxSize="40px" 
+        borderRadius="full" 
+        bg="rgba(255,203,47,0.2)" 
+        display="flex" 
+        alignItems="center" 
+        justifyContent="center"
+        mb={2}
+      >
+        <Text fontSize="xl" color="#ffcb2f">!</Text>
+      </Box>
+      <Text fontWeight="bold" mt={4} mb={1} color="white">No Methods Available</Text>
+      <Text fontSize="sm" color="#e0d0b0">There are no training methods available at your current level {currentLevel}.</Text>
+      <Button 
+        mt={4} 
+        size="sm" 
+        bg="#ffcb2f" 
+        color="#211305" 
+        border="2px solid black" 
+        _hover={{ bg: "#e0a922" }} 
+        onClick={() => store.setShowOnlyAvailable(false)}
+        fontWeight="bold"
+      >
+        Show All Methods
+      </Button>
+    </Alert>
+  );
+}), { ssr: false });
+
 export default function SkillPage({ params }: Props) {
   const { skill } = params;
   
@@ -111,7 +257,9 @@ export default function SkillPage({ params }: Props) {
   // Get calculator inputs from store
   const { 
     calculatorInputs, 
-    playerStats
+    playerStats,
+    sortOption,
+    setSortOption
   } = useCalculatorStore();
   
   // Direct access to store
@@ -126,8 +274,6 @@ export default function SkillPage({ params }: Props) {
   const [targetXp, setTargetXp] = useState(getXpForLevel(storedInput.targetLevel));
   const [neededXp, setNeededXp] = useState(getXpForLevel(storedInput.targetLevel) - getXpForLevel(storedInput.currentLevel));
   const [progress, setProgress] = useState(0);
-  const [sortOption, setSortOption] = useState<SortOption>("level");
-  const [showOnlyAvailable, setShowOnlyAvailable] = useState(false);
   
   // Training methods for this skill - Memoized based on skillKey
   const methods = useMemo(() => trainingMethods[skillKey] || [], [skillKey]);
@@ -150,6 +296,9 @@ export default function SkillPage({ params }: Props) {
   // --- START: Update Method Calculation with Live Prices (using useMemo) ---
   // Memoize calculated methods to prevent recalculation on every render unless dependencies change
   const calculatedMethods = useMemo(() => {
+    // Get showOnlyAvailable from store to prevent hydration mismatch
+    const { showOnlyAvailable } = useCalculatorStore.getState();
+
     // If prices aren't loaded yet, return empty array
     if (pricesLoading || !itemPriceData) {
       return [];
@@ -193,11 +342,14 @@ export default function SkillPage({ params }: Props) {
             profitPerAction = totalOutputValue - totalInputCost;
           }
           
-          // Special case for construction - always ensure it's a cost
+          // Ensure construction shows costs
           if (skillKey === 'construction' && profitPerAction > 0) {
-            // For Construction, costs should always be negative or zero
-            // If somehow we calculated a profit, use the absolute value as a cost
             profitPerAction = -Math.abs(profitPerAction);
+          }
+          // For cooking, use data from cooking file directly rather than recalculating
+          else if (skillKey === 'cooking' && method.gpEach !== undefined) {
+            // Use the explicit GP value from the method data
+            profitPerAction = method.gpEach;
           }
         } catch (err) {
           console.error('Error calculating profit for method:', method.name, err);
@@ -207,6 +359,10 @@ export default function SkillPage({ params }: Props) {
           // Ensure construction shows costs
           if (skillKey === 'construction' && profitPerAction > 0) {
             profitPerAction = -Math.abs(profitPerAction);
+          }
+          // For cooking, ensure high-level methods show profit unless specifically set as negative
+          else if (skillKey === 'cooking' && method.level >= 30 && profitPerAction < 0 && method.gpEach === undefined) {
+            profitPerAction = Math.abs(profitPerAction);
           }
         }
 
@@ -218,16 +374,13 @@ export default function SkillPage({ params }: Props) {
 
       // Filter methods based on level
       const filteredMethods = safeMethodsWithPrices.filter(method => {
-        // Always filter by target level
-        const meetsTargetLevel = method.level <= targetLevel;
-        
         // If showing only available methods, filter by current level too
         if (showOnlyAvailable) {
-          return meetsTargetLevel && method.level <= currentLevel;
+          return method.level <= currentLevel; // Show only methods the player can currently use
         }
         
         // Otherwise just use target level
-        return meetsTargetLevel;
+        return method.level <= targetLevel;
       });
 
       // Sort methods based on selected option
@@ -263,12 +416,20 @@ export default function SkillPage({ params }: Props) {
           ? (actionsNeeded / method.estimatedActionsPerHour).toFixed(1) 
           : "?";
         
+        // Handle cooking inconsistencies - if the method is profitable in cooking data file but shown as negative
+        // in our calculation, respect the original value from the data file
+        let adjustedProfitPerAction = method.profitPerAction;
+        if (skillKey === 'cooking' && method.gpEach !== undefined) {
+          // If we have explicit GP values, use them to determine if this should be profit or loss
+          adjustedProfitPerAction = method.gpEach;
+        }
+        
         // Calculate total profit/loss
-        const totalProfit = method.profitPerAction * actionsNeeded;
+        const totalProfit = adjustedProfitPerAction * actionsNeeded;
         
         return {
           ...method,
-          livePricePerAction: method.profitPerAction,
+          livePricePerAction: adjustedProfitPerAction,
           actionsNeeded,
           hoursNeeded,
           totalCost: totalProfit
@@ -278,11 +439,12 @@ export default function SkillPage({ params }: Props) {
       console.error('Error in training methods calculation:', err);
       return [];
     }
-  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading, showOnlyAvailable, currentLevel, skillKey]);
+  }, [methods, itemPriceData, neededXp, targetLevel, sortOption, pricesLoading, currentLevel, skillKey]);
+  // Remove showOnlyAvailable from dependencies as we're getting it fresh from the store
   // --- END: Update Method Calculation ---
   
-  // Simpler notification function
-  const notify = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+  // Simpler notification function wrapped in useCallback
+  const notify = useCallback((message: string, type: 'success' | 'error' | 'info' = 'success') => {
     try {
       store.setState({
         notification: {
@@ -294,10 +456,10 @@ export default function SkillPage({ params }: Props) {
     } catch (err) {
       console.error('Failed to set notification:', err);
     }
-  };
+  }, [store]);
   
-  // Update calculator input directly
-  const updateInput = (skill: SkillName, input: Partial<typeof storedInput>) => {
+  // Update calculator input directly - wrapped in useCallback
+  const updateInput = useCallback((skill: SkillName, input: Partial<typeof storedInput>) => {
     try {
       store.setState((state) => ({
         calculatorInputs: {
@@ -311,7 +473,7 @@ export default function SkillPage({ params }: Props) {
     } catch (err) {
       console.error('Failed to update calculator input:', err);
     }
-  };
+  }, [store]);
   
   // Handle level input changes
   const handleCurrentLevelChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -371,7 +533,7 @@ export default function SkillPage({ params }: Props) {
     if (!Number.isFinite(num)) return "?"; 
     return num.toLocaleString(); // Use localeString for better formatting
   };
-
+  
   // --- START: Render Loading/Error States ---
   const renderContent = () => {
     if (pricesLoading) {
@@ -392,8 +554,12 @@ export default function SkillPage({ params }: Props) {
           <Text fontSize="xs" color="gray.500" mt={2}>({priceFetchError?.message})</Text>
         </Alert>
       );
-      // Note: Even on error, calculatedMethods might fall back to static prices, so we might still want to render the table below.
-      // The logic above in useMemo handles falling back to method.gpEach.
+    }
+    
+    // Check if we have methods to display - use store.getState() instead of hook to avoid lint error
+    const storeState = useCalculatorStore.getState();
+    if (calculatedMethods.length === 0 && storeState.showOnlyAvailable) {
+      return <NoMethodsAvailable currentLevel={currentLevel} />;
     }
     
     // If loaded successfully (or even with error, we show the table with fallback prices)
@@ -436,18 +602,14 @@ export default function SkillPage({ params }: Props) {
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{formatNumber(method.actionsNeeded)}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color="white">{method.hoursNeeded}</Box>
                 <Box as="td" px={4} py={3} textAlign="right" color={skillKey === 'construction' ? "#ff6b6b" : (method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b")}>
-                  {skillKey === 'construction' && method.livePricePerAction <= 0 ? 
-                    formatNumber(method.livePricePerAction) : 
-                    method.livePricePerAction >= 0 ? 
-                      `+${formatNumber(method.livePricePerAction)}` : 
-                      formatNumber(method.livePricePerAction)}
+                  {method.livePricePerAction >= 0 ? 
+                    `+${formatNumber(method.livePricePerAction)}` : 
+                    formatNumber(method.livePricePerAction)}
                 </Box>
                 <Box as="td" px={4} py={3} textAlign="right" color={skillKey === 'construction' ? "#ff6b6b" : (method.livePricePerAction >= 0 ? "#00ff00" : "#ff6b6b")}>
-                  {skillKey === 'construction' && method.totalCost <= 0 ? 
-                    formatNumber(method.totalCost) : 
-                    method.livePricePerAction >= 0 ? 
-                      `+${formatNumber(method.totalCost)}` : 
-                      formatNumber(method.totalCost)}
+                  {method.livePricePerAction >= 0 ? 
+                    `+${formatNumber(method.totalCost)}` : 
+                    formatNumber(method.totalCost)}
                 </Box>
               </Box>
             ))}
@@ -750,39 +912,41 @@ export default function SkillPage({ params }: Props) {
           
           <PlayerLookup />
           
-          {playerStats && (
-            <Box mt={3}>
-              <Flex justify="flex-end">
-                <Button
-                  size="sm"
-                  bg="#361f0e"
-                  color="#ffcb2f"
-                  _hover={{ bg: '#4a2a15' }}
-                  borderWidth="1px"
-                  borderColor="black"
-                  boxShadow="2px 2px 0 rgba(0,0,0,0.3)"
-                  onClick={() => {
-                    // Map any alternate skill names
-                    const lookupSkill = skillKey === 'runecraft' ? 'runecrafting' : skillKey;
-                    
-                    if (playerStats.stats[lookupSkill]) {
-                      const level = playerStats.stats[lookupSkill].level;
-                      setCurrentLevel(level);
-                      setCurrentXp(getXpForLevel(level));
+          <ClientOnly>
+            {playerStats && (
+              <Box mt={3}>
+                <Flex justify="flex-end">
+                  <Button
+                    size="sm"
+                    bg="#361f0e"
+                    color="#ffcb2f"
+                    _hover={{ bg: '#4a2a15' }}
+                    borderWidth="1px"
+                    borderColor="black"
+                    boxShadow="2px 2px 0 rgba(0,0,0,0.3)"
+                    onClick={() => {
+                      // Map any alternate skill names
+                      const lookupSkill = skillKey === 'runecraft' ? 'runecrafting' : skillKey;
                       
-                      // Update the store as well
-                      updateInput(skillKey, { currentLevel: level });
-                      
-                      // Show notification using our workaround function
-                      notify(`Level ${level} from ${playerStats.username} applied to ${skillName} calculator`);
-                    }
-                  }}
-                >
-                  Apply Level {playerStats.stats[skillKey === 'runecraft' ? 'runecrafting' : skillKey]?.level || '?'}
-                </Button>
-              </Flex>
-            </Box>
-          )}
+                      if (playerStats.stats[lookupSkill]) {
+                        const level = playerStats.stats[lookupSkill].level;
+                        setCurrentLevel(level);
+                        setCurrentXp(getXpForLevel(level));
+                        
+                        // Update the store as well
+                        updateInput(skillKey, { currentLevel: level });
+                        
+                        // Show notification using our workaround function
+                        notify(`Level ${level} from ${playerStats.username} applied to ${skillName} calculator`);
+                      }
+                    }}
+                  >
+                    Apply Level {playerStats.stats[skillKey === 'runecraft' ? 'runecrafting' : skillKey]?.level || '?'}
+                  </Button>
+                </Flex>
+              </Box>
+            )}
+          </ClientOnly>
         </Box>
         
         {/* Training Methods Table */}
@@ -807,63 +971,17 @@ export default function SkillPage({ params }: Props) {
         >
           <Flex justify="space-between" align="center" mb={4}>
             <SectionHeading>Training Methods</SectionHeading>
-            <Flex gap={4}>
-              <Box>
-                <Button
-                  size="sm"
-                  bg={showOnlyAvailable ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                  color={showOnlyAvailable ? "#211305" : "white"}
-                  border="2px solid black"
-                  _hover={{ bg: "#e0a922" }}
-                  onClick={() => setShowOnlyAvailable(!showOnlyAvailable)}
-                  fontWeight="bold"
-                  height="10"
-                >
-                  {showOnlyAvailable ? "Showing Available" : "Show All Methods"}
-                </Button>
-              </Box>
-              <ButtonGroup size="sm">
-                <Button 
-                  bg={sortOption === "xphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                  color={sortOption === "xphr" ? "#211305" : "white"}
-                  border="2px solid black"
-                  borderLeftRadius="md" 
-                  borderRightRadius="0"
-                  _hover={{ bg: "#e0a922" }}
-                  onClick={() => setSortOption("xphr")}
-                  fontWeight="bold"
-                  height="10"
-                >
-                  XP/hr
-                </Button>
-                <Button 
-                  bg={sortOption === "gphr" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                  color={sortOption === "gphr" ? "#211305" : "white"}
-                  border="2px solid black"
-                  borderRadius="0"
-                  borderLeft="none" 
-                  _hover={{ bg: "#e0a922" }}
-                  onClick={() => setSortOption("gphr")}
-                  fontWeight="bold"
-                  height="10"
-                >
-                  GP/hr
-                </Button>
-                <Button 
-                  bg={sortOption === "level" ? "#ffcb2f" : "rgba(0,0,0,0.3)"}
-                  color={sortOption === "level" ? "#211305" : "white"}
-                  border="2px solid black"
-                  borderLeftRadius="0" 
-                  borderRightRadius="md"
-                  borderLeft="none"
-                  _hover={{ bg: "#e0a922" }}
-                  onClick={() => setSortOption("level")}
-                  fontWeight="bold"
-                  height="10"
-                >
-                  Level
-                </Button>
-              </ButtonGroup>
+            <Flex gap={4} align="center" wrap="wrap" justify="flex-end">
+              {/* My Level Only button */}
+              <ClientOnly>
+                <ToggleButton />
+              </ClientOnly>
+              <ClientOnly>
+                <SortButtons 
+                  localSortOption={sortOption} 
+                  setLocalSortOption={setSortOption} 
+                />
+              </ClientOnly>
             </Flex>
           </Flex>
           
@@ -874,7 +992,9 @@ export default function SkillPage({ params }: Props) {
               </Text>
             </Flex>
           ) : (
-            renderContent()
+            <ClientOnly>
+              {renderContent()}
+            </ClientOnly>
           )}
         </Box>
       </Container>
