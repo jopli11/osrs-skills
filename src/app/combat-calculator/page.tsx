@@ -30,6 +30,7 @@ import { SkillIcon } from '@/components/SkillIcon'; // Assuming SkillIcon can ha
 import { SkillName } from '@/lib/types'; // May need adjustment if combat skills aren't in SkillName
 import { useCalculatorStore } from '@/lib/store'; // Added for player stats
 import PlayerLookup from '@/components/PlayerLookup'; // Added player lookup component
+import Footer from '@/components/Footer'; // Import Footer
 
 // Type for skill levels
 type CombatLevels = {
@@ -116,7 +117,8 @@ export default function CombatCalculatorPage() {
               setLevels(newLevels);
           }
       }
-  }, [playerStats]); // Rerun when playerStats change
+  // eslint-disable-next-line react-hooks/exhaustive-deps 
+  }, [playerStats]); // Rerun when playerStats change, intentionally omitting levels
 
   // Recalculate combat level whenever levels change (initial or subsequent)
   useEffect(() => {
@@ -410,54 +412,42 @@ export default function CombatCalculatorPage() {
 
         {/* Information Box */}
         <Box 
-          mt={10} 
-          p={6} 
           bg="rgba(42, 30, 15, 0.75)" 
           borderRadius="md" 
+          p={6} 
+          mt={8}
           border="2px solid black"
           boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
           backdropFilter="blur(4px)"
+          position="relative"
+          _after={{
+            content: '""',
+            position: 'absolute',
+            top: '1px',
+            left: '1px',
+            right: '1px',
+            height: '1px',
+            backgroundColor: 'rgba(255, 203, 47, 0.2)'
+          }}
         >
           <SectionHeading mb={4}>How Combat Level is Calculated</SectionHeading>
-          <Text color="#e0d0b0" mb={3}>
+          <Text mb={3}>
             The Old School RuneScape combat level is calculated from these skills:
           </Text>
-          <VStack align="start" spacing={1} color="white">
-            <Text><strong>Base level:</strong> (Defence + Hitpoints + Prayer ÷ 2) × 0.25</Text>
-            <Text><strong>Melee level:</strong> (Attack + Strength) × 0.325</Text>
-            <Text><strong>Range level:</strong> Ranged × 0.4875</Text>
-            <Text><strong>Mage level:</strong> Magic × 0.4875</Text>
+          <VStack align="start" spacing={1}>
+            <Text><Box as="span" fontWeight="bold">Base level:</Box> (Defence + Hitpoints + Prayer ÷ 2) × 0.25</Text>
+            <Text><Box as="span" fontWeight="bold">Melee level:</Box> (Attack + Strength) × 0.325</Text>
+            <Text><Box as="span" fontWeight="bold">Range level:</Box> Ranged × 0.4875</Text>
+            <Text><Box as="span" fontWeight="bold">Mage level:</Box> Magic × 0.4875</Text>
           </VStack>
-          <Text color="#e0d0b0" mt={3}>
+          <Text mt={3}>
             Your combat level is determined by the Base level plus the highest of Melee, Range, or Mage levels.
           </Text>
         </Box>
       </Container>
 
-      {/* Footer */}
-      <Box 
-        as="footer" 
-        bg="rgba(42, 30, 15, 0.9)"
-        mt={16} 
-        py={8} 
-        borderTop="2px solid black"
-        backdropFilter="blur(2px)"
-        position="relative"
-        _before={{
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          backgroundColor: 'rgba(255, 203, 47, 0.15)'
-        }}
-      >
-        <Container maxW="7xl" textAlign="center">
-          <Text fontSize="sm" color="#e0d0b0">© {new Date().getFullYear()} OSRSCalculators | All game content is copyright Jagex Ltd.</Text>
-          <Text fontSize="sm" color="#e0d0b0" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
-        </Container>
-      </Box>
+      {/* Add Standard Footer */}
+      <Footer />
     </Box>
   );
 } 

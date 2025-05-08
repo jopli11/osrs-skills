@@ -1,6 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import NextLink from 'next/link';
+import dynamic from 'next/dynamic';
 import { 
   Box, 
   Container, 
@@ -19,18 +20,34 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  VStack
+  VStack,
+  Link as ChakraLink,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import React, { useState, useEffect } from 'react';
 import SkillCard from '@/components/SkillCard';
 import { SkillName } from '@/lib/types';
 import { ALL_SKILLS } from '@/lib/constants';
-import PlayerLookup from '@/components/PlayerLookup';
 import OsrsHeading from '@/components/OsrsHeading';
 import { track } from '@vercel/analytics';
+import Footer from '@/components/Footer';
+
+// Dynamically import PlayerLookup with SSR disabled
+const DynamicPlayerLookup = dynamic(
+  () => import('@/components/PlayerLookup'),
+  {
+    ssr: false,
+    loading: () => null
+  }
+);
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   return (
     <Box>
@@ -53,98 +70,134 @@ export default function Home() {
       >
         <Container maxW="7xl" py={4}>
           <Flex justify="space-between" align="center">
-            <Link href="/" style={{ textDecoration: 'none' }}>
-              <Heading 
-                as="h1" 
-                size="lg" 
-                fontWeight="bold" 
-                fontFamily="'Roboto Slab', serif"
-                textShadow="2px 2px 3px rgba(0,0,0,0.8)"
-              >
-                <Box as="span" color="#ffcb2f">OSRS</Box>
-                <Box as="span" color="white">Calculators</Box>
-              </Heading>
-            </Link>
-            
-            {/* Desktop Navigation */}
-            <HStack spacing={6} display={{ base: 'none', md: 'flex' }}>
-              <Link href="/#skills" style={{ textDecoration: 'none' }} onClick={() => track('Navigate_To_Skills', { from: '/' })}>
-                 <Text 
-                   color="#e0d0b0"
-                   fontSize="md"
-                   fontWeight="medium"
-                   _hover={{ color: '#ffcb2f' }}
-                 >
-                   Skills
-                 </Text>
-              </Link>
-              <Link href="/combat-calculator" style={{ textDecoration: 'none' }} onClick={() => track('Navigate_To_CombatCalc', { from: '/' })}>
-                <Text 
-                  color="#e0d0b0"
-                  fontSize="md"
-                  fontWeight="medium"
-                  _hover={{ color: '#ffcb2f' }}
+            <NextLink href="/" passHref legacyBehavior>
+              <ChakraLink _hover={{ textDecoration: 'none' }}>
+                <Heading 
+                  as="h1" 
+                  size="lg" 
+                  fontWeight="bold" 
+                  fontFamily="'Roboto Slab', serif"
+                  textShadow="2px 2px 3px rgba(0,0,0,0.8)"
                 >
-                  Combat Calc
-                </Text>
-              </Link>
-            </HStack>
+                  <Box as="span" color="#ffcb2f">OSRS</Box>
+                  <Box as="span" color="white">Calculators</Box>
+                </Heading>
+              </ChakraLink>
+            </NextLink>
+            
+            {hasMounted && (
+              <>
+                {/* Desktop Navigation */}
+                <HStack spacing={6} display={{ base: 'none', md: 'flex' }}>
+                  <NextLink href="/#skills" passHref legacyBehavior>
+                    <ChakraLink
+                      color="#e0d0b0"
+                      fontSize="md"
+                      fontWeight="medium"
+                      _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
+                      onClick={() => track('Navigate_To_Skills', { from: '/' })}
+                    >
+                      Skills
+                    </ChakraLink>
+                  </NextLink>
+                  <NextLink href="/combat-calculator" passHref legacyBehavior>
+                    <ChakraLink 
+                      color="#e0d0b0"
+                      fontSize="md"
+                      fontWeight="medium"
+                      _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
+                      onClick={() => track('Navigate_To_CombatCalc', { from: '/' })}
+                    >
+                      Combat Calc
+                    </ChakraLink>
+                  </NextLink>
+                  <NextLink href="/max-hit-calculator" passHref legacyBehavior>
+                    <ChakraLink 
+                      color="#e0d0b0"
+                      fontSize="md"
+                      fontWeight="medium"
+                      _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
+                      onClick={() => track('Navigate_To_MaxHitCalc', { from: '/' })}
+                    >
+                      Max Hit Calc
+                    </ChakraLink>
+                  </NextLink>
+                </HStack>
 
-            {/* Mobile Navigation - Burger Icon */}
-            <IconButton
-              aria-label="Open menu"
-              icon={<HamburgerIcon />}
-              display={{ base: 'flex', md: 'none' }}
-              onClick={onOpen}
-              bg="#ffcb2f"
-              color="#211305"
-              _hover={{ bg: '#e0a922' }}
-              size="md"
-            />
+                {/* Mobile Navigation - Burger Icon */}
+                <IconButton
+                  aria-label="Open menu"
+                  icon={<HamburgerIcon />}
+                  display={{ base: 'flex', md: 'none' }}
+                  onClick={onOpen}
+                  bg="#ffcb2f"
+                  color="#211305"
+                  _hover={{ bg: '#e0a922' }}
+                  size="md"
+                />
+              </>
+            )}
           </Flex>
         </Container>
       </Box>
 
-      {/* Mobile Drawer Menu */}
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent bg="#2a1e0f" color="#e0d0b0">
-          <DrawerCloseButton />
-          <DrawerHeader 
-            borderBottomWidth="1px" 
-            borderColor="rgba(255, 203, 47, 0.2)"
-            fontFamily="'Roboto Slab', serif"
-            color="#ffcb2f"
-          >
-            Navigation
-          </DrawerHeader>
-          <DrawerBody>
-            <VStack spacing={4} align="stretch" mt={4}>
-              <Link href="/#skills" style={{ textDecoration: 'none' }} onClick={() => { onClose(); track('Navigate_To_Skills', { from: 'mobile_menu' }); }}>
-                <Text 
-                  fontSize="lg" 
-                  fontWeight="medium" 
-                  _hover={{ color: '#ffcb2f' }}
-                  py={2}
-                >
-                  Skills
-                </Text>
-              </Link>
-              <Link href="/combat-calculator" style={{ textDecoration: 'none' }} onClick={() => { onClose(); track('Navigate_To_CombatCalc', { from: 'mobile_menu' }); }}>
-                <Text 
-                  fontSize="lg" 
-                  fontWeight="medium" 
-                  _hover={{ color: '#ffcb2f' }}
-                  py={2}
-                >
-                  Combat Calc
-                </Text>
-              </Link>
-              {/* Add more links here as needed */}
-            </VStack>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+      {/* Mobile Drawer Menu - Conditionally render the ENTIRE Drawer based on mount */}
+      {hasMounted && (
+        <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+          <DrawerOverlay />
+          <DrawerContent bg="#2a1e0f" color="#e0d0b0">
+            <DrawerCloseButton />
+            <DrawerHeader 
+              borderBottomWidth="1px" 
+              borderColor="rgba(255, 203, 47, 0.2)"
+              fontFamily="'Roboto Slab', serif"
+              color="#ffcb2f"
+            >
+              Navigation
+            </DrawerHeader>
+            <DrawerBody>
+              <VStack spacing={4} align="stretch" mt={4}>
+                <NextLink href="/#skills" passHref legacyBehavior>
+                  <ChakraLink 
+                    fontSize="lg" 
+                    fontWeight="medium" 
+                    _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
+                    py={2} 
+                    display="block"
+                    onClick={() => { onClose(); track('Navigate_To_Skills', { from: 'mobile_menu' }); }}
+                  >
+                    Skills
+                  </ChakraLink>
+                </NextLink>
+                <NextLink href="/combat-calculator" passHref legacyBehavior>
+                  <ChakraLink 
+                    fontSize="lg" 
+                    fontWeight="medium" 
+                    _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
+                    py={2} 
+                    display="block"
+                    onClick={() => { onClose(); track('Navigate_To_CombatCalc', { from: 'mobile_menu' }); }}
+                  >
+                    Combat Calc
+                  </ChakraLink>
+                </NextLink>
+                <NextLink href="/max-hit-calculator" passHref legacyBehavior>
+                  <ChakraLink 
+                    fontSize="lg" 
+                    fontWeight="medium" 
+                    _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
+                    py={2} 
+                    display="block"
+                    onClick={() => { onClose(); track('Navigate_To_MaxHitCalc', { from: 'mobile_menu' }); }}
+                  >
+                    Max Hit Calc
+                  </ChakraLink>
+                </NextLink>
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      )}
 
       <Box as="main">
         {/* Hero Section */}
@@ -241,7 +294,7 @@ export default function Home() {
               </Flex>
               
               <Box>
-                <PlayerLookup />
+                <DynamicPlayerLookup />
               </Box>
             </Box>
             
@@ -333,29 +386,8 @@ export default function Home() {
         </Container>
       </Box>
 
-      <Box 
-        as="footer" 
-        bg="rgba(42, 30, 15, 0.9)"
-        mt={16} 
-        py={8} 
-        borderTop="2px solid black"
-        backdropFilter="blur(2px)"
-        position="relative"
-        _before={{
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          backgroundColor: 'rgba(255, 203, 47, 0.15)'
-        }}
-      >
-        <Container maxW="7xl" textAlign="center">
-          <Text fontSize="sm" color="#e0d0b0">© {new Date().getFullYear()} OSRSCalculators | All game content is copyright Jagex Ltd.</Text>
-          <Text fontSize="sm" color="#e0d0b0" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
-        </Container>
-      </Box>
+      {/* Footer */}
+      <Footer />
     </Box>
   );
 }
