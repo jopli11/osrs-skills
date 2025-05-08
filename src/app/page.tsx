@@ -10,8 +10,18 @@ import {
   Button, 
   SimpleGrid,
   Badge,
-  HStack
+  HStack,
+  IconButton,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  VStack
 } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import SkillCard from '@/components/SkillCard';
 import { SkillName } from '@/lib/types';
 import { ALL_SKILLS } from '@/lib/constants';
@@ -20,6 +30,8 @@ import OsrsHeading from '@/components/OsrsHeading';
 import { track } from '@vercel/analytics';
 
 export default function Home() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box>
       {/* Header/Navigation Bar */}
@@ -54,7 +66,8 @@ export default function Home() {
               </Heading>
             </Link>
             
-            <HStack spacing={6}>
+            {/* Desktop Navigation */}
+            <HStack spacing={6} display={{ base: 'none', md: 'flex' }}>
               <Link href="/#skills" style={{ textDecoration: 'none' }} onClick={() => track('Navigate_To_Skills', { from: '/' })}>
                  <Text 
                    color="#e0d0b0"
@@ -76,9 +89,62 @@ export default function Home() {
                 </Text>
               </Link>
             </HStack>
+
+            {/* Mobile Navigation - Burger Icon */}
+            <IconButton
+              aria-label="Open menu"
+              icon={<HamburgerIcon />}
+              display={{ base: 'flex', md: 'none' }}
+              onClick={onOpen}
+              bg="#ffcb2f"
+              color="#211305"
+              _hover={{ bg: '#e0a922' }}
+              size="md"
+            />
           </Flex>
         </Container>
       </Box>
+
+      {/* Mobile Drawer Menu */}
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent bg="#2a1e0f" color="#e0d0b0">
+          <DrawerCloseButton />
+          <DrawerHeader 
+            borderBottomWidth="1px" 
+            borderColor="rgba(255, 203, 47, 0.2)"
+            fontFamily="'Roboto Slab', serif"
+            color="#ffcb2f"
+          >
+            Navigation
+          </DrawerHeader>
+          <DrawerBody>
+            <VStack spacing={4} align="stretch" mt={4}>
+              <Link href="/#skills" style={{ textDecoration: 'none' }} onClick={() => { onClose(); track('Navigate_To_Skills', { from: 'mobile_menu' }); }}>
+                <Text 
+                  fontSize="lg" 
+                  fontWeight="medium" 
+                  _hover={{ color: '#ffcb2f' }}
+                  py={2}
+                >
+                  Skills
+                </Text>
+              </Link>
+              <Link href="/combat-calculator" style={{ textDecoration: 'none' }} onClick={() => { onClose(); track('Navigate_To_CombatCalc', { from: 'mobile_menu' }); }}>
+                <Text 
+                  fontSize="lg" 
+                  fontWeight="medium" 
+                  _hover={{ color: '#ffcb2f' }}
+                  py={2}
+                >
+                  Combat Calc
+                </Text>
+              </Link>
+              {/* Add more links here as needed */}
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
 
       <Box as="main">
         {/* Hero Section */}
