@@ -8,6 +8,7 @@ import { useState } from "react";
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '@chakra-ui/react';
 import Notification from '@/components/Notification';
+import theme from '@/theme';
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({
@@ -21,7 +22,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <CacheProvider>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider
             attribute="data-theme"

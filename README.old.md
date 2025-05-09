@@ -1,2 +1,0 @@
-# osrs-skills
- tools

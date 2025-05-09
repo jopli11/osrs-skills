@@ -19,6 +19,7 @@ import { CheckIcon } from '@chakra-ui/icons';
 import { SkillIcon } from '@/components/SkillIcon'; // For icons on cards
 import OsrsHeading from '@/components/OsrsHeading';
 import Footer from '@/components/Footer';
+import ClientOnly from '@/components/ClientOnly'; // Import ClientOnly
 import { track } from '@vercel/analytics';
 import { SkillName } from '@/lib/types'; // For SkillIcon typing
 
@@ -136,37 +137,40 @@ export default function MaxHitCalculatorSelectionPage() {
           </OsrsHeading>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
             {calculatorOptions.map((option) => (
-              <NextLink key={option.name} href={option.href} passHref legacyBehavior>
-                <ChakraLink 
-                  as="a" 
-                  _hover={{ textDecoration: 'none' }}
-                  onClick={() => track(option.trackingEventName, { from: '/max-hit-calculator'})}
-                >
-                  <Box
-                    p={8}
-                    bg="rgba(30, 20, 10, 0.85)"
-                    border="2px solid black"
-                    borderRadius="md"
-                    boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
-                    transition="all 0.2s ease-in-out"
-                    _hover={{
+              <NextLink key={option.name} href={option.href} passHref>
+                <ClientOnly> {/* Wrap the part causing hydration issues */}
+                  <ChakraLink 
+                    display="flex"
+                    height="100%"
+                    _hover={{ 
+                      textDecoration: 'none',
                       transform: 'translateY(-4px) scale(1.02)',
                       borderColor: '#ffcb2f',
-                      boxShadow: '8px 8px 0 rgba(255, 203, 47, 0.2)',
-                      cursor: 'pointer'
+                      boxShadow: '8px 8px 0 rgba(255, 203, 47, 0.2)', 
                     }}
-                    textAlign="center"
-                    height="100%" // Ensure cards in a row are same height
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
+                    onClick={() => track(option.trackingEventName, { from: '/max-hit-calculator'})}
                   >
-                    <SkillIcon skill={option.iconSkill} size={56} />
-                    <Heading size="md" mt={4} mb={2} color="white" textShadow="1px 1px 1px #000">{option.name}</Heading>
-                    <Text fontSize="sm" color="#c5c5c5">{option.description}</Text>
-                  </Box>
-                </ChakraLink>
+                    <Box
+                      p={8}
+                      bg="rgba(30, 20, 10, 0.85)"
+                      border="2px solid black"
+                      borderRadius="md" 
+                      boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+                      transition="all 0.2s ease-in-out"
+                      width="100%"
+                      height="100%"
+                      textAlign="center"
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <SkillIcon skill={option.iconSkill} size={56} />
+                      <Heading size="md" mt={4} mb={2} color="white" textShadow="1px 1px 1px #000">{option.name}</Heading>
+                      <Text fontSize="sm" color="#c5c5c5">{option.description}</Text>
+                    </Box>
+                  </ChakraLink>
+                </ClientOnly>
               </NextLink>
             ))}
           </SimpleGrid>

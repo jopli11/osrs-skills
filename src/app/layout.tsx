@@ -4,6 +4,8 @@ import "./globals.css";
 import "./styles.css";
 import { Inter, Roboto_Slab } from 'next/font/google';
 import { Analytics } from "@vercel/analytics/next";
+import { ColorModeScript } from '@chakra-ui/react';
+import theme from '@/theme';
 
 // Load fonts with next/font
 const inter = Inter({
@@ -177,6 +179,7 @@ export default function RootLayout({
         }} />
       </head>
       <body className="osrs-background" suppressHydrationWarning>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         {/* Google Tag Manager (noscript) */}
         <noscript dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNZPR8WP"
