@@ -11,7 +11,11 @@ import {
   Flex,
   Link as ChakraLink,
   Button,
+  List,
+  ListItem,
+  ListIcon,
 } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
 import { SkillIcon } from '@/components/SkillIcon'; // For icons on cards
 import OsrsHeading from '@/components/OsrsHeading';
 import Footer from '@/components/Footer';
@@ -140,7 +144,7 @@ export default function MaxHitCalculatorSelectionPage() {
                 >
                   <Box
                     p={8}
-                    bg="rgba(42, 30, 15, 0.75)"
+                    bg="rgba(30, 20, 10, 0.85)"
                     border="2px solid black"
                     borderRadius="md"
                     boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
@@ -196,6 +200,41 @@ export default function MaxHitCalculatorSelectionPage() {
               Understanding your max hit helps in choosing the right gear setups, prayer activations, and consumable usage to improve your efficiency and effectiveness in OSRS. 
               Use our Melee, Ranged, and Magic max hit calculators to fine-tune your setup for any combat scenario!
             </Text>
+          </Box>
+        </Container>
+
+        {/* Pro Tips Box - Desktop Only */}
+        <Container maxW="6xl" pb={8} display={{ base: 'none', md: 'block' }}>
+          <Box 
+            bg="rgba(30, 20, 10, 0.85)"
+            borderRadius="md" 
+            p={6} 
+            border="2px solid"
+            borderColor="black"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            backdropFilter="blur(2px)"
+            position="relative"
+            _after={{}}
+          >
+    
+            <List spacing={3}>
+              <ListItem>
+                <ListIcon as={CheckIcon} color="#ffcb2f" />
+                Always use the highest-tier stat-boosting prayers and potions available to you for a significant damage increase.
+              </ListItem>
+              <ListItem>
+                <ListIcon as={CheckIcon} color="#ffcb2f" />
+                Don&apos;t forget weapon special attacks! Many can drastically increase your max hit or overall DPS.
+              </ListItem>
+              <ListItem>
+                <ListIcon as={CheckIcon} color="#ffcb2f" />
+                Consider your opponent&apos;s defensive stats. Higher accuracy can be just as important as a higher max hit in many situations.
+              </ListItem>
+              <ListItem>
+                <ListIcon as={CheckIcon} color="#ffcb2f" />
+                Slayer tasks often provide damage and accuracy boosts against specific monsters when wearing a Slayer Helmet or Black Mask.
+              </ListItem>
+            </List>
           </Box>
         </Container>
       </Box>
