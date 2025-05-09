@@ -7,7 +7,6 @@ import {
   HStack,
   FormControl,
   FormLabel,
-  Input,
   Select as ChakraSelect,
   Checkbox,
   CheckboxGroup,
@@ -17,7 +16,12 @@ import {
   useToast,
   Flex,
   Heading,
-  Link as ChakraLink
+  Link as ChakraLink,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo } from 'react';
@@ -365,28 +369,74 @@ export default function MaxHitCalculatorPage() {
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
                 <Box bg="rgba(42, 30, 15, 0.85)" borderRadius="md" p={6} border="2px solid black" boxShadow="5px 5px 0 rgba(0,0,0,0.4)">
                   <OsrsHeading fontSize="xl" mb={4}>Player Stats</OsrsHeading>
-                  <VStack spacing={3}>
-                     {/* Stats Inputs - Using Input temporarily for simplicity during debug */}
-                     <FormControl>
-                      <FormLabel htmlFor="attackLvl">Attack Level</FormLabel>
-                      <Input id="attackLvl" type="number" value={localPlayerStats.attack} onChange={(e) => setLocalPlayerStats({...localPlayerStats, attack: parseInt(e.target.value) || 1})} />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="strengthLvl">Strength Level</FormLabel>
-                      <Input id="strengthLvl" type="number" value={localPlayerStats.strength} onChange={(e) => setLocalPlayerStats({...localPlayerStats, strength: parseInt(e.target.value) || 1})} />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="rangedLvl">Ranged Level</FormLabel>
-                      <Input id="rangedLvl" type="number" value={localPlayerStats.ranged} onChange={(e) => setLocalPlayerStats({...localPlayerStats, ranged: parseInt(e.target.value) || 1})} />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="magicLvl">Magic Level</FormLabel>
-                      <Input id="magicLvl" type="number" value={localPlayerStats.magic} onChange={(e) => setLocalPlayerStats({...localPlayerStats, magic: parseInt(e.target.value) || 1})} />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="prayerLvl">Prayer Level</FormLabel>
-                      <Input id="prayerLvl" type="number" value={localPlayerStats.prayer} onChange={(e) => setLocalPlayerStats({...localPlayerStats, prayer: parseInt(e.target.value) || 1})} />
-                    </FormControl>
+                  <VStack spacing={4} align="stretch">
+                    {['Attack', 'Strength', 'Ranged', 'Magic', 'Prayer'].map((stat) => {
+                      const statKey = stat.toLowerCase() as keyof NumericPlayerStats;
+                      return (
+                        <VStack key={statKey} align="stretch" spacing={1}>
+                          <FormLabel 
+                            htmlFor={`${statKey}-level-max-hit`} 
+                            mb="0" 
+                            display="flex" 
+                            alignItems="center"
+                            justifyContent="center"
+                            cursor="pointer"
+                            color="#c5c5c5"
+                            fontWeight="medium"
+                            fontSize="sm"
+                          >
+                            <SkillIcon skill={statKey} size={20} />
+                            <Text ml={2}>{stat}</Text>
+                          </FormLabel>
+                          <NumberInput
+                            id={`${statKey}-level-max-hit`}
+                            size="md"
+                            min={1}
+                            max={99}
+                            value={localPlayerStats[statKey]}
+                            onChange={(_valueAsString, valueAsNumber) => {
+                              const cleanValue = isNaN(valueAsNumber) ? 1 : Math.max(1, Math.min(99, valueAsNumber));
+                              setLocalPlayerStats(prevStats => ({
+                                ...prevStats,
+                                [statKey]: cleanValue,
+                              }));
+                              track('MaxHitCalc_StatChanged', { stat: statKey, level: cleanValue });
+                            }}
+                            bg="#1a140a"
+                            borderColor="#3b2914"
+                            focusBorderColor="#ffcb2f"
+                            allowMouseWheel
+                            onFocus={() => track('MaxHitCalc_StatFocused', { stat: statKey })}
+                            borderRadius="sm"
+                          >
+                            <NumberInputField 
+                              color="#e0d0b0"
+                              textAlign="center"
+                              fontSize="lg"
+                              fontWeight="bold"
+                              _hover={{ borderColor: "#4a3822" }}
+                              borderRadius="sm"
+                            />
+                            <NumberInputStepper borderColor="#3b2914" borderLeftWidth="1px">
+                              <NumberIncrementStepper
+                                color="#a09080"
+                                _active={{ bg: '#ffcb2f', color: '#211305' }}
+                                _hover={{ color: '#ffcb2f' }}
+                                borderColor="transparent"
+                                borderTopRightRadius="sm" 
+                              />
+                              <NumberDecrementStepper
+                                color="#a09080"
+                                _active={{ bg: '#ffcb2f', color: '#211305' }}
+                                _hover={{ color: '#ffcb2f' }}
+                                borderColor="transparent"
+                                borderBottomRightRadius="sm"
+                              />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </VStack>
+                      );
+                    })}
                   </VStack>
                 </Box>
 
