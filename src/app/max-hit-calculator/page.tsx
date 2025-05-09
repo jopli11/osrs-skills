@@ -126,7 +126,7 @@ export default function MaxHitCalculatorSelectionPage() {
         </Container>
 
         {/* Calculator Selection Grid */}
-        <Container maxW="4xl" py={8}>
+        <Container maxW="6xl" py={8}>
           <OsrsHeading mb={6} textAlign="center" fontSize="2xl">
             Select Combat Style
           </OsrsHeading>
@@ -139,7 +139,7 @@ export default function MaxHitCalculatorSelectionPage() {
                   onClick={() => track(option.trackingEventName, { from: '/max-hit-calculator'})}
                 >
                   <Box
-                    p={6}
+                    p={8}
                     bg="rgba(42, 30, 15, 0.75)"
                     border="2px solid black"
                     borderRadius="md"
@@ -158,7 +158,7 @@ export default function MaxHitCalculatorSelectionPage() {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <SkillIcon skill={option.iconSkill} size={48} />
+                    <SkillIcon skill={option.iconSkill} size={56} />
                     <Heading size="md" mt={4} mb={2} color="white" textShadow="1px 1px 1px #000">{option.name}</Heading>
                     <Text fontSize="sm" color="#c5c5c5">{option.description}</Text>
                   </Box>
@@ -166,6 +166,37 @@ export default function MaxHitCalculatorSelectionPage() {
               </NextLink>
             ))}
           </SimpleGrid>
+        </Container>
+
+        {/* SEO Information Box - Desktop Only */}
+        <Container maxW="6xl" pb={8} display={{ base: 'none', md: 'block' }}>
+          <Box 
+            bg="rgba(42, 30, 15, 0.75)" 
+            borderRadius="md" 
+            p={6} 
+            border="2px solid black"
+            boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            backdropFilter="blur(4px)"
+            position="relative"
+            _after={{
+              content: '""',
+              position: 'absolute',
+              top: '1px',
+              left: '1px',
+              right: '1px',
+              height: '1px',
+              backgroundColor: 'rgba(255, 203, 47, 0.2)'
+            }}
+          >
+            <OsrsHeading fontSize="xl" mb={4} textAlign="center">Understanding Max Hit Calculations</OsrsHeading>
+            <Text color="#e0d0b0" fontSize="sm" textAlign="center">
+              Max hit calculators are essential tools for Old School RuneScape players looking to optimize their combat performance. 
+              By inputting your stats, gear, prayers, and potions, you can determine the highest possible damage you can deal with a single attack. 
+              This is crucial for various activities, including Player vs. Monster (PvM) encounters, bossing, and Player vs. Player (PvP) combat. 
+              Understanding your max hit helps in choosing the right gear setups, prayer activations, and consumable usage to improve your efficiency and effectiveness in OSRS. 
+              Use our Melee, Ranged, and Magic max hit calculators to fine-tune your setup for any combat scenario!
+            </Text>
+          </Box>
         </Container>
       </Box>
 
