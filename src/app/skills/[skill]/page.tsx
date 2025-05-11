@@ -998,31 +998,6 @@ export default function SkillPage({ params }: Props) {
           )}
         </Box>
       </Container>
-
-      {/* Footer */}
-      <Box 
-        as="footer" 
-        bg="rgba(42, 30, 15, 0.9)"
-        mt={16} 
-        py={8} 
-        borderTop="2px solid black"
-        backdropFilter="blur(2px)"
-        position="relative"
-        _before={{
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          backgroundColor: 'rgba(255, 203, 47, 0.15)'
-        }}
-      >
-        <Container maxW="7xl" textAlign="center">
-          <Text fontSize="sm" color="#e0d0b0">© {new Date().getFullYear()} OSRSCalculators | All game content is copyright Jagex Ltd.</Text>
-          <Text fontSize="sm" color="#e0d0b0" mt={1}>Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.</Text>
-        </Container>
-      </Box>
     </Box>
   );
 } 

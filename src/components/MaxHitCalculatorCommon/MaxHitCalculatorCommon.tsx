@@ -30,7 +30,6 @@ import PlayerLookup from '@/components/PlayerLookup';
 import { SkillIcon } from '@/components/SkillIcon';
 import { SkillName } from '@/lib/types';
 import { track } from '@vercel/analytics';
-import Footer from '@/components/Footer';
 import { EquipmentItem } from '@/data/equipmentData';
 
 interface NumericPlayerStats {
@@ -441,8 +440,6 @@ const MaxHitCalculatorCommon: React.FC<MaxHitCalculatorCommonProps> = (props) =>
           </>
         ) : null}
       </Container>
-
-      <Footer />
     </Box>
   );
 };

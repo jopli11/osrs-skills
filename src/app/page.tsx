@@ -30,7 +30,6 @@ import { SkillName } from '@/lib/types';
 import { ALL_SKILLS } from '@/lib/constants';
 import OsrsHeading from '@/components/OsrsHeading';
 import { track } from '@vercel/analytics';
-import Footer from '@/components/Footer';
 
 // Dynamically import PlayerLookup with SSR disabled
 const DynamicPlayerLookup = dynamic(
@@ -385,9 +384,6 @@ export default function Home() {
           </Box>
         </Container>
       </Box>
-
-      {/* Footer */}
-      <Footer />
     </Box>
   );
 }

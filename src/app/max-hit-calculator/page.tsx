@@ -18,7 +18,6 @@ import {
 import { CheckIcon } from '@chakra-ui/icons';
 import { SkillIcon } from '@/components/SkillIcon'; // For icons on cards
 import OsrsHeading from '@/components/OsrsHeading';
-import Footer from '@/components/Footer';
 import ClientOnly from '@/components/ClientOnly'; // Import ClientOnly
 import { track } from '@vercel/analytics';
 import { SkillName } from '@/lib/types'; // For SkillIcon typing
@@ -242,8 +241,6 @@ export default function MaxHitCalculatorSelectionPage() {
           </Box>
         </Container>
       </Box>
-
-      <Footer />
     </Box>
   );
 } 

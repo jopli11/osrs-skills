@@ -30,7 +30,6 @@ import { SkillIcon } from '@/components/SkillIcon'; // Assuming SkillIcon can ha
 import { SkillName } from '@/lib/types'; // May need adjustment if combat skills aren't in SkillName
 import { useCalculatorStore } from '@/lib/store'; // Added for player stats
 import PlayerLookup from '@/components/PlayerLookup'; // Added player lookup component
-import Footer from '@/components/Footer'; // Import Footer
 
 // Type for skill levels
 type CombatLevels = {
@@ -369,7 +368,7 @@ export default function CombatCalculatorPage() {
           </Box>
         </SimpleGrid>
         
-        {/* Player Lookup Section - Moved here */}
+        {/* Player Lookup Section - Wrapped in ClientOnly */}
         <Box 
           mt={8}
           bg="rgba(42, 30, 15, 0.75)" 
@@ -445,9 +444,6 @@ export default function CombatCalculatorPage() {
           </Text>
         </Box>
       </Container>
-
-      {/* Add Standard Footer */}
-      <Footer />
     </Box>
   );
 } 

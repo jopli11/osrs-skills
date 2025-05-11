@@ -109,17 +109,64 @@ This document outlines common causes and solutions for React hydration errors wh
             ```
 
 4.  **`suppressHydrationWarning`:**
-    *   **Use with caution.** For content that is intentionally different between server and client and cannot be easily resolved (e.g., timestamps updated live on the client), you can use the `suppressHydrationWarning` prop on the HTML element where the mismatch occurs.
+    *   Use with caution. For content that is intentionally different between server and client and cannot be easily resolved (e.g., timestamps updated live on the client), you can use the `suppressHydrationWarning` prop on the HTML element where the mismatch occurs.
     *   This doesn't *fix* the underlying mismatch but tells React to ignore it for that specific element and its children. It should be a last resort.
     *   Your `RootLayout` already uses this on `<html>` and `<body>`, which can be helpful for attributes managed by third-party scripts or browser extensions, but try to avoid it for your own component content.
 
-5.  **Unique Keys for Lists:**
+5.  **Client-Side Only Rendering for Stubborn Cases (`ClientOnly` Component):**
+    *   **Problem:** Persistent hydration errors on specific components or elements where style or attribute mismatches are hard to resolve with standard SSR approaches.
+    *   **Solution:** Wrap the problematic component/JSX in a `ClientOnly` wrapper that defers rendering its children until the component has mounted on the client. This ensures that the part of the UI causing the hydration mismatch is not server-rendered, thus avoiding the error.
+    *   **Example `ClientOnly.tsx` component:**
+        ```tsx
+        // src/components/ClientOnly.tsx
+        'use client';
+
+        import { useState, useEffect, ReactNode } from 'react';
+
+        interface ClientOnlyProps {
+          children: ReactNode;
+        }
+
+        export default function ClientOnly({ children }: ClientOnlyProps) {
+          const [hasMounted, setHasMounted] = useState(false);
+
+          useEffect(() => {
+            setHasMounted(true);
+          }, []);
+
+          if (!hasMounted) {
+            return null; // Or a loading skeleton/placeholder
+          }
+
+          return <>{children}</>;
+        }
+        ```
+    *   **Usage:**
+        ```tsx
+        import ClientOnly from '@/components/ClientOnly';
+        // ... other imports
+
+        function MyPageComponent() {
+          return (
+            <div>
+              <ClientOnly>
+                {/* Components or JSX causing hydration issues */}
+                <PossiblyProblematicComponent /> 
+              </ClientOnly>
+              {/* Other content */}
+            </div>
+          );
+        }
+        ```
+    *   **Caveats:** This approach means the wrapped content won't be part of the initial server-rendered HTML. This can affect Largest Contentful Paint (LCP) and SEO if critical content is deferred. Use it judiciously for non-critical elements or as a last resort for fixing stubborn hydration errors.
+
+6.  **Unique Keys for Lists:**
     *   **Problem:** Missing or non-unique `key` props when rendering lists of components.
     *   **Solution:** Always provide a stable, unique `key` to each item rendered in a loop.
 
-6.  **Third-Party Libraries:**
+7.  **Third-Party Libraries:**
     *   **Problem:** Some third-party React libraries might not be fully SSR-compatible or might have their own SSR considerations.
-    *   **Solution:** Check the library's documentation for Next.js or SSR usage guides. You might need to wrap them in a client-only component (see point 3).
+    *   **Solution:** Check the library's documentation for Next.js or SSR usage guides. You might need to wrap them in a client-only component (see point 5).
 
 ## General Debugging Steps
 

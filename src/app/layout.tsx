@@ -6,6 +6,11 @@ import { Inter, Roboto_Slab } from 'next/font/google';
 import { Analytics } from "@vercel/analytics/next";
 import { ColorModeScript } from '@chakra-ui/react';
 import theme from '@/theme';
+import dynamic from 'next/dynamic';
+import ClientOnly from '@/components/ClientOnly';
+
+// Dynamically import Footer with ssr: false
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
 
 // Load fonts with next/font
 const inter = Inter({
@@ -190,6 +195,9 @@ export default function RootLayout({
           {children}
         </Providers>
         <Analytics />
+        <ClientOnly>
+          <Footer />
+        </ClientOnly>
       </body>
     </html>
   );
