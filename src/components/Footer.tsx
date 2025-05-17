@@ -31,16 +31,16 @@ export default function Footer({ ...props }: BoxProps) {
         </Text>
         <Flex justifyContent="center" alignItems="center" gap={4} mb={4}>
           <Link href="https://oldschool.runescape.wiki" isExternal _hover={{ color: "white" }}>
-            OSRS Wiki
+            OSRS Wiki /
           </Link>
           <Link href="https://oldschool.runescape.com" isExternal _hover={{ color: "white" }}>
-            Old School RuneScape
+            Old School RuneScape /
           </Link>
           <Link href="https://www.ge-tracker.com" isExternal _hover={{ color: "white" }}>
-            GE Tracker
+            GE Tracker /
           </Link>
           <Link href="https://runelite.net" isExternal _hover={{ color: "white" }}>
-            RuneLite
+            RuneLite /
           </Link>
         </Flex>
 

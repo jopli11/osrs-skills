@@ -43,6 +43,11 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
   'Void ranger helm': { attack_ranged: 4, slot: 'head' },
   'Crystal helm': { slot: 'head' },
 
+  // --- Oathplate Items ---
+  'Oathplate helm': { attack_slash: 10, str: 6, slot: 'head' },
+  'Oathplate chest': { attack_slash: 16, str: 4, slot: 'body' },
+  'Oathplate legs': { attack_slash: 12, str: 2, slot: 'legs' },
+
   // --- Cape Slot Items ---
   'Fire cape': { str: 4, attack_stab: 1, attack_slash: 1, attack_crush: 1, attack_magic: 1, attack_ranged: 1, prayer: 2, slot: 'cape' },
   'Infernal cape': { str: 8, attack_stab: 4, attack_slash: 4, attack_crush: 4, attack_magic: 1, attack_ranged: 1, prayer: 2, slot: 'cape' },
