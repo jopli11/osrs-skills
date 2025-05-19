@@ -126,8 +126,9 @@ export default function RangedMaxHitCalculatorPage() {
 
   const [prayers, setPrayers] = useState<string[]>([]);
   const [potion, setPotion] = useState<string | null>(null);
-  const [combatStyle, setCombatStyle] = useState<string | null>("ranged_accurate"); // Default to accurate
+  const [combatStyle, setCombatStyle] = useState<string | null>('rapid'); // Default to rapid for ranged
   const [isOnSlayerTask, setIsOnSlayerTask] = useState(false);
+  const [isAttackingDemon, setIsAttackingDemon] = useState(false); // New state
   const [rangedMaxHit, setRangedMaxHit] = useState(0);
 
   const equipmentOptions = useMemo((): EquipmentOptionType[] =>
@@ -160,8 +161,9 @@ export default function RangedMaxHitCalculatorPage() {
       potionBonus: potionRangedBonus,
       prayerBonus: selectedPrayerBonus,
       styleBonus: styleBonus, // This is effective ranged level bonus from style
-      equipment: equipment,
-      isOnSlayerTask: isOnSlayerTask,
+      equipment,
+      isOnSlayerTask,
+      isAttackingDemon, // Pass to calculation
       // combatStyle: combatStyle, // Pass if formula needs it for specific weapon interactions
     };
 
@@ -177,6 +179,7 @@ export default function RangedMaxHitCalculatorPage() {
       potion: potion || 'none',
       combatStyle: combatStyle || 'none',
       isOnSlayerTask,
+      isAttackingDemon, // Add to tracking
       result: newRangedMax,
     });
     setStoreNotification({ message: `Ranged Max Hit: ${newRangedMax}`, type: 'success', timestamp: Date.now() });
@@ -203,6 +206,8 @@ export default function RangedMaxHitCalculatorPage() {
     availableCombatStyles: availableRangedCombatStyles,
     isOnSlayerTask,
     setIsOnSlayerTask,
+    isAttackingDemon, // Pass to common component
+    setIsAttackingDemon, // Pass to common component
     calculateSpecificMaxHit: calculateActualRangedMaxHit,
     maxHitResult: rangedMaxHit,
     showPlayerLookup,

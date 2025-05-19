@@ -17,6 +17,7 @@ interface MeleeMaxHitParams {
   equipment: EquipmentLoadout;
   combatStyle: string | null; // Need combat style to check for Crush (Inquisitor)
   isOnSlayerTask: boolean; // Explicit flag, easier than inferring from helm
+  isAttackingDemon?: boolean; // Added for demonbane effect
   // specialAttackBonus?: number; // Keep for future special attack implementation
   // dharokBonus?: number; // Keep for future Dharok's implementation
   salveBonus?: number; // Salve bonus will be calculated internally based on gear
@@ -31,8 +32,7 @@ export function calculateMeleeMaxHit(params: MeleeMaxHitParams): number {
     equipment,
     combatStyle,
     isOnSlayerTask,
-    // specialAttackBonus = 1, 
-    // salveBonus = 1 // Calculated below
+    isAttackingDemon, // Destructure new param
   } = params;
 
   // --- Calculate Equipment Bonuses & Set Effects ---
@@ -42,6 +42,7 @@ export function calculateMeleeMaxHit(params: MeleeMaxHitParams): number {
   let salveMultiplier = 1; 
   let obsidianSetBonus = 1;
   let inquisitorMultiplier = 1;
+  let demonbaneMultiplier = 1; // Added for demonbane weapons
 
   // 1. Sum base equipment strength
   Object.values(equipment).forEach(itemName => {
@@ -121,6 +122,15 @@ export function calculateMeleeMaxHit(params: MeleeMaxHitParams): number {
   // maxHit = Math.floor(maxHit * specialAttackBonus);
   maxHit = Math.floor(maxHit * inquisitorMultiplier);
   
+  // 7. Check for Demonbane weapon effect
+  if (isAttackingDemon) {
+    const weaponName = equipment.weapon;
+    if (weaponName === 'Emberlight' || weaponName === 'Demonbane (2h Sword)' || weaponName === 'Burning Claws') {
+      demonbaneMultiplier = 1.20; // 20% damage bonus
+      // Accuracy bonus also applies but is not handled in max hit calc directly
+    }
+  }
+  maxHit = Math.floor(maxHit * demonbaneMultiplier); // Apply demonbane bonus
 
   return maxHit > 0 ? maxHit : 0; // Ensure max hit isn't negative
 }
@@ -133,6 +143,8 @@ interface RangedMaxHitParams {
   styleBonus: number; // Accurate: 3, Rapid: 0, Longrange: 1 
   equipment: EquipmentLoadout;
   isOnSlayerTask: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isAttackingDemon?: boolean; // Added for consistency
   // specialAttackMultiplier?: number;
   // salveBonus?: number; 
 }
@@ -145,7 +157,8 @@ export function calculateRangedMaxHit(params: RangedMaxHitParams): number {
     styleBonus,
     equipment,
     isOnSlayerTask,
-    // specialAttackMultiplier = 1,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isAttackingDemon, // Destructure (not used yet for ranged, but kept for API consistency)
   } = params;
 
   // --- Calculate Equipment Bonuses & Set Effects ---
@@ -208,14 +221,17 @@ interface MagicMaxHitParams {
   spellBaseMaxHit: number;
   equipment: EquipmentLoadout;
   isOnSlayerTask: boolean;
-  // Add magic level if needed for staff calculations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isAttackingDemon?: boolean; // Added for consistency
 }
 
 export function calculateMagicMaxHit(params: MagicMaxHitParams): number {
   const { 
     spellBaseMaxHit, 
     equipment,
-    isOnSlayerTask
+    isOnSlayerTask,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isAttackingDemon, // Destructure (not used yet for magic, but kept for API consistency)
   } = params;
 
   if (!spellBaseMaxHit) return 0; // Can't calculate without a base hit

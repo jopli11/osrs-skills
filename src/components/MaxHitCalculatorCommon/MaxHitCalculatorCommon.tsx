@@ -92,6 +92,9 @@ export interface MaxHitCalculatorCommonProps {
   isOnSlayerTask: boolean;
   setIsOnSlayerTask: React.Dispatch<React.SetStateAction<boolean>>;
 
+  isAttackingDemon: boolean;
+  setIsAttackingDemon: React.Dispatch<React.SetStateAction<boolean>>;
+
   calculateSpecificMaxHit: () => void;
   maxHitResult: number;
 
@@ -124,6 +127,8 @@ const MaxHitCalculatorCommon: React.FC<MaxHitCalculatorCommonProps> = (props) =>
     availableSpells,
     isOnSlayerTask,
     setIsOnSlayerTask,
+    isAttackingDemon,
+    setIsAttackingDemon,
     calculateSpecificMaxHit,
     maxHitResult,
     showPlayerLookup,
@@ -348,13 +353,27 @@ const MaxHitCalculatorCommon: React.FC<MaxHitCalculatorCommonProps> = (props) =>
                       id={`slayer-task-checkbox-${calculatorType.toLowerCase()}`}
                       isChecked={isOnSlayerTask}
                       onChange={(e) => setIsOnSlayerTask(e.target.checked)}
-                      colorScheme="orange"
+                      colorScheme="yellow"
                       borderColor="gray.600"
                       size="lg"
                       mr={2}
                     />
-                    <FormLabel htmlFor={`slayer-task-checkbox-${calculatorType.toLowerCase()}`} mb="0">
+                    <FormLabel htmlFor={`slayer-task-checkbox-${calculatorType.toLowerCase()}`} mb="0" color="#e0d0b0">
                       On Slayer Task? (for Slayer Helm bonus)
+                    </FormLabel>
+                  </FormControl>
+                  <FormControl display="flex" alignItems="center" pt={{ base: 2, md: 8 }}>
+                    <Checkbox
+                      id={`attacking-demon-checkbox-${calculatorType.toLowerCase()}`}
+                      isChecked={isAttackingDemon}
+                      onChange={(e) => setIsAttackingDemon(e.target.checked)}
+                      colorScheme="red"
+                      borderColor="gray.600"
+                      size="lg"
+                      mr={2}
+                    />
+                    <FormLabel htmlFor={`attacking-demon-checkbox-${calculatorType.toLowerCase()}`} mb="0" color="#e0d0b0">
+                      Attacking a Demon?
                     </FormLabel>
                   </FormControl>
                   <FormControl gridColumn={{ md: "1 / -1" }}>

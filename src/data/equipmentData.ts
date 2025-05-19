@@ -88,6 +88,9 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
 
   // --- Weapon Slot Items ---
   'Toktz-xil-ak': { str: 69, attack_slash: 72, slot: 'weapon', isObsidianWeapon: true }, // Obsidian sword
+  'Emberlight': { attack_stab: 63, attack_slash: 70, str: 60, slot: 'weapon' },
+  'Demonbane (2h Sword)': { attack_stab: 85, attack_slash: 105, str: 90, slot: 'weapon' },
+  'Burning Claws': { attack_stab: 65, attack_slash: 75, str: 70, slot: 'weapon' },
   'Toktz-xil-ek': { str: 49, attack_stab: 54, attack_slash: 27, slot: 'weapon', isObsidianWeapon: true }, // Obsidian knife
   'Twisted bow': { attack_ranged: 70, ranged_str: 20, slot: 'weapon' },
   'Scythe of vitur': { attack_stab: 70, attack_slash: 125, attack_crush: 30, str: 75, attack_magic: -6, slot: 'weapon' },

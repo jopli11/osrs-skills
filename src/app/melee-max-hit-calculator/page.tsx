@@ -184,6 +184,7 @@ export default function MeleeMaxHitCalculatorPage() {
   const [potion, setPotion] = useState<string | null>(null);
   const [combatStyle, setCombatStyle] = useState<string | null>("aggressive_melee"); // Default to aggressive
   const [isOnSlayerTask, setIsOnSlayerTask] = useState(false);
+  const [isAttackingDemon, setIsAttackingDemon] = useState(false); // New state for attacking demon
   const [meleeMaxHit, setMeleeMaxHit] = useState(0);
 
   const equipmentOptions = useMemo((): EquipmentOptionType[] =>
@@ -218,6 +219,7 @@ export default function MeleeMaxHitCalculatorPage() {
       equipment: equipment, 
       combatStyle: combatStyle, 
       isOnSlayerTask: isOnSlayerTask,
+      isAttackingDemon, // Pass to calculation
     };
 
     const newMeleeMax = calculateMeleeMaxHit(meleeParams);
@@ -237,6 +239,7 @@ export default function MeleeMaxHitCalculatorPage() {
       potion: potion || 'none',
       combatStyle: combatStyle || 'none',
       isOnSlayerTask,
+      isAttackingDemon, // Add to tracking
       result: newMeleeMax,
     });
     setStoreNotification({
@@ -267,6 +270,8 @@ export default function MeleeMaxHitCalculatorPage() {
     availableCombatStyles: availableMeleeCombatStyles,
     isOnSlayerTask,
     setIsOnSlayerTask,
+    isAttackingDemon, // Pass to common component
+    setIsAttackingDemon, // Pass to common component
     calculateSpecificMaxHit: calculateActualMeleeMaxHit,
     maxHitResult: meleeMaxHit,
     showPlayerLookup,

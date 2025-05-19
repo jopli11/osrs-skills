@@ -130,6 +130,7 @@ export default function MagicMaxHitCalculatorPage() {
   const [combatStyle, setCombatStyle] = useState<string | null>("standard_spellbook"); // Or null if not directly used by formula
   const [spell, setSpell] = useState<string | null>(null);
   const [isOnSlayerTask, setIsOnSlayerTask] = useState(false);
+  const [isAttackingDemon, setIsAttackingDemon] = useState(false);
   const [magicMaxHit, setMagicMaxHit] = useState(0);
 
   const equipmentOptions = useMemo((): EquipmentOptionType[] =>
@@ -147,7 +148,8 @@ export default function MagicMaxHitCalculatorPage() {
       // magicLevel: localPlayerStats.magic, // Pass if formula needs it for potion boosts etc.
       spellBaseMaxHit: baseSpellDamage,
       equipment: equipment,
-      isOnSlayerTask: isOnSlayerTask, // For Slayer helmet (i) bonus
+      isOnSlayerTask: isOnSlayerTask,
+      isAttackingDemon,
       // prayers: prayers, // Pass if formula considers Augury etc. for specific gear interactions
       // potion: potion, // Pass if formula handles specific potion effects beyond level boost
     };
@@ -163,6 +165,7 @@ export default function MagicMaxHitCalculatorPage() {
       prayersUsedCount: prayers.length, // Augury might be relevant for some setups
       potion: potion || 'none',
       isOnSlayerTask,
+      isAttackingDemon,
       result: newMagicMax,
     });
     setStoreNotification({ message: `Magic Max Hit: ${newMagicMax}`, type: 'success', timestamp: Date.now() });
@@ -192,6 +195,8 @@ export default function MagicMaxHitCalculatorPage() {
     availableSpells, // Magic specific
     isOnSlayerTask,
     setIsOnSlayerTask,
+    isAttackingDemon,
+    setIsAttackingDemon,
     calculateSpecificMaxHit: calculateActualMagicMaxHit,
     maxHitResult: magicMaxHit,
     showPlayerLookup,
