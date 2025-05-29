@@ -122,6 +122,73 @@ const richTextRenderOptions: Options = {
         {children}
       </Box>
     ),
+    // Table rendering with OSRS theming
+    [BLOCKS.TABLE]: (node, children) => (
+      <Box overflowX="auto" my={6}>
+        <Box 
+          as="table" 
+          width="100%" 
+          bg="rgba(42, 30, 15, 0.9)"
+          border="2px solid black"
+          borderRadius="md"
+          boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+          backdropFilter="blur(4px)"
+        >
+          {children}
+        </Box>
+      </Box>
+    ),
+    [BLOCKS.TABLE_ROW]: (node, children) => {
+      // Check if this row contains header cells
+      const hasHeaderCells = node.content?.some(cell => cell.nodeType === 'table-header-cell');
+      
+      if (hasHeaderCells) {
+        return (
+          <Box as="thead">
+            <Box as="tr" bg="rgba(0,0,0,0.4)" borderBottom="2px solid black">
+              {children}
+            </Box>
+          </Box>
+        );
+      } else {
+        return (
+          <Box as="tr" borderBottom="1px solid rgba(255, 203, 47, 0.2)" _hover={{ bg: "rgba(255, 203, 47, 0.05)" }}>
+            {children}
+          </Box>
+        );
+      }
+    },
+    [BLOCKS.TABLE_HEADER_CELL]: (node, children) => (
+      <Box 
+        as="th" 
+        px={4} 
+        py={3} 
+        textAlign="left" 
+        color="#ffcb2f" 
+        fontWeight="bold" 
+        fontSize="sm"
+        fontFamily="'Roboto Slab', serif"
+        textShadow="1px 1px 2px rgba(0,0,0,0.8)"
+        borderRight="1px solid rgba(255, 203, 47, 0.3)"
+        _last={{ borderRight: "none" }}
+      >
+        {children}
+      </Box>
+    ),
+    [BLOCKS.TABLE_CELL]: (node, children) => (
+      <Box 
+        as="td" 
+        px={4} 
+        py={3} 
+        color="#e0d0b0" 
+        fontSize="sm"
+        borderRight="1px solid rgba(255, 203, 47, 0.2)"
+        _last={{ borderRight: "none" }}
+        lineHeight="1.5"
+      >
+        {children}
+      </Box>
+    ),
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
       const asset = node.data.target;
       if (!asset || !asset.fields || !asset.fields.file) {
