@@ -57,6 +57,13 @@ export async function fetchAllBlogPosts(): Promise<BlogPostEntry[]> {
     order: ['-fields.publicationDate'],
   };
   const entries: EntryCollection<BlogPostSkeleton, undefined, string> = await client.getEntries<BlogPostSkeleton>(query);
+  
+  // Debug logging to help troubleshoot missing posts
+  console.log(`Fetched ${entries.items.length} blog posts from Contentful`);
+  entries.items.forEach((item, index) => {
+    console.log(`Post ${index + 1}: "${item.fields.title}" (slug: ${item.fields.slug}, published: ${item.fields.publicationDate})`);
+  });
+  
   return entries.items as BlogPostEntry[];
 }
 
