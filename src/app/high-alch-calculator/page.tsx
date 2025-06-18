@@ -24,6 +24,7 @@ import {
   Badge,
   Alert,
   AlertIcon,
+  Button,
 } from '@chakra-ui/react';
 import { track } from '@vercel/analytics';
 
@@ -130,25 +131,42 @@ export default function HighAlchCalculatorPage() {
             backgroundColor: 'rgba(255, 203, 47, 0.2)'
           }}
         >
-          <VStack spacing={4}>
-            <Heading 
-              size="xl" 
-              textAlign="center" 
-              color="white"
-              fontFamily="'Roboto Slab', serif"
-              textShadow="2px 2px 0px #000"
-            >
-              🔥 High Alchemy Calculator
-            </Heading>
-            <Text 
-              textAlign="center" 
-              color="#e0d0b0" 
-              fontSize="lg"
-              maxW="2xl"
-            >
-              Calculate profit/loss from high alchemy spells. Find the best items to alch for Magic XP and GP.
-            </Text>
-          </VStack>
+          <Flex align="center" justify="space-between" flexDir={{ base: "column", md: "row" }} gap={4}>
+            <VStack spacing={4} flex="1">
+              <Heading 
+                size="xl" 
+                textAlign="center" 
+                color="white"
+                fontFamily="'Roboto Slab', serif"
+                textShadow="2px 2px 0px #000"
+              >
+                🔥 High Alchemy Calculator
+              </Heading>
+              <Text 
+                textAlign="center" 
+                color="#e0d0b0" 
+                fontSize="lg"
+                maxW="2xl"
+              >
+                Calculate profit/loss from high alchemy spells. Find the best items to alch for Magic XP and GP.
+              </Text>
+            </VStack>
+            <Link href="/misc-calculators" style={{ textDecoration: 'none' }}>
+              <Button
+                onClick={() => track('Navigate_Back_To_MiscCalcs', { from: 'high-alch-calculator' })}
+                bg="#ffcb2f"
+                color="#211305"
+                _hover={{ bg: '#e0a922', transform: 'translateY(1px)' }}
+                border="2px solid black"
+                boxShadow="3px 3px 0 rgba(0,0,0,0.5)"
+                fontWeight="bold"
+                fontSize="md"
+                borderRadius="sm"
+              >
+                ← Back to Misc Calcs
+              </Button>
+            </Link>
+          </Flex>
         </Box>
 
         <Flex direction={{ base: 'column', lg: 'row' }} gap={8}>

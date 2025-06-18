@@ -175,25 +175,42 @@ export default function XpCalculatorPage() {
             backgroundColor: 'rgba(255, 203, 47, 0.2)'
           }}
         >
-          <VStack spacing={4}>
-            <Heading 
-              size="xl" 
-              textAlign="center" 
-              color="white"
-              fontFamily="'Roboto Slab', serif"
-              textShadow="2px 2px 0px #000"
-            >
-              📈 XP Calculator
-            </Heading>
-            <Text 
-              textAlign="center" 
-              color="#e0d0b0" 
-              fontSize="lg"
-              maxW="2xl"
-            >
-              Calculate experience needed to reach your target level and how many actions it will take.
-            </Text>
-          </VStack>
+          <Flex align="center" justify="space-between" flexDir={{ base: "column", md: "row" }} gap={4}>
+            <VStack spacing={4} flex="1">
+              <Heading 
+                size="xl" 
+                textAlign="center" 
+                color="white"
+                fontFamily="'Roboto Slab', serif"
+                textShadow="2px 2px 0px #000"
+              >
+                📈 XP Calculator
+              </Heading>
+              <Text 
+                textAlign="center" 
+                color="#e0d0b0" 
+                fontSize="lg"
+                maxW="2xl"
+              >
+                Calculate experience needed to reach your target level and how many actions it will take.
+              </Text>
+            </VStack>
+            <Link href="/misc-calculators" style={{ textDecoration: 'none' }}>
+              <Button
+                onClick={() => track('Navigate_Back_To_MiscCalcs', { from: 'xp-calculator' })}
+                bg="#ffcb2f"
+                color="#211305"
+                _hover={{ bg: '#e0a922', transform: 'translateY(1px)' }}
+                border="2px solid black"
+                boxShadow="3px 3px 0 rgba(0,0,0,0.5)"
+                fontWeight="bold"
+                fontSize="md"
+                borderRadius="sm"
+              >
+                ← Back to Misc Calcs
+              </Button>
+            </Link>
+          </Flex>
         </Box>
 
         {/* Player Lookup Section */}

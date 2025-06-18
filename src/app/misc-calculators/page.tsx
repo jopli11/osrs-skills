@@ -46,6 +46,27 @@ const calculatorOptions: CalculatorOption[] = [
     icon: '🔥',
     trackingEventName: 'Navigate_To_HighAlchCalc_From_Selection',
   },
+  {
+    name: 'GP per XP Calculator',
+    description: 'Find the most cost-efficient training methods.',
+    href: '/gp-per-xp-calculator',
+    icon: '💰',
+    trackingEventName: 'Navigate_To_GpPerXpCalc_From_Selection',
+  },
+  {
+    name: 'Blast Furnace Calculator',
+    description: 'Calculate Blast Furnace profit and XP rates.',
+    href: '/blast-furnace-calculator',
+    icon: '🔨',
+    trackingEventName: 'Navigate_To_BlastFurnaceCalc_From_Selection',
+  },
+  {
+    name: 'Cannonball Calculator',
+    description: 'Calculate cannonball production profit.',
+    href: '/cannonball-calculator',
+    icon: '⚫',
+    trackingEventName: 'Navigate_To_CannonballCalc_From_Selection',
+  },
 ];
 
 export default function MiscCalculatorsSelectionPage() {
