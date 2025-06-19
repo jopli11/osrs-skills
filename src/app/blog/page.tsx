@@ -1,7 +1,7 @@
 'use client';
 
 import NextLink from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Box,
   Container,
@@ -17,6 +17,8 @@ import {
 } from '@chakra-ui/react';
 import Navigation from '@/components/Navigation';
 import OsrsHeading from '@/components/OsrsHeading';
+import BlogFilters from '@/components/BlogFilters';
+import BlogPagination from '@/components/BlogPagination';
 import { track } from '@vercel/analytics';
 import { type BlogPostEntry } from '@/lib/contentful';
 
@@ -31,32 +33,89 @@ interface Asset {
   fields: AssetFields;
 }
 
+interface BlogResponse {
+  posts: BlogPostEntry[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalPosts: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+    limit: number;
+  };
+}
+
 export default function BlogIndexPage() {
-  const [posts, setPosts] = useState<BlogPostEntry[]>([]);
+  const [blogData, setBlogData] = useState<BlogResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Filter states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+
+  // Debounced search to avoid too many API calls
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
   useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        const response = await fetch('/api/blog');
-        if (!response.ok) {
-          throw new Error('Failed to fetch blog posts');
-        }
-        const data = await response.json();
-        setPosts(data.posts);
-      } catch (err) {
-        console.error('Failed to fetch blog posts:', err);
-        setError('Failed to load blog posts');
-      } finally {
-        setLoading(false);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const loadPosts = useCallback(async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: '6',
+        ...(debouncedSearch && { search: debouncedSearch }),
+        ...(dateFrom && { dateFrom }),
+        ...(dateTo && { dateTo }),
+      });
+
+      const response = await fetch(`/api/blog?${params}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch blog posts');
       }
-    };
+      const data = await response.json();
+      setBlogData(data);
+    } catch (err) {
+      console.error('Failed to fetch blog posts:', err);
+      setError('Failed to load blog posts');
+    } finally {
+      setLoading(false);
+    }
+  }, [currentPage, debouncedSearch, dateFrom, dateTo]);
 
+  // Load posts when filters change
+  useEffect(() => {
     loadPosts();
-  }, []);
+  }, [loadPosts]);
 
-  if (loading) {
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }, [debouncedSearch, dateFrom, dateTo]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleClearFilters = () => {
+    setSearch('');
+    setDateFrom('');
+    setDateTo('');
+    setCurrentPage(1);
+  };
+
+  if (loading && !blogData) {
     return (
       <Box minHeight="100vh" display="flex" flexDirection="column">
         <Navigation currentPage="Blog" />
@@ -131,6 +190,9 @@ export default function BlogIndexPage() {
     return post.fields.title;
   };
 
+  const posts = blogData?.posts || [];
+  const pagination = blogData?.pagination;
+
   return (
     <Box minHeight="100vh" display="flex" flexDirection="column">
       <Navigation currentPage="Blog" />
@@ -195,9 +257,22 @@ export default function BlogIndexPage() {
           </Box>
         </Container>
 
+        {/* Filters Section */}
+        <Container maxW="6xl">
+          <BlogFilters
+            search={search}
+            dateFrom={dateFrom}
+            dateTo={dateTo}
+            onSearchChange={setSearch}
+            onDateFromChange={setDateFrom}
+            onDateToChange={setDateTo}
+            onClearFilters={handleClearFilters}
+          />
+        </Container>
+
         {/* Blog Posts Grid */}
         <Container maxW="6xl" pb={8}>
-          {posts.length === 0 ? (
+          {loading ? (
             <Box 
               bg="rgba(42, 30, 15, 0.75)" 
               borderRadius="md" 
@@ -207,7 +282,20 @@ export default function BlogIndexPage() {
               boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
             >
               <Text color="#e0d0b0" fontSize="lg">
-                No blog posts found. Check back soon for OSRS guides and strategies!
+                Loading posts...
+              </Text>
+            </Box>
+          ) : posts.length === 0 ? (
+            <Box 
+              bg="rgba(42, 30, 15, 0.75)" 
+              borderRadius="md" 
+              p={8} 
+              textAlign="center"
+              border="2px solid black"
+              boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+            >
+              <Text color="#e0d0b0" fontSize="lg">
+                No blog posts found matching your criteria. Try adjusting your filters!
               </Text>
             </Box>
           ) : (
@@ -223,7 +311,7 @@ export default function BlogIndexPage() {
                   border="1px solid black"
                   boxShadow="1px 1px 0 rgba(0,0,0,0.2)"
                 >
-                  Latest Articles
+                  {pagination?.totalPosts || 0} Articles Found
                 </Badge>
               </Box>
               
@@ -311,6 +399,17 @@ export default function BlogIndexPage() {
                   </NextLink>
                 ))}
               </SimpleGrid>
+
+              {/* Pagination */}
+              {pagination && (
+                <BlogPagination
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                  totalPosts={pagination.totalPosts}
+                  limit={pagination.limit}
+                  onPageChange={handlePageChange}
+                />
+              )}
             </>
           )}
         </Container>

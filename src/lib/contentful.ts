@@ -31,6 +31,26 @@ export type BlogPostSkeleton = EntrySkeletonType<BlogPostFields, "blogPost">;
 // Define the type for a full Blog Post entry from Contentful using the skeleton
 export type BlogPostEntry = Entry<BlogPostSkeleton, undefined>;
 
+// Interface for blog query parameters
+export interface BlogQueryParams {
+  limit?: number;
+  skip?: number;
+  search?: string;
+  author?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  keyword?: string;
+}
+
+// Interface for blog response with pagination info
+export interface BlogResponse {
+  posts: BlogPostEntry[];
+  total: number;
+  limit: number;
+  skip: number;
+  hasMore: boolean;
+}
+
 const space = process.env.CONTENTFUL_SPACE_ID;
 const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
 
@@ -65,6 +85,128 @@ export async function fetchAllBlogPosts(): Promise<BlogPostEntry[]> {
   });
   
   return entries.items as BlogPostEntry[];
+}
+
+/**
+ * Fetches blog posts with pagination, search, and filtering support.
+ */
+export async function fetchBlogPosts(params: BlogQueryParams = {}): Promise<BlogResponse> {
+  const {
+    limit = 6, // Default to 6 posts per page
+    skip = 0,
+    search,
+    author,
+    dateFrom,
+    dateTo,
+    keyword
+  } = params;
+
+  const query: EntriesQueries<BlogPostSkeleton, undefined> = {
+    content_type: 'blogPost',
+    limit,
+    skip,
+    // @ts-expect-error - Contentful SDK types can be overly strict for specific order queries.
+    order: ['-fields.publicationDate'],
+  };
+
+  // Add search functionality - search in title and seoDescription
+  if (search) {
+    // @ts-expect-error - Contentful SDK types can be overly strict for search queries.
+    query['query'] = search;
+  }
+
+  // Filter by author
+  if (author) {
+    // @ts-expect-error - Contentful SDK types can be overly strict for field queries.
+    query['fields.author'] = author;
+  }
+
+  // Filter by keyword
+  if (keyword) {
+    // @ts-expect-error - Contentful SDK types can be overly strict for field queries.
+    query['fields.keywords[in]'] = keyword;
+  }
+
+  // Filter by date range
+  if (dateFrom) {
+    // @ts-expect-error - Contentful SDK types can be overly strict for date queries.
+    query['fields.publicationDate[gte]'] = dateFrom;
+  }
+  if (dateTo) {
+    // @ts-expect-error - Contentful SDK types can be overly strict for date queries.
+    query['fields.publicationDate[lte]'] = dateTo;
+  }
+
+  const entries: EntryCollection<BlogPostSkeleton, undefined, string> = await client.getEntries<BlogPostSkeleton>(query);
+  
+  // Debug logging
+  console.log(`Fetched ${entries.items.length} of ${entries.total} blog posts from Contentful`);
+  console.log(`Query params:`, params);
+  
+  return {
+    posts: entries.items as BlogPostEntry[],
+    total: entries.total,
+    limit: entries.limit,
+    skip: entries.skip,
+    hasMore: entries.skip + entries.limit < entries.total
+  };
+}
+
+/**
+ * Fetches unique authors for filter dropdown
+ */
+export async function fetchBlogAuthors(): Promise<string[]> {
+  try {
+    const query: EntriesQueries<BlogPostSkeleton, undefined> = {
+      content_type: 'blogPost',
+      select: ['fields.author'],
+    };
+    
+    const entries: EntryCollection<BlogPostSkeleton, undefined, string> = await client.getEntries<BlogPostSkeleton>(query);
+    
+    const authorsSet = new Set<string>();
+    entries.items.forEach(item => {
+      if (item.fields.author) {
+        authorsSet.add(item.fields.author);
+      }
+    });
+      
+    return Array.from(authorsSet).sort();
+  } catch (error) {
+    console.error('Error fetching blog authors:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetches unique keywords for filter dropdown
+ */
+export async function fetchBlogKeywords(): Promise<string[]> {
+  try {
+    const query: EntriesQueries<BlogPostSkeleton, undefined> = {
+      content_type: 'blogPost',
+      select: ['fields.keywords'],
+    };
+    
+    const entries: EntryCollection<BlogPostSkeleton, undefined, string> = await client.getEntries<BlogPostSkeleton>(query);
+    
+    const keywordsSet = new Set<string>();
+    entries.items.forEach(item => {
+      const keywords = item.fields.keywords as string[] | undefined;
+      if (keywords && Array.isArray(keywords)) {
+        keywords.forEach((keyword) => {
+          if (typeof keyword === 'string') {
+            keywordsSet.add(keyword);
+          }
+        });
+      }
+    });
+      
+    return Array.from(keywordsSet).sort();
+  } catch (error) {
+    console.error('Error fetching blog keywords:', error);
+    return [];
+  }
 }
 
 /**
