@@ -2,6 +2,7 @@
 
 import React from 'react';
 import NextLink from 'next/link';
+import Image from 'next/image';
 import {
   Box,
   Container,
@@ -29,42 +30,42 @@ const calculatorOptions: CalculatorOption[] = [
     name: 'Total Level Calculator',
     description: 'Calculate your total level across all skills.',
     href: '/total-level-calculator',
-    icon: '📊',
+    icon: '/icons/calculators/totallevel icon.png',
     trackingEventName: 'Navigate_To_TotalLevelCalc_From_Selection',
   },
   {
     name: 'XP Calculator',
     description: 'Calculate XP needed to reach target levels.',
     href: '/xp-calculator',
-    icon: '📈',
+    icon: '/icons/calculators/xp icon.png',
     trackingEventName: 'Navigate_To_XpCalc_From_Selection',
   },
   {
     name: 'High Alchemy Calculator',
     description: 'Calculate profit/loss from high alchemy.',
     href: '/high-alch-calculator',
-    icon: '🔥',
+    icon: '/icons/calculators/highalch icon.png',
     trackingEventName: 'Navigate_To_HighAlchCalc_From_Selection',
   },
   {
     name: 'GP per XP Calculator',
     description: 'Find the most cost-efficient training methods.',
     href: '/gp-per-xp-calculator',
-    icon: '💰',
+    icon: '/icons/calculators/xpgp icon.png',
     trackingEventName: 'Navigate_To_GpPerXpCalc_From_Selection',
   },
   {
     name: 'Blast Furnace Calculator',
     description: 'Calculate Blast Furnace profit and XP rates.',
     href: '/blast-furnace-calculator',
-    icon: '🔨',
+    icon: '/icons/calculators/blastfurnace icon.png',
     trackingEventName: 'Navigate_To_BlastFurnaceCalc_From_Selection',
   },
   {
     name: 'Cannonball Calculator',
     description: 'Calculate cannonball production profit.',
     href: '/cannonball-calculator',
-    icon: '⚫',
+    icon: '/icons/calculators/cannonball icon.png',
     trackingEventName: 'Navigate_To_CannonballCalc_From_Selection',
   },
 ];
@@ -146,14 +147,23 @@ export default function MiscCalculatorsSelectionPage() {
                   bg="rgba(0,0,0,0.5)" 
                   border="1px solid rgba(0,0,0,0.8)" 
                   boxShadow="inset 0 0 5px rgba(0,0,0,0.5), 0 1px 2px rgba(255, 203, 47, 0.2)"
-                  fontSize="3xl"
                   width="72px"
                   height="72px"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
+                  position="relative"
                 >
-                  🧮
+                  <Image
+                    src="/icons/calculators/misc icon-Photoroom.png"
+                    alt="Misc Calculators"
+                    width={56}
+                    height={56}
+                    style={{
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))'
+                    }}
+                  />
                 </Box>
                 <Box>
                   <Heading 
@@ -223,8 +233,17 @@ export default function MiscCalculatorsSelectionPage() {
                       alignItems="center"
                       justifyContent="center"
                     >
-                      <Box fontSize="4xl" mb={4}>
-                        {option.icon}
+                      <Box mb={4} position="relative" width="64px" height="64px" mx="auto">
+                        <Image
+                          src={option.icon}
+                          alt={`${option.name} icon`}
+                          width={64}
+                          height={64}
+                          style={{
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))'
+                          }}
+                        />
                       </Box>
                       <Heading 
                         size="md" 
@@ -266,29 +285,30 @@ export default function MiscCalculatorsSelectionPage() {
             }}
           >
             <OsrsHeading fontSize="xl" mb={4} textAlign="center">
-              Essential OSRS Tools
+              About Misc Calculators
             </OsrsHeading>
-            <Text color="#e0d0b0" fontSize="sm" textAlign="center" mb={4}>
-              These miscellaneous calculators provide essential utility for planning your Old School RuneScape journey. 
-              From tracking your total level progress to optimizing XP gains and calculating profitable activities.
+            <Text color="#e0d0b0" fontSize="md" textAlign="center" mb={6} lineHeight="1.6">
+              These utility calculators are designed to help you plan and optimize your Old School RuneScape journey. 
+              Whether you&apos;re tracking your overall account progress, planning efficient training routes, or calculating 
+              the profitability of various activities, these tools provide the essential math behind smart gameplay decisions.
             </Text>
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
               <Box textAlign="center">
-                <Text color="#ffcb2f" fontWeight="bold" mb={2}>📊 Progress Tracking</Text>
-                <Text color="#b0a080" fontSize="xs">
-                  Monitor your account progression with total level calculations and skill planning tools.
+                <Text color="#ffcb2f" fontWeight="bold" mb={2} fontSize="lg">Goal Planning</Text>
+                <Text color="#b0a080" fontSize="sm">
+                  Set realistic targets and track your progress toward major account milestones and achievements.
                 </Text>
               </Box>
               <Box textAlign="center">
-                <Text color="#ffcb2f" fontWeight="bold" mb={2}>📈 XP Planning</Text>
-                <Text color="#b0a080" fontSize="xs">
-                  Calculate exact XP requirements and plan your training methods efficiently.
+                <Text color="#ffcb2f" fontWeight="bold" mb={2} fontSize="lg">Efficiency Focus</Text>
+                <Text color="#b0a080" fontSize="sm">
+                  Make informed decisions about training methods, time investment, and resource allocation.
                 </Text>
               </Box>
               <Box textAlign="center">
-                <Text color="#ffcb2f" fontWeight="bold" mb={2}>💰 Profit Analysis</Text>
-                <Text color="#b0a080" fontSize="xs">
-                  Analyze profitability of various activities like high alchemy for optimal GP/XP ratios.
+                <Text color="#ffcb2f" fontWeight="bold" mb={2} fontSize="lg">Smart Gameplay</Text>
+                <Text color="#b0a080" fontSize="sm">
+                  Turn complex game mechanics into simple calculations that guide your strategic choices.
                 </Text>
               </Box>
             </SimpleGrid>

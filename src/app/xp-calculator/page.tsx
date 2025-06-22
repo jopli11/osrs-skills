@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Box,
   Container,
@@ -177,15 +178,29 @@ export default function XpCalculatorPage() {
         >
           <Flex align="center" justify="space-between" flexDir={{ base: "column", md: "row" }} gap={4}>
             <VStack spacing={4} flex="1">
-              <Heading 
-                size="xl" 
-                textAlign="center" 
-                color="white"
-                fontFamily="'Roboto Slab', serif"
-                textShadow="2px 2px 0px #000"
-              >
-                📈 XP Calculator
-              </Heading>
+              <Flex align="center" gap={4}>
+                <Box position="relative" width="48px" height="48px">
+                  <Image
+                    src="/icons/calculators/xp icon.png"
+                    alt="XP Calculator"
+                    width={48}
+                    height={48}
+                    style={{
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))'
+                    }}
+                  />
+                </Box>
+                <Heading 
+                  size="xl" 
+                  textAlign="center" 
+                  color="white"
+                  fontFamily="'Roboto Slab', serif"
+                  textShadow="2px 2px 0px #000"
+                >
+                  XP Calculator
+                </Heading>
+              </Flex>
               <Text 
                 textAlign="center" 
                 color="#e0d0b0" 

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import {
   Box,
   Container,
@@ -237,8 +238,17 @@ export default function BlastFurnaceCalculatorPage() {
           >
             <Flex align="center" justify="space-between" flexDir={{ base: "column", md: "row" }} gap={4}>
               <Flex align="center">
-                <Box mr={4} p={2} borderRadius="full" bg="rgba(0,0,0,0.5)" border="1px solid rgba(0,0,0,0.8)" boxShadow="inset 0 0 5px rgba(0,0,0,0.5), 0 1px 2px rgba(255, 203, 47, 0.2)">
-                  <SkillIcon skill="smithing" size={56} />
+                <Box mr={4} p={2} borderRadius="full" bg="rgba(0,0,0,0.5)" border="1px solid rgba(0,0,0,0.8)" boxShadow="inset 0 0 5px rgba(0,0,0,0.5), 0 1px 2px rgba(255, 203, 47, 0.2)" position="relative" width="64px" height="64px" display="flex" alignItems="center" justifyContent="center">
+                  <Image
+                    src="/icons/calculators/blastfurnace icon.png"
+                    alt="Blast Furnace Calculator"
+                    width={48}
+                    height={48}
+                    style={{
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))'
+                    }}
+                  />
                 </Box>
                 <Box>
                   <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">Blast Furnace Calculator</Heading>
