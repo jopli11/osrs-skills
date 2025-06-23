@@ -10,6 +10,7 @@ import {
   Button, 
   SimpleGrid,
   Badge,
+  Image,
 } from '@chakra-ui/react';
 import React from 'react';
 import SkillCard from '@/components/SkillCard';
@@ -230,8 +231,15 @@ export default function Home() {
               fontSize="md" 
               borderRadius="sm"
               onClick={() => track('Navigate_To_Blog', { from: 'homepage' })}
+              leftIcon={
+                <Image 
+                  src="/icons/Blog Icon.png" 
+                  alt="Blog Icon" 
+                  boxSize="20px" 
+                />
+              }
             >
-              📜 Read Our Blog
+              Read Our Blog
             </Button>
           </Box>
         </Container>

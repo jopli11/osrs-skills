@@ -227,8 +227,15 @@ export default function BlogIndexPage() {
                   bg="rgba(0,0,0,0.5)" 
                   border="2px solid rgba(0,0,0,0.8)" 
                   boxShadow="inset 0 0 5px rgba(0,0,0,0.5), 0 1px 2px rgba(255, 203, 47, 0.2)"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
                 >
-                  <Text fontSize="3xl" aria-label="Scroll emoji">📜</Text>
+                  <Image 
+                    src="/icons/Blog Icon.png" 
+                    alt="Blog Icon" 
+                    boxSize="48px"
+                  />
                 </Box>
                 <Box>
                   <OsrsHeading fontSize="2xl" mb={2}>OSRS Blog</OsrsHeading>
