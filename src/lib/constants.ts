@@ -59,32 +59,32 @@ export const SKILL_NAMES: Record<SkillName, string> = {
 };
 
 /**
- * Paths to skill icons in the public directory
+ * Paths to skill icons in the public directory (optimized high-resolution versions)
  */
 export const SKILL_ICON_PATHS: Record<SkillName, string> = {
-  attack: "/icons/skills/attack.png",
-  strength: "/icons/skills/strength.png",
-  defence: "/icons/skills/defence.png",
-  ranged: "/icons/skills/ranged.png",
-  prayer: "/icons/skills/prayer.png",
-  magic: "/icons/skills/magic.png",
-  runecraft: "/icons/skills/runecraft.png",
-  construction: "/icons/skills/construction.png",
-  hitpoints: "/icons/skills/hitpoints.png",
-  agility: "/icons/skills/agility.png",
-  herblore: "/icons/skills/herblore.png",
-  thieving: "/icons/skills/thieving.png",
-  crafting: "/icons/skills/crafting.png",
-  fletching: "/icons/skills/fletching.png",
-  slayer: "/icons/skills/slayer.png",
-  hunter: "/icons/skills/hunter.png",
-  mining: "/icons/skills/mining.png",
-  smithing: "/icons/skills/smithing.png",
-  fishing: "/icons/skills/fishing.png",
-  cooking: "/icons/skills/cooking.png",
-  firemaking: "/icons/skills/firemaking.png",
-  woodcutting: "/icons/skills/woodcutting.png",
-  farming: "/icons/skills/farming.png",
+  attack: "/icons/skills/optimized/attack.png",
+  strength: "/icons/skills/optimized/strength.png",
+  defence: "/icons/skills/optimized/defence.png",
+  ranged: "/icons/skills/optimized/ranged.png",
+  prayer: "/icons/skills/optimized/prayer.png",
+  magic: "/icons/skills/optimized/magic.png",
+  runecraft: "/icons/skills/optimized/runecraft.png",
+  construction: "/icons/skills/optimized/construction.png",
+  hitpoints: "/icons/skills/optimized/hitpoints.png",
+  agility: "/icons/skills/optimized/agility.png",
+  herblore: "/icons/skills/optimized/herblore.png",
+  thieving: "/icons/skills/optimized/thieving.png",
+  crafting: "/icons/skills/optimized/crafting.png",
+  fletching: "/icons/skills/optimized/fletching.png",
+  slayer: "/icons/skills/optimized/slayer.png",
+  hunter: "/icons/skills/optimized/hunter.png",
+  mining: "/icons/skills/optimized/mining.png",
+  smithing: "/icons/skills/optimized/smithing.png",
+  fishing: "/icons/skills/optimized/fishing.png",
+  cooking: "/icons/skills/optimized/cooking.png",
+  firemaking: "/icons/skills/optimized/firemaking.png",
+  woodcutting: "/icons/skills/optimized/woodcutting.png",
+  farming: "/icons/skills/optimized/farming.png",
 };
 
 // Original Wiki URLs for reference or fallback
