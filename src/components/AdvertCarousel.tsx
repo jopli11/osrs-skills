@@ -7,7 +7,6 @@ import {
   Flex,
   IconButton,
   Image,
-  Link,
   Text
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -29,7 +28,7 @@ interface AdvertCarouselProps {
 const DEFAULT_BANNERS: Banner[] = [
   {
     id: '1',
-    imageUrl: '/images/$3000+ VALUIE.mp4',
+    imageUrl: 'https://streamable.com/e/eu28q3?',
     linkUrl: 'https://probemas.com/raffles?utm_source=osrs-calculators&utm_medium=banner&utm_campaign=homepage-carousel&utm_content=advert1',
     altText: 'Probemas Raffles - Win OSRS Items',
     title: 'Probemas Raffles Advertisement'
@@ -126,7 +125,7 @@ export default function AdvertCarousel({
             justifyContent="center"
             boxShadow="0 2px 8px rgba(0, 0, 0, 0.3)"
           >
-                                     {banners[currentIndex].imageUrl.includes('placeholder') ? (
+            {banners[currentIndex].imageUrl.includes('placeholder') ? (
               // Placeholder content when no real banner
               <Flex direction="column" align="center" justify="center" h="100%" color="#e0d0b0" px={4}>
                 <Text fontSize="sm" fontWeight="bold" color="white" mb={1}>
@@ -136,37 +135,64 @@ export default function AdvertCarousel({
                   728 x 90 Banner • Contact: joel@probemas.com
                 </Text>
               </Flex>
+            ) : banners[currentIndex].imageUrl.includes('streamable.com') ? (
+              <Box position="relative" width="100%" height={0} paddingBottom="12.363%">
+                <iframe
+                  allow="fullscreen;autoplay"
+                  allowFullScreen
+                  height="100%"
+                  src="https://streamable.com/e/eu28q3?autoplay=1&muted=1&nocontrols=1"
+                  width="100%"
+                  style={{
+                    border: 'none',
+                    width: '100%',
+                    height: '100%',
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    overflow: 'hidden',
+                    zIndex: 1
+                  }}
+                  title="Probemas Raffle Banner"
+                />
+                <a
+                  href="https://probemas.com/raffles?utm_source=osrs-calculators&utm_medium=banner&utm_campaign=homepage-carousel&utm_content=advert1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 2,
+                    cursor: 'pointer',
+                    display: 'block'
+                  }}
+                  aria-label="Go to Probemas Raffles"
+                />
+              </Box>
+            ) : banners[currentIndex].imageUrl.includes('.mp4') ? (
+              <Box as="video"
+                src={banners[currentIndex].imageUrl}
+                width="100%"
+                height="100%"
+                objectFit="cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{ cursor: 'pointer' }}
+              />
             ) : (
-              <Link 
-                href={banners[currentIndex].linkUrl} 
-                isExternal 
-                display="block" 
-                w="100%" 
-                h="100%"
-              >
-                {banners[currentIndex].imageUrl.includes('.mp4') ? (
-                  <Box as="video"
-                    src={banners[currentIndex].imageUrl}
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    style={{ cursor: 'pointer' }}
-                  />
-                ) : (
-                  <Image
-                    src={banners[currentIndex].imageUrl}
-                    alt={banners[currentIndex].altText}
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                    transition="opacity 0.3s ease"
-                  />
-                )}
-              </Link>
+              <Image
+                src={banners[currentIndex].imageUrl}
+                alt={banners[currentIndex].altText}
+                width="100%"
+                height="100%"
+                objectFit="cover"
+                transition="opacity 0.3s ease"
+              />
             )}
           </Box>
 
