@@ -18,6 +18,7 @@ import { SkillName } from '@/lib/types';
 import { ALL_SKILLS } from '@/lib/constants';
 import OsrsHeading from '@/components/OsrsHeading';
 import Navigation from '@/components/Navigation';
+import AdvertCarousel from '@/components/AdvertCarousel';
 import { track } from '@vercel/analytics';
 
 // Dynamically import PlayerLookup with SSR disabled
@@ -107,6 +108,9 @@ export default function Home() {
             </Button>
           </Box>
         </Container>
+
+        {/* Advertisement Carousel */}
+        <AdvertCarousel />
 
         {/* Skills Section */}
         <Container maxW="6xl" pt={12} pb={8} id="skills">
