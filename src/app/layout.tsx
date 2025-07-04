@@ -8,7 +8,7 @@ import { ColorModeScript } from '@chakra-ui/react';
 import theme from '@/theme';
 import dynamic from 'next/dynamic';
 import ClientOnly from '@/components/ClientOnly';
-import Script from 'next/script';
+import DeferredScripts from '@/components/DeferredScripts';
 
 // Dynamically import Footer with ssr: false
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
@@ -176,12 +176,10 @@ export default function RootLayout({
       </head>
       <body className="osrs-background" suppressHydrationWarning>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        {/* Google Tag Manager (deferred) */}
-        <Script id="gtm" strategy="afterInteractive" src="https://www.googletagmanager.com/gtm.js?id=GTM-NNZPR8WP" />
-        {/* End Google Tag Manager */}
         <Providers>
           {children}
         </Providers>
+        <DeferredScripts />
         <Analytics />
         <ClientOnly>
           <Footer />
