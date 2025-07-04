@@ -76,7 +76,7 @@ export default function Navigation({ currentPage }: NavigationProps) {
                   as="h1" 
                   size="lg" 
                   fontWeight="bold" 
-                  fontFamily="'Roboto Slab', serif"
+                  fontFamily="var(--font-roboto-slab), serif"
                   textShadow="2px 2px 3px rgba(0,0,0,0.8)"
                 >
                   <Box as="span" color="#ffcb2f">OSRS</Box>
@@ -135,7 +135,7 @@ export default function Navigation({ currentPage }: NavigationProps) {
             <DrawerHeader 
               borderBottomWidth="1px" 
               borderColor="rgba(255, 203, 47, 0.2)"
-              fontFamily="'Roboto Slab', serif"
+              fontFamily="var(--font-roboto-slab), serif"
               color="#ffcb2f"
             >
               Navigation

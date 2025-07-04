@@ -12,7 +12,7 @@ export default function OsrsHeading({ children, fontSize = "20px", ...props }: O
   return (
     <Box 
       as="h2" 
-      fontFamily="'Roboto Slab', serif"
+      fontFamily="var(--font-roboto-slab), serif"
       fontWeight="900"
       fontSize={{ base: typeof fontSize === 'number' ? fontSize * 0.8 : fontSize, md: fontSize }}
       lineHeight="1.2"

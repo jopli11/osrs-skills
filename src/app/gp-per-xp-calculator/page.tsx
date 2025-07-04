@@ -184,7 +184,7 @@ export default function GpPerXpCalculatorPage() {
         <Container maxW="7xl" py={4}>
           <Flex justify="center" align="center">
             <ChakraLink as={NextLink} href="/" style={{ textDecoration: 'none' }} _hover={{ textDecoration: 'none' }}>
-              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="'Roboto Slab', serif" textShadow="2px 2px 0px #000">
+              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="var(--font-roboto-slab), serif" textShadow="2px 2px 0px #000">
                 <Text as="span" color="#ffcb2f">OSRS</Text>
                 <Text as="span" color="white">Calculators</Text>
                 <Text as="span" color="#e0d0b0" ml={2} fontSize="sm" fontWeight="normal">| GP per XP Calculator</Text>
@@ -218,7 +218,7 @@ export default function GpPerXpCalculatorPage() {
                   />
                 </Box>
                 <Box>
-                  <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">GP per XP Calculator</Heading>
+                  <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">GP per XP Calculator</Heading>
                   <Text color="#e0d0b0">Calculate the most cost-efficient training methods for buyable skills with live Grand Exchange prices.</Text>
                 </Box>
               </Flex>
@@ -356,7 +356,7 @@ export default function GpPerXpCalculatorPage() {
 
         {/* Cost Efficiency Guide */}
         <Container maxW="6xl" py={8} mb={20}>
-          <Heading size="lg" color="white" mb={6} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">
+          <Heading size="lg" color="white" mb={6} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">
             Cost Efficiency Guide
           </Heading>
           

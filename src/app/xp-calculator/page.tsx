@@ -142,7 +142,7 @@ export default function XpCalculatorPage() {
                 as="h1" 
                 size="lg" 
                 fontWeight="bold" 
-                fontFamily="'Roboto Slab', serif"
+                fontFamily="var(--font-roboto-slab), serif"
                 textShadow="2px 2px 0px #000"
               >
                 <Text as="span" color="#ffcb2f">OSRS</Text>
@@ -195,7 +195,7 @@ export default function XpCalculatorPage() {
                   size="xl" 
                   textAlign="center" 
                   color="white"
-                  fontFamily="'Roboto Slab', serif"
+                  fontFamily="var(--font-roboto-slab), serif"
                   textShadow="2px 2px 0px #000"
                 >
                   XP Calculator
@@ -244,7 +244,7 @@ export default function XpCalculatorPage() {
             >
               Import
             </Badge>
-            <Heading size="md" color="white" fontFamily="'Roboto Slab', serif">
+            <Heading size="md" color="white" fontFamily="var(--font-roboto-slab), serif">
               Import Your Stats
             </Heading>
           </Flex>
@@ -268,7 +268,7 @@ export default function XpCalculatorPage() {
               >
                 Settings
               </Badge>
-              <Heading size="md" color="white" fontFamily="'Roboto Slab', serif">
+              <Heading size="md" color="white" fontFamily="var(--font-roboto-slab), serif">
                 Calculator Settings
               </Heading>
             </Flex>
@@ -443,7 +443,7 @@ export default function XpCalculatorPage() {
               >
                 Results
               </Badge>
-              <Heading size="md" color="white" fontFamily="'Roboto Slab', serif">
+              <Heading size="md" color="white" fontFamily="var(--font-roboto-slab), serif">
                 XP Calculation
               </Heading>
             </Flex>
@@ -535,7 +535,7 @@ export default function XpCalculatorPage() {
 
         {/* Information Section */}
         <Box mt={12}>
-          <Heading size="md" color="white" mb={4} fontFamily="'Roboto Slab', serif">
+          <Heading size="md" color="white" mb={4} fontFamily="var(--font-roboto-slab), serif">
             About XP Calculation
           </Heading>
           <Box

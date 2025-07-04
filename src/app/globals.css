@@ -298,7 +298,7 @@ footer {
 /* OSRS Style Headings */
 
 .osrs-heading {
-    font-family: 'Roboto Slab', serif;
+    font-family: var(--font-roboto-slab), serif;
     color: #ffcb2f;
     font-weight: 900;
     letter-spacing: 0px;

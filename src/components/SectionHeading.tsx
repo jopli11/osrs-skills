@@ -12,7 +12,7 @@ export default function SectionHeading({ children, ...props }: SectionHeadingPro
     <Heading 
       color="#ffcb2f" 
       size="md"
-      fontFamily="'Roboto Slab', serif"
+      fontFamily="var(--font-roboto-slab), serif"
       fontWeight="800"
       fontSize="16px"
       letterSpacing="0.5px"
@@ -29,7 +29,7 @@ export function LargeSectionHeading({ children, ...props }: SectionHeadingProps)
     <Heading 
       color="#ffcb2f" 
       size="lg"
-      fontFamily="'Roboto Slab', serif"
+      fontFamily="var(--font-roboto-slab), serif"
       fontWeight="800"
       fontSize="18px"
       letterSpacing="0.5px"
@@ -48,7 +48,7 @@ export function OsrsTitle({ children, ...props }: SectionHeadingProps) {
       color="#ffcb2f"
       size="lg"
       fontSize="20px"
-      fontFamily="'Roboto Slab', serif"
+      fontFamily="var(--font-roboto-slab), serif"
       fontWeight="800"
       textShadow="2px 2px 3px rgba(0,0,0,0.8)"
       {...props}

@@ -155,7 +155,7 @@ export default function CannonballCalculatorPage() {
         <Container maxW="7xl" py={4}>
           <Flex justify="center" align="center">
             <ChakraLink as={NextLink} href="/" style={{ textDecoration: 'none' }} _hover={{ textDecoration: 'none' }}>
-              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="'Roboto Slab', serif" textShadow="2px 2px 0px #000">
+              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="var(--font-roboto-slab), serif" textShadow="2px 2px 0px #000">
                 <Text as="span" color="#ffcb2f">OSRS</Text>
                 <Text as="span" color="white">Calculators</Text>
                 <Text as="span" color="#e0d0b0" ml={2} fontSize="sm" fontWeight="normal">| Cannonball Calculator</Text>
@@ -189,7 +189,7 @@ export default function CannonballCalculatorPage() {
                   />
                 </Box>
                 <Box>
-                  <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">Cannonball Calculator</Heading>
+                  <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">Cannonball Calculator</Heading>
                   <Text color="#e0d0b0">Calculate profit from making cannonballs from steel bars with live Grand Exchange prices.</Text>
                 </Box>
               </Flex>
@@ -402,7 +402,7 @@ export default function CannonballCalculatorPage() {
 
         {/* Cannonball Guide */}
         <Container maxW="6xl" py={8} mb={20}>
-          <Heading size="lg" color="white" mb={6} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">
+          <Heading size="lg" color="white" mb={6} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">
             Cannonball Making Guide
           </Heading>
           

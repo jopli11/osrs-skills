@@ -62,7 +62,7 @@ const richTextRenderOptions: Options = {
         mb={6} 
         mt={8}
         color="#ffcb2f" 
-        fontFamily="'Roboto Slab', serif"
+        fontFamily="var(--font-roboto-slab), serif"
         textShadow="2px 2px 3px rgba(0,0,0,0.8)"
       >
         {children}
@@ -75,7 +75,7 @@ const richTextRenderOptions: Options = {
         mb={4} 
         mt={6}
         color="#ffcb2f" 
-        fontFamily="'Roboto Slab', serif"
+        fontFamily="var(--font-roboto-slab), serif"
         textShadow="2px 2px 3px rgba(0,0,0,0.8)"
       >
         {children}
@@ -88,7 +88,7 @@ const richTextRenderOptions: Options = {
         mb={3} 
         mt={5}
         color="#ffcb2f" 
-        fontFamily="'Roboto Slab', serif"
+        fontFamily="var(--font-roboto-slab), serif"
         textShadow="2px 2px 3px rgba(0,0,0,0.8)"
       >
         {children}
@@ -167,7 +167,7 @@ const richTextRenderOptions: Options = {
         color="#ffcb2f" 
         fontWeight="bold" 
         fontSize="sm"
-        fontFamily="'Roboto Slab', serif"
+        fontFamily="var(--font-roboto-slab), serif"
         textShadow="1px 1px 2px rgba(0,0,0,0.8)"
         borderRight="1px solid rgba(255, 203, 47, 0.3)"
         _last={{ borderRight: "none" }}

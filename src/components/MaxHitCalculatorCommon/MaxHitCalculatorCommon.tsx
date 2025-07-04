@@ -160,7 +160,7 @@ const MaxHitCalculatorCommon: React.FC<MaxHitCalculatorCommonProps> = (props) =>
         <Container maxW="7xl" py={4}>
           <Flex justify="center" align="center">
             <ChakraLink as={NextLink} href="/" style={{ textDecoration: 'none' }} _hover={{ textDecoration: 'none' }}>
-              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="'Roboto Slab', serif" textShadow="2px 2px 0px #000">
+              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="var(--font-roboto-slab), serif" textShadow="2px 2px 0px #000">
                 <Text as="span" color="#ffcb2f">OSRS</Text>
                 <Text as="span" color="white">Calculators</Text>
                 <Text as="span" color="#e0d0b0" ml={2} fontSize="sm" fontWeight="normal">| {pageTitle}</Text>
@@ -184,7 +184,7 @@ const MaxHitCalculatorCommon: React.FC<MaxHitCalculatorCommonProps> = (props) =>
                  <SkillIcon skill={heroIconSkill} size={56} />
               </Box>
               <Box>
-                <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">{pageTitle}</Heading>
+                <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">{pageTitle}</Heading>
                 <Text color="#e0d0b0">Determine your potential {calculatorType.toLowerCase()} max damage.</Text>
               </Box>
             </Flex>

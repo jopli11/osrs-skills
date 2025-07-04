@@ -97,7 +97,7 @@ export default function MiscCalculatorsSelectionPage() {
                 as="h1" 
                 size="lg" 
                 fontWeight="bold" 
-                fontFamily="'Roboto Slab', serif" 
+                fontFamily="var(--font-roboto-slab), serif" 
                 textShadow="2px 2px 0px #000"
               >
                 <Text as="span" color="#ffcb2f">OSRS</Text>
@@ -171,7 +171,7 @@ export default function MiscCalculatorsSelectionPage() {
                     color="white" 
                     mb={1} 
                     textShadow="2px 2px 0px #000" 
-                    fontFamily="'Roboto Slab', serif"
+                    fontFamily="var(--font-roboto-slab), serif"
                   >
                     Misc Calculators
                   </Heading>
@@ -205,61 +205,61 @@ export default function MiscCalculatorsSelectionPage() {
           </OsrsHeading>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
             {calculatorOptions.map((option) => (
-              <NextLink key={option.name} href={option.href} passHref>
-                <ClientOnly>
-                  <ChakraLink 
-                    display="flex"
+              <ClientOnly key={option.name}>
+                <ChakraLink
+                  as={NextLink}
+                  href={option.href}
+                  display="flex"
+                  height="100%"
+                  _hover={{
+                    textDecoration: 'none',
+                    transform: 'translateY(-4px) scale(1.02)',
+                    borderColor: '#ffcb2f',
+                    boxShadow: '8px 8px 0 rgba(255, 203, 47, 0.2)',
+                  }}
+                  onClick={() => track(option.trackingEventName, { from: '/misc-calculators'})}
+                >
+                  <Box
+                    p={8}
+                    bg="rgba(30, 20, 10, 0.85)"
+                    border="2px solid black"
+                    borderRadius="md" 
+                    boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
+                    transition="all 0.2s ease-in-out"
+                    width="100%"
                     height="100%"
-                    _hover={{ 
-                      textDecoration: 'none',
-                      transform: 'translateY(-4px) scale(1.02)',
-                      borderColor: '#ffcb2f',
-                      boxShadow: '8px 8px 0 rgba(255, 203, 47, 0.2)', 
-                    }}
-                    onClick={() => track(option.trackingEventName, { from: '/misc-calculators'})}
+                    textAlign="center"
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
                   >
-                    <Box
-                      p={8}
-                      bg="rgba(30, 20, 10, 0.85)"
-                      border="2px solid black"
-                      borderRadius="md" 
-                      boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
-                      transition="all 0.2s ease-in-out"
-                      width="100%"
-                      height="100%"
-                      textAlign="center"
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <Box mb={4} position="relative" width="64px" height="64px" mx="auto">
-                        <Image
-                          src={option.icon}
-                          alt={`${option.name} icon`}
-                          width={64}
-                          height={64}
-                          style={{
-                            objectFit: 'contain',
-                            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))'
-                          }}
-                        />
-                      </Box>
-                      <Heading 
-                        size="md" 
-                        mb={2} 
-                        color="white" 
-                        textShadow="1px 1px 1px #000"
-                      >
-                        {option.name}
-                      </Heading>
-                      <Text fontSize="sm" color="#c5c5c5">
-                        {option.description}
-                      </Text>
+                    <Box mb={4} position="relative" width="64px" height="64px" mx="auto">
+                      <Image
+                        src={option.icon}
+                        alt={`${option.name} icon`}
+                        width={64}
+                        height={64}
+                        style={{
+                          objectFit: 'contain',
+                          filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))'
+                        }}
+                      />
                     </Box>
-                  </ChakraLink>
-                </ClientOnly>
-              </NextLink>
+                    <Heading 
+                      size="md" 
+                      mb={2} 
+                      color="white" 
+                      textShadow="1px 1px 1px #000"
+                    >
+                      {option.name}
+                    </Heading>
+                    <Text fontSize="sm" color="#c5c5c5">
+                      {option.description}
+                    </Text>
+                  </Box>
+                </ChakraLink>
+              </ClientOnly>
             ))}
           </SimpleGrid>
         </Container>

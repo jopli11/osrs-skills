@@ -647,7 +647,7 @@ export default function SkillPage({ params }: Props) {
                 as="h1" 
                 size="lg" 
                 fontWeight="bold" 
-                fontFamily="'Roboto Slab', serif"
+                fontFamily="var(--font-roboto-slab), serif"
                 textShadow="2px 2px 0px #000"
               >
                 <Text as="span" color="#ffcb2f">OSRS</Text>
@@ -717,7 +717,7 @@ export default function SkillPage({ params }: Props) {
                 <SkillIcon skill={skillKey} size={56} />
               </Box>
               <Box>
-                <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">{skillName} Calculator</Heading>
+                <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">{skillName} Calculator</Heading>
                 <Text color="#e0d0b0">
                   Plan your {skillName} training efficiently with live Grand Exchange prices.
                 </Text>

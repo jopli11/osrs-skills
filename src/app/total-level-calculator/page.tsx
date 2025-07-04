@@ -173,7 +173,7 @@ export default function TotalLevelCalculatorPage() {
                 as="h1" 
                 size="lg" 
                 fontWeight="bold" 
-                fontFamily="'Roboto Slab', serif"
+                fontFamily="var(--font-roboto-slab), serif"
                 textShadow="2px 2px 0px #000"
               >
                 <Text as="span" color="#ffcb2f">OSRS</Text>
@@ -226,7 +226,7 @@ export default function TotalLevelCalculatorPage() {
                   size="xl" 
                   textAlign="center" 
                   color="white"
-                  fontFamily="'Roboto Slab', serif"
+                  fontFamily="var(--font-roboto-slab), serif"
                   textShadow="2px 2px 0px #000"
                 >
                   Total Level Calculator
@@ -275,7 +275,7 @@ export default function TotalLevelCalculatorPage() {
             >
               Import
             </Badge>
-            <Heading size="md" color="white" fontFamily="'Roboto Slab', serif">
+            <Heading size="md" color="white" fontFamily="var(--font-roboto-slab), serif">
               Import Your Stats
             </Heading>
           </Flex>
@@ -300,7 +300,7 @@ export default function TotalLevelCalculatorPage() {
                 >
                   Skills
                 </Badge>
-                <Heading size="md" color="white" fontFamily="'Roboto Slab', serif">
+                <Heading size="md" color="white" fontFamily="var(--font-roboto-slab), serif">
                   Skill Levels
                 </Heading>
               </Flex>
@@ -411,7 +411,7 @@ export default function TotalLevelCalculatorPage() {
               >
                 Results
               </Badge>
-              <Heading size="md" color="white" fontFamily="'Roboto Slab', serif">
+              <Heading size="md" color="white" fontFamily="var(--font-roboto-slab), serif">
                 Total Level
               </Heading>
             </Flex>

@@ -8,6 +8,7 @@ import { ColorModeScript } from '@chakra-ui/react';
 import theme from '@/theme';
 import dynamic from 'next/dynamic';
 import ClientOnly from '@/components/ClientOnly';
+import Script from 'next/script';
 
 // Dynamically import Footer with ssr: false
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
@@ -108,16 +109,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${robotoSlab.variable}`}>
       <head>
-        {/* Google Tag Manager */}
-        <script dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-NNZPR8WP');`
-        }} />
-        {/* End Google Tag Manager */}
-        
         <link
           rel="preload"
           href="/images/optimized/bg-texture-placeholder.webp"
@@ -185,12 +176,9 @@ export default function RootLayout({
       </head>
       <body className="osrs-background" suppressHydrationWarning>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        {/* Google Tag Manager (noscript) */}
-        <noscript dangerouslySetInnerHTML={{
-          __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNZPR8WP"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>`
-        }} />
-        {/* End Google Tag Manager (noscript) */}
+        {/* Google Tag Manager (deferred) */}
+        <Script id="gtm" strategy="afterInteractive" src="https://www.googletagmanager.com/gtm.js?id=GTM-NNZPR8WP" />
+        {/* End Google Tag Manager */}
         <Providers>
           {children}
         </Providers>

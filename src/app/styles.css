@@ -1,22 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* Inter font is now loaded locally via next/font in app/layout.tsx, so an external @import is unnecessary and would be render-blocking. */
+
 @import '../styles/probemas-theme.css';
 html,
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), sans-serif;
     margin: 0;
     padding: 0;
     color: var(--foreground);
 }
 
 .base-styles {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), sans-serif;
     margin: 0;
     padding: 0;
     color: #ffffff;
 }
 
 .osrs-background {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), sans-serif;
     margin: 0;
     padding: 0;
     color: #ffffff;

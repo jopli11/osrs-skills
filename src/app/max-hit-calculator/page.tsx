@@ -69,7 +69,7 @@ export default function MaxHitCalculatorSelectionPage() {
         <Container maxW="7xl" py={4}>
           <Flex justify="center" align="center">
             <ChakraLink as={NextLink} href="/" _hover={{ textDecoration: 'none' }}>
-              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="'Roboto Slab', serif" textShadow="2px 2px 0px #000">
+              <Heading as="h1" size="lg" fontWeight="bold" fontFamily="var(--font-roboto-slab), serif" textShadow="2px 2px 0px #000">
                 <Text as="span" color="#ffcb2f">OSRS</Text>
                 <Text as="span" color="white">Calculators</Text>
                 <Text as="span" color="#e0d0b0" ml={2} fontSize="sm" fontWeight="normal">| Max Hit Calculator</Text> 
@@ -107,7 +107,7 @@ export default function MaxHitCalculatorSelectionPage() {
                    <SkillIcon skill={'strength'} size={56} /> {/* Generic strength icon for main max hit page */}
                 </Box>
                 <Box>
-                  <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="'Roboto Slab', serif">Max Hit Calculator</Heading>
+                  <Heading size="lg" color="white" mb={1} textShadow="2px 2px 0px #000" fontFamily="var(--font-roboto-slab), serif">Max Hit Calculator</Heading>
                   <Text color="#e0d0b0">Choose a combat style to calculate your max hit.</Text>
                 </Box>
               </Flex>
