@@ -108,7 +108,7 @@ export default function Footer({ ...props }: BoxProps) {
         <Stack mt={4} spacing={1} fontSize="xs" textAlign="center">
           <Text suppressHydrationWarning={true}>
             © {year} OSRSCalculators | All game content is copyright Jagex Ltd.
-            {' '}| Not affiliated with Jagex or RuneScape. | Icons from the OSRS Wiki.
+            {' '}| Not affiliated with Jagex or RuneScape.
           </Text>
           <Text color={gold}>
             Contact: <Link href="mailto:joel@probemas.com" color="white" _hover={{ color: gold }}>joel@probemas.com</Link>
