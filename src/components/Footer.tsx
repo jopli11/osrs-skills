@@ -60,7 +60,8 @@ export default function Footer({ ...props }: BoxProps) {
                 <Link
                   href={l.href}
                   isExternal
-                  _hover={{ color: 'white' }}
+                  color="white"
+                  _hover={{ color: gold }}
                   whiteSpace="nowrap"
                 >
                   {l.label}
@@ -87,7 +88,8 @@ export default function Footer({ ...props }: BoxProps) {
                 <Link
                   href={l.href}
                   isExternal
-                  _hover={{ color: 'white' }}
+                  color="white"
+                  _hover={{ color: gold }}
                   whiteSpace="nowrap"
                 >
                   {l.label}
@@ -108,8 +110,8 @@ export default function Footer({ ...props }: BoxProps) {
             © {year} OSRSCalculators | All game content is copyright Jagex Ltd.
             {' '}| Not affiliated with Jagex or RuneScape. | Icons from the OSRS Wiki.
           </Text>
-          <Text>
-            Contact: <Link href="mailto:joel@probemas.com" color={gold}>joel@probemas.com</Link>
+          <Text color={gold}>
+            Contact: <Link href="mailto:joel@probemas.com" color="white" _hover={{ color: gold }}>joel@probemas.com</Link>
           </Text>
         </Stack>
       </Container>
