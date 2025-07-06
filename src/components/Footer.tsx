@@ -1,8 +1,8 @@
 'use client';
 
 // Ensure React hooks are NOT imported unless needed elsewhere
-import { Box, Container, Text, BoxProps, Link, Flex, Divider } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { Box, Container, Text, BoxProps, Link, Flex, Divider, Stack } from '@chakra-ui/react';
+import { useState, useEffect, Fragment } from 'react';
 
 // No need for a separate interface if it just extends BoxProps
 // interface FooterProps extends BoxProps {}
@@ -15,43 +15,103 @@ export default function Footer({ ...props }: BoxProps) {
     setYear(new Date().getFullYear());
   }, []);
 
+  const gold = '#eab516';
+
+  // Link definitions for cleaner mapping/rendering
+  const usefulLinks = [
+    { label: 'OSRS Wiki', href: 'https://oldschool.runescape.wiki' },
+    { label: 'Old School RuneScape', href: 'https://oldschool.runescape.com' },
+    { label: 'GE Tracker', href: 'https://www.ge-tracker.com' },
+    { label: 'RuneLite', href: 'https://runelite.net' },
+  ];
+
+  const partnerLinks = [
+    { label: 'Probemas Raffles', href: 'https://probemas.com/raffles' },
+    { label: 'FreeToKeep.gg', href: 'https://freetokeep.gg/' },
+  ];
+
   return (
-    <Box 
-      as="footer" 
-      borderTop="2px solid black" 
-      bg="#2a1e0f" 
-      color="#a0a0a0" 
-      py={6} 
+    <Box
+      as="footer"
+      borderTop="2px solid black"
+      bg="#2a1e0f"
+      color="#a0a0a0"
+      py={4}
       mt={16}
+      fontSize="sm"
       {...props}
     >
-      <Container maxW="6xl" textAlign="center">
-        <Text fontSize="sm" fontWeight="bold" mb={2}>
-          Useful Links:
-        </Text>
-        <Flex justifyContent="center" alignItems="center" gap={4} mb={4}>
-          <Link href="https://oldschool.runescape.wiki" isExternal _hover={{ color: "white" }}>
-            OSRS Wiki /
-          </Link>
-          <Link href="https://oldschool.runescape.com" isExternal _hover={{ color: "white" }}>
-            Old School RuneScape /
-          </Link>
-          <Link href="https://www.ge-tracker.com" isExternal _hover={{ color: "white" }}>
-            GE Tracker /
-          </Link>
-          <Link href="https://runelite.net" isExternal _hover={{ color: "white" }}>
-            RuneLite /
-          </Link>
-        </Flex>
+      <Container maxW="6xl">
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          spacing={{ base: 2, md: 6 }}
+          justify="center"
+          align="center"
+          flexWrap="wrap"
+          textAlign="center"
+        >
+          {/* Useful Links */}
+          <Flex align="center" flexWrap="wrap">
+            <Text color={gold} fontWeight="bold" mr={2}>
+              Useful Links:
+            </Text>
+            {usefulLinks.map((l, idx) => (
+              <Fragment key={l.href}>
+                <Link
+                  href={l.href}
+                  isExternal
+                  _hover={{ color: 'white' }}
+                  whiteSpace="nowrap"
+                >
+                  {l.label}
+                </Link>
+                {idx !== usefulLinks.length - 1 && (
+                  <Text as="span" color={gold} mx={2} fontWeight="bold">
+                    /
+                  </Text>
+                )}
+              </Fragment>
+            ))}
+          </Flex>
 
-        <Divider borderColor="rgba(255,255,255,0.1)" my={4} />
+          {/* Divider between sections for mobile */}
+          <Divider display={{ base: 'block', md: 'none' }} borderColor={gold} opacity={0.4} />
 
-        <Text fontSize="sm" suppressHydrationWarning={true}>
-          © {year} OSRSCalculators | All game content is copyright Jagex Ltd.
-        </Text>
-        <Text fontSize="xs" mt={1}>
-          Not affiliated with Jagex or RuneScape. Icons from the OSRS Wiki.
-        </Text>
+          {/* Partners */}
+          <Flex align="center" flexWrap="wrap">
+            <Text color={gold} fontWeight="bold" mr={2}>
+              Partners:
+            </Text>
+            {partnerLinks.map((l, idx) => (
+              <Fragment key={l.href}>
+                <Link
+                  href={l.href}
+                  isExternal
+                  _hover={{ color: 'white' }}
+                  whiteSpace="nowrap"
+                >
+                  {l.label}
+                </Link>
+                {idx !== partnerLinks.length - 1 && (
+                  <Text as="span" color={gold} mx={2} fontWeight="bold">
+                    /
+                  </Text>
+                )}
+              </Fragment>
+            ))}
+          </Flex>
+        </Stack>
+
+        {/* Legal & Contact */}
+        <Stack mt={4} spacing={1} fontSize="xs" textAlign="center">
+          <Text suppressHydrationWarning={true}>
+            © {year} OSRSCalculators | All game content is copyright Jagex Ltd.
+            {' '}| Not affiliated with Jagex or RuneScape. | Icons from the OSRS Wiki.
+          </Text>
+          <Text>
+            Contact: <Link href="mailto:joel@probemas.com" color={gold}>joel@probemas.com</Link>
+          </Text>
+        </Stack>
       </Container>
     </Box>
   );
