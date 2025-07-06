@@ -137,12 +137,12 @@ export default function RootLayout({
           media="(min-width: 1601px)"
         />
         
-        <link rel="preload" href="/icons/skills/attack.png" as="image" />
-        <link rel="preload" href="/icons/skills/strength.png" as="image" />
-        <link rel="preload" href="/icons/skills/defence.png" as="image" />
-        <link rel="preload" href="/icons/skills/ranged.png" as="image" />
-        <link rel="preload" href="/icons/skills/prayer.png" as="image" />
-        <link rel="preload" href="/icons/skills/magic.png" as="image" />
+        <link rel="preload" href="/icons/skills/new/attack128.png" as="image" />
+        <link rel="preload" href="/icons/skills/new/strength128.png" as="image" />
+        <link rel="preload" href="/icons/skills/new/defence128.png" as="image" />
+        <link rel="preload" href="/icons/skills/new/ranged128.png" as="image" />
+        <link rel="preload" href="/icons/skills/new/prayer128.png" as="image" />
+        <link rel="preload" href="/icons/skills/new/magic128.png" as="image" />
         
         <link rel="dns-prefetch" href="https://oldschool.runescape.wiki" />
         <link rel="preconnect" href="https://oldschool.runescape.wiki" crossOrigin="anonymous" />
