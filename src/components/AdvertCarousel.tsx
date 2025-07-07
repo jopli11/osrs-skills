@@ -35,10 +35,10 @@ const DEFAULT_BANNERS: Banner[] = [
   },
   {
     id: '2',
-    imageUrl: '/api/placeholder/728/90', // Placeholder for future ads
-    linkUrl: '#',
-    altText: 'Advertisement Space Available',
-    title: 'Available Ad Space'
+    imageUrl: '/images/freetokeepbanner.png',
+    linkUrl: 'https://freetokeep.gg?utm_source=osrs-calculators&utm_medium=banner&utm_campaign=homepage-carousel&utm_content=freetokeep',
+    altText: 'FreetoKeep.gg - Free OSRS Items',
+    title: 'FreetoKeep.gg Advertisement'
   },
   {
     id: '3',
@@ -185,14 +185,32 @@ export default function AdvertCarousel({
                 style={{ cursor: 'pointer' }}
               />
             ) : (
-              <Image
-                src={banners[currentIndex].imageUrl}
-                alt={banners[currentIndex].altText}
-                width="100%"
-                height="100%"
-                objectFit="cover"
-                transition="opacity 0.3s ease"
-              />
+              <Box position="relative" width="100%" height="100%">
+                <Image
+                  src={banners[currentIndex].imageUrl}
+                  alt={banners[currentIndex].altText}
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                  transition="opacity 0.3s ease"
+                />
+                <a
+                  href={banners[currentIndex].linkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 2,
+                    cursor: 'pointer',
+                    display: 'block'
+                  }}
+                  aria-label={banners[currentIndex].altText}
+                />
+              </Box>
             )}
           </Box>
 
