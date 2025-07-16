@@ -40,7 +40,7 @@ export default function Navigation({ currentPage }: NavigationProps) {
     { href: "/max-hit-calculator", label: "Max Hit Calc", trackEvent: "Navigate_To_MaxHitCalc" },
     { href: "/misc-calculators", label: "Misc Calcs", trackEvent: "Navigate_To_MiscCalcs" },
     { href: "/blog", label: "Blog", trackEvent: "Navigate_To_Blog" }
-  ];
+    ];
 
   const getPageTitle = () => {
     if (currentPage) {

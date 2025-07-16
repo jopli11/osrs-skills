@@ -80,12 +80,28 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  // Add icons (favicon, apple-touch-icon)
+  // Add icons (favicon, apple-touch-icon) - Comprehensive favicon setup for SEO
   icons: {
-    icon: '/images/favicon.ico',
-    shortcut: '/images/favicon-16x16.png',
-    apple: '/images/apple-touch-icon.png',
+    icon: [
+      { url: '/images/favicon/favicon.ico', sizes: 'any' },
+      { url: '/images/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/images/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/favicon/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/images/favicon/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/images/favicon/favicon.ico',
+    apple: [
+      { url: '/images/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/images/favicon/favicon.ico',
+        color: '#35281e',
+      },
+    ],
   },
+  manifest: '/images/favicon/site.webmanifest',
   verification: {
     google: '6v9I76yF7pTFwA7Gnv0HMlMQ6sD_Fb0yNl9zDp2ZvN0',
   },

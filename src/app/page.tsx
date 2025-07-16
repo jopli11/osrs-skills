@@ -6,7 +6,6 @@ import {
   Container, 
   Flex, 
   Text, 
-  Heading, 
   Button, 
   SimpleGrid,
   Badge,
@@ -59,16 +58,30 @@ export default function Home() {
             }}
           >
             <Flex direction="column" gap={4} mb={6}>
-              <Box mb={1}>
-                {/* OSRS Style Logo */}
-                <Heading 
-                  size="2xl" 
-                  fontFamily="var(--font-roboto-slab), serif"
-                  textShadow="2px 2px 3px rgba(0,0,0,0.8)"
+              <Box mb={1} display="flex" justifyContent="center">
+                {/* OSRS Style Logo - CSS Cropped for Quality */}
+                <Box
+                  width={{ base: "240px", md: "320px" }}
+                  height={{ base: "80px", md: "100px" }}
+                  overflow="hidden"
+                  position="relative"
+                  filter="drop-shadow(1px 1px 2px rgba(0,0,0,0.4))"
                 >
-                  <Box as="span" color="#ffcb2f">OSRS</Box>
-                  <Box as="span" color="white">Calculators</Box>
-                </Heading>
+                  <Image 
+                    src="/images/logov3.png"
+                    alt="OSRS Calculators Logo"
+                    width="auto"
+                    height="150%"
+                    objectFit="cover"
+                    objectPosition="center 50%"
+                    transform="scale(1.4)"
+                    transformOrigin="center"
+                    position="absolute"
+                    top="50%"
+                    left="50%"
+                    style={{ transform: "translate(-50%, -50%) scale(1.4)" }}
+                  />
+                </Box>
               </Box>
               <Text 
                 fontSize="lg" 
