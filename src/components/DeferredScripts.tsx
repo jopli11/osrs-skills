@@ -10,12 +10,6 @@ export default function DeferredScripts() {
       if (doc._scriptsLoaded) return;
       doc._scriptsLoaded = true;
 
-      // Google Tag Manager
-      const gtm = document.createElement("script");
-      gtm.src = "https://www.googletagmanager.com/gtm.js?id=GTM-NNZPR8WP";
-      gtm.async = true;
-      document.head.appendChild(gtm);
-
       // CookieYes banner (optional; comment out if not used)
       const cookie = document.createElement("script");
       cookie.src = "https://cdn-cookieyes.com/client_data/your_id/banner.js"; // TODO: replace with real ID
