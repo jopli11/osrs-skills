@@ -85,7 +85,7 @@ export default function AdvertCarousel({
   if (banners.length === 0) return null;
 
   return (
-    <Container maxW="6xl" py={2}>
+    <Container maxW="6xl" py={2} display={{ base: 'none', md: 'block' }}>
       <Box
         position="relative"
         onMouseEnter={() => setIsPaused(true)}
