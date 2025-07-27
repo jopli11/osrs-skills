@@ -530,5 +530,24 @@ export const magicMethods: MethodRow[] = [
     outputItems: [],
     isMembers: true,
     notes: "Requires MM2. Stack maniacal monkeys for up to 400-500k XP/hr."
+  },
+  {
+    id: "magic_afk_crab_community_boss",
+    name: "AFK Crab Community Boss",
+    skill: "magic",
+    levelReq: 40,
+    xpEach: 95,
+    gpEach: 50,
+    isMembers: true,
+    estimatedActionsPerHour: 1200,
+    inputItems: [
+      { id: 555, name: "Water rune", quantity: 3 },
+      { id: 562, name: "Chaos rune", quantity: 2 }
+    ],
+    outputItems: [
+      { id: 526, name: "Bones", quantity: 1 },
+      { id: 0, name: "Various drops", quantity: 1 }
+    ],
+    notes: "New Final Dawn community boss that provides AFK magic training with decent XP rates and some profit from drops."
   }
 ]; 
