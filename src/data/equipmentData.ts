@@ -85,12 +85,15 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
   'Dragon bolts': { ranged_str: 122, slot: 'ammo' },
   'Diamond bolts (e)': { ranged_str: 105, slot: 'ammo' },
   'Ruby bolts (e)': { ranged_str: 103, slot: 'ammo' },
+  'Atlatl darts': { ranged_str: 45, slot: 'ammo' },
 
   // --- Weapon Slot Items ---
   'Toktz-xil-ak': { str: 69, attack_slash: 72, slot: 'weapon', isObsidianWeapon: true }, // Obsidian sword
   'Emberlight': { attack_stab: 63, attack_slash: 70, str: 60, slot: 'weapon' },
   'Demonbane (2h Sword)': { attack_stab: 85, attack_slash: 105, str: 90, slot: 'weapon' },
   'Burning Claws': { attack_stab: 65, attack_slash: 75, str: 70, slot: 'weapon' },
+  'Earthbound Tecpatl': { str: 75, attack_stab: 80, attack_slash: 45, slot: 'weapon' },
+  'Redwood Hiking Staff': { str: 45, attack_crush: 50, attack_magic: 15, magic_dmg: 0.05, slot: 'weapon' },
   'Toktz-xil-ek': { str: 49, attack_stab: 54, attack_slash: 27, slot: 'weapon', isObsidianWeapon: true }, // Obsidian knife
   'Twisted bow': { attack_ranged: 70, ranged_str: 20, slot: 'weapon' },
   'Scythe of vitur': { attack_stab: 70, attack_slash: 125, attack_crush: 30, str: 75, attack_magic: -6, slot: 'weapon' },
@@ -139,6 +142,7 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
   // --- Shield Slot Items ---
   'Dragon defender': { str: 6, attack_stab: 25, attack_slash: 24, attack_crush: 23, attack_ranged: -3, attack_magic: -3, slot: 'shield' },
   'Avernic defender': { str: 8, attack_stab: 30, attack_slash: 29, attack_crush: 28, attack_magic: -5, attack_ranged: -4, prayer: 0, slot: 'shield' },
+  'Antler Guard': { str: 4, attack_stab: 15, attack_slash: 14, attack_crush: 13, attack_ranged: -2, attack_magic: -2, slot: 'shield' },
   'Rune defender': { str: 5, attack_stab: 20, attack_slash: 19, attack_crush: 18, attack_ranged: -3, attack_magic: -3, slot: 'shield' },
   'Toktz-ket-xil': { str: 5, slot: 'shield' },
   'Dragonfire shield': { str: 7, slot: 'shield' },

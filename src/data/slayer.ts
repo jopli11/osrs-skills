@@ -203,5 +203,38 @@ export const slayerMethods: MethodRow[] = [
     outputItems: [
       { id: 995, name: "Coins", quantity: 5000 }
     ]
+  },
+  {
+    id: "slayer_custodia_pass_dungeon",
+    name: "Custodia Pass Slayer Dungeon",
+    skill: "slayer",
+    levelReq: 80,
+    xpEach: 25000,
+    gpEach: 200000,
+    isMembers: true,
+    inputItems: [
+      { id: 0, name: "High level gear", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 0, name: "Antler Guard", quantity: 0.01 },
+      { id: 0, name: "Various drops", quantity: 1 }
+    ],
+    notes: "New Final Dawn slayer dungeon with three tiers of Custodia Stalkers. Rewards include the Antler Guard shield and other valuable drops. Good XP rates with profit potential."
+  },
+  {
+    id: "slayer_custodia_stalkers",
+    name: "Custodia Stalkers",
+    skill: "slayer",
+    levelReq: 80,
+    xpEach: 20000,
+    gpEach: 150000,
+    isMembers: true,
+    inputItems: [
+      { id: 0, name: "Combat gear", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 0, name: "Various drops", quantity: 1 }
+    ],
+    notes: "New Final Dawn monster type found in the Custodia Pass Slayer Dungeon. Three tiers available with increasing difficulty and rewards."
   }
 ]; 

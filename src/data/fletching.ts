@@ -417,5 +417,39 @@ export const fletchingMethods: MethodRow[] = [
     outputItems: [
       { id: 859, name: "Magic longbow", quantity: 1 }
     ]
+  },
+  {
+    id: "fletching_auburnvale_activity",
+    name: "Auburnvale Fletching Activity",
+    skill: "fletching",
+    levelReq: 50,
+    xpEach: 120,
+    gpEach: 50,
+    isMembers: true,
+    inputItems: [
+      { id: 0, name: "Various materials", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 0, name: "Fletching Knife", quantity: 0.01 },
+      { id: 0, name: "Bow String Spool", quantity: 0.01 },
+      { id: 0, name: "Atlatl Darts", quantity: 1 }
+    ],
+    notes: "New Final Dawn fletching activity in Auburnvale. Provides unique rewards including the Fletching Knife, Bow String Spool, and Atlatl Dart crafting. Good XP rates with profit potential."
+  },
+  {
+    id: "fletching_atlatl_darts",
+    name: "Crafting Atlatl Darts",
+    skill: "fletching",
+    levelReq: 60,
+    xpEach: 85,
+    gpEach: 30,
+    isMembers: true,
+    inputItems: [
+      { id: 0, name: "Atlatl dart materials", quantity: 1 }
+    ],
+    outputItems: [
+      { id: 0, name: "Atlatl darts", quantity: 1 }
+    ],
+    notes: "New Final Dawn ammunition type. Crafted through the Auburnvale fletching activity. Provides good XP rates and profit."
   }
 ]; 
