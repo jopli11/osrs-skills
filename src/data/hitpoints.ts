@@ -171,5 +171,22 @@ export const hitpointsMethods: MethodRow[] = [
       { id: 385, name: "Shark", quantity: 30 }
     ],
     outputItems: []
+  },
+  {
+    id: "hitpoints_afk_crab_community_boss",
+    name: "AFK Crab Community Boss",
+    skill: "hitpoints",
+    levelReq: 40,
+    xpEach: 95,
+    gpEach: 50,
+    isMembers: true,
+    inputItems: [
+      { id: 4587, name: "Dragon scimitar", quantity: 0.0001 }
+    ],
+    outputItems: [
+      { id: 526, name: "Bones", quantity: 1 },
+      { id: 0, name: "Various drops", quantity: 1 }
+    ],
+    notes: "New Final Dawn community boss that provides AFK combat training with decent XP rates and some profit from drops."
   }
 ]; 

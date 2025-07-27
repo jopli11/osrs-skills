@@ -209,6 +209,7 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
   'Tormented bracelet': { magic_dmg: 0.05, attack_magic: 10, prayer: 2, slot: 'hands' },
   'Barrows gloves': { str: 12, attack_stab: 12, attack_slash: 12, attack_crush: 12, attack_ranged: 12, attack_magic: 6, slot: 'hands' },
   'Ferocious gloves': { str: 16, attack_stab: 14, attack_slash: 14, attack_crush: 14, attack_magic: -14, attack_ranged: -14, slot: 'hands' },
+  'Confliction gauntlets': { str: 18, attack_stab: 16, attack_slash: 16, attack_crush: 16, attack_magic: -16, attack_ranged: -16, slot: 'hands' },
   'Dragon gloves': { str: 9, attack_stab: 9, attack_slash: 9, attack_crush: 9, slot: 'hands' },
   'Regen bracelet': { slot: 'hands' },
   'Black d\'hide vambraces': { attack_ranged: 10, slot: 'hands' },
@@ -220,6 +221,7 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
 
   // --- Feet Slot Items ---
   'Primordial boots': { str: 5, attack_stab: 2, attack_slash: 2, attack_crush: 2, slot: 'feet' },
+  'Avernic treads': { str: 7, attack_stab: 4, attack_slash: 4, attack_crush: 4, slot: 'feet' },
   'Dragon boots': { str: 4, slot: 'feet' },
   'Guardian boots': { str: 3, prayer: 2, slot: 'feet' },
   'Granite boots': { str: 3, slot: 'feet' },
@@ -252,5 +254,6 @@ export const EQUIPMENT_DATA: Record<string, EquipmentItem> = {
   'Venator ring': { attack_ranged: 10, prayer: 1, slot: 'ring' },
   'Brimstone ring': { str: 4, attack_stab: 4, attack_slash: 4, attack_crush: 4, attack_magic: 6, attack_ranged: 4, slot: 'ring' },
   'Ring of suffering (i)': { prayer: 4, slot: 'ring' },
-  'Ring of the gods (i)': { prayer: 8, slot: 'ring' }
+  'Ring of the gods (i)': { prayer: 8, slot: 'ring' },
+  'Eye of ayak': { str: 14, attack_stab: 6, attack_slash: 6, attack_crush: 6, attack_magic: 6, attack_ranged: 6, prayer: 3, slot: 'ring' }
 }; 
