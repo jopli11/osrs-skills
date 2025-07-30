@@ -37,6 +37,7 @@ export default function Navigation({ currentPage }: NavigationProps) {
   const navigationItems = [
     { href: "/#skills", label: "Skills", trackEvent: "Navigate_To_Skills" },
     { href: "/combat-calculator", label: "Combat Calc", trackEvent: "Navigate_To_CombatCalc" },
+    { href: "/dps-calculator", label: "DPS Calc", trackEvent: "Navigate_To_DPSCalc" },
     { href: "/max-hit-calculator", label: "Max Hit Calc", trackEvent: "Navigate_To_MaxHitCalc" },
     { href: "/misc-calculators", label: "Misc Calcs", trackEvent: "Navigate_To_MiscCalcs" },
     { href: "/blog", label: "Blog", trackEvent: "Navigate_To_Blog" }

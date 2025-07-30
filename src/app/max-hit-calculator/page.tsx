@@ -32,6 +32,13 @@ interface CalculatorOption {
 
 const calculatorOptions: CalculatorOption[] = [
   {
+    name: 'DPS Calculator',
+    description: 'Advanced damage per second calculator with monster analysis.',
+    href: '/dps-calculator',
+    iconSkill: 'attack',
+    trackingEventName: 'Navigate_To_DPSCalc_From_Selection',
+  },
+  {
     name: 'Melee Max Hit',
     description: 'Calculate your maximum Melee damage.',
     href: '/melee-max-hit-calculator',
