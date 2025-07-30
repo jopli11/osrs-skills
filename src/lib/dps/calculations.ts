@@ -79,6 +79,15 @@ function isWearingMagicVoid(player: Player): boolean {
   return hasVoidHelm && hasVoidTop && hasVoidBottom && hasVoidGloves;
 }
 
+function isWearingScythe(player: Player): boolean {
+  const equippedItems = Object.values(player.equipment).map(item => item?.name).filter(Boolean);
+  return equippedItems.some(itemName => itemName && (
+    itemName.includes('of vitur') || 
+    itemName.includes('Sanguinesti staff') ||
+    itemName.includes('sanguinesti')
+  ));
+}
+
 function hasMonsterAttribute(monster: Monster, attribute: string): boolean {
   return monster.attributes && monster.attributes.includes(attribute as MonsterAttribute);
 }
@@ -178,28 +187,6 @@ function applySpecialEquipmentBonuses(player: Player, baseValue: number, bonusTy
       } else if (inqPieces === 3) {
         // 1% extra for full set when not using inq mace
         result = Math.floor(result * 1.05);
-      }
-    }
-  }
-  
-  // Scythe of Vitur multi-hit bonus for large monsters
-  if (monster && isWearing(player, 'Scythe of vitur')) {
-    const monsterSize = monster.size || 1;
-    if (monsterSize >= 3) {
-      // Scythe hits up to 3 times on 3x3 or larger monsters
-      if (bonusType === 'maxHit') {
-        // Each additional hit does 50% and 25% of the first hit
-        const firstHit = result;
-        const secondHit = Math.floor(firstHit * 0.5);
-        const thirdHit = Math.floor(firstHit * 0.25);
-        result = firstHit + secondHit + thirdHit;
-      }
-    } else if (monsterSize === 2) {
-      // 2x2 monsters get hit twice
-      if (bonusType === 'maxHit') {
-        const firstHit = result;
-        const secondHit = Math.floor(firstHit * 0.5);
-        result = firstHit + secondHit;
       }
     }
   }
@@ -436,14 +423,54 @@ export function calculateDPS(player: Player, monster: Monster): DPSCalculationRe
   const accuracyDecimal = getNormalAccuracyRoll(attackRoll, defenceRoll);
   const accuracy = accuracyDecimal * 100;
   
-  // Calculate max hit
-  let maxHit = getPlayerMaxHit(player);
+  // Calculate base max hit
+  let baseMaxHit = getPlayerMaxHit(player);
   
   // Apply special equipment bonuses to max hit
-  maxHit = applySpecialEquipmentBonuses(player, maxHit, 'maxHit', monster);
+  baseMaxHit = applySpecialEquipmentBonuses(player, baseMaxHit, 'maxHit', monster);
   
-  // Calculate average hit (assuming linear distribution from 0 to maxHit)
-  const averageHit = accuracy > 0 ? (maxHit * accuracyDecimal) / 2 : 0;
+  // Handle scythe multi-hit logic
+  let maxHit = baseMaxHit;
+  let averageHit = 0;
+  
+  if (player.style.type === 'stab' || player.style.type === 'slash' || player.style.type === 'crush') {
+    if (isWearingScythe(player)) {
+      const monsterSize = monster.size || 1;
+      const numHits = Math.min(Math.max(monsterSize, 1), 3);
+      
+
+      
+      if (numHits > 1) {
+        // Calculate total damage for all hits
+        let totalDamage = 0;
+        for (let i = 0; i < numHits; i++) {
+          const hitDamage = Math.floor(baseMaxHit / (2 ** i));
+          totalDamage += hitDamage;
+        }
+        maxHit = totalDamage;
+        
+        // Calculate average damage considering accuracy for each hit
+        let totalAverageDamage = 0;
+        for (let i = 0; i < numHits; i++) {
+          const hitDamage = Math.floor(baseMaxHit / (2 ** i));
+          // Each hit has its own accuracy roll, but for simplicity we'll use the same accuracy
+          totalAverageDamage += (hitDamage * accuracyDecimal);
+        }
+        averageHit = totalAverageDamage;
+        
+
+      } else {
+        // Single hit for small monsters
+        averageHit = (baseMaxHit * accuracyDecimal);
+      }
+    } else {
+      // Standard single hit calculation
+      averageHit = (baseMaxHit * accuracyDecimal);
+    }
+  } else {
+    // Non-melee styles use standard calculation
+    averageHit = (baseMaxHit * accuracyDecimal);
+  }
   
   // Calculate DPS (damage per tick converted to damage per second)
   // OSRS runs at 0.6 seconds per tick

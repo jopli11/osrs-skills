@@ -27,6 +27,7 @@ import {
 import { useDPSStore } from '@/stores/dpsStore';
 import { PlayerSkills, Prayer, OFFENSIVE_PRAYERS } from '@/types/dps/Player';
 import EquipmentModal from './EquipmentModal';
+import { getCombatStylesForCategory, getWeaponCategory } from '@/data/dps/combat-styles';
 
 
 // Skill Input Component
@@ -233,6 +234,8 @@ const PlayerSection: React.FC = () => {
       boxShadow="5px 5px 0 rgba(0,0,0,0.4)"
       backdropFilter="blur(4px)"
       position="relative"
+      maxWidth="100%"
+      overflow="hidden"
       _after={{
         content: '""',
         position: 'absolute',
@@ -258,7 +261,7 @@ const PlayerSection: React.FC = () => {
       </Badge>
 
       <Tabs variant="enclosed" colorScheme="yellow" size="sm">
-        <TabList mb={4} bg="rgba(0,0,0,0.3)" borderRadius="md" p={1}>
+        <TabList mb={4} bg="rgba(0,0,0,0.3)" borderRadius="md" p={1} overflow="visible" display="flex" flexWrap="nowrap">
           <Tab 
             color="#e0d0b0" 
             _selected={{ 
@@ -275,7 +278,9 @@ const PlayerSection: React.FC = () => {
             }}
             border="1px solid transparent"
             borderRadius="md"
-            mx={1}
+            mx={0.25}
+            flex="1"
+            minW="0"
             transition="all 0.2s"
           >
             Skills
@@ -296,7 +301,9 @@ const PlayerSection: React.FC = () => {
             }}
             border="1px solid transparent"
             borderRadius="md"
-            mx={1}
+            mx={0.25}
+            flex="1"
+            minW="0"
             transition="all 0.2s"
           >
             Equipment
@@ -317,7 +324,9 @@ const PlayerSection: React.FC = () => {
             }}
             border="1px solid transparent"
             borderRadius="md"
-            mx={1}
+            mx={0.25}
+            flex="1"
+            minW="0"
             transition="all 0.2s"
           >
             Combat
@@ -338,7 +347,9 @@ const PlayerSection: React.FC = () => {
             }}
             border="1px solid transparent"
             borderRadius="md"
-            mx={1}
+            mx={0.25}
+            flex="1"
+            minW="0"
             transition="all 0.2s"
           >
             Prayers
@@ -429,6 +440,44 @@ const PlayerSection: React.FC = () => {
                 <EquipmentSlot slotKey="feet" slotName="Feet" onClick={handleEquipmentSlotClick} />
                 <EquipmentSlot slotKey="ring" slotName="Ring" onClick={handleEquipmentSlotClick} />
               </SimpleGrid>
+              
+              {/* Equipment Bonuses Display */}
+              <Box 
+                bg="rgba(0,0,0,0.3)" 
+                p={3} 
+                borderRadius="md" 
+                border="1px solid #3b2914"
+                width="100%"
+              >
+                <Text fontSize="sm" color="#ffcb2f" fontWeight="bold" mb={2}>
+                  Equipment Bonuses
+                </Text>
+                <SimpleGrid columns={3} spacing={3}>
+                  <VStack spacing={1} align="start">
+                    <Text fontSize="xs" color="#7a7060" fontWeight="bold">Offensive</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Stab: {player.offensive.stab}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Slash: {player.offensive.slash}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Crush: {player.offensive.crush}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Magic: {player.offensive.magic}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Ranged: {player.offensive.ranged}</Text>
+                  </VStack>
+                  <VStack spacing={1} align="start">
+                    <Text fontSize="xs" color="#7a7060" fontWeight="bold">Defensive</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Stab: {player.defensive.stab}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Slash: {player.defensive.slash}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Crush: {player.defensive.crush}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Magic: {player.defensive.magic}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Ranged: {player.defensive.ranged}</Text>
+                  </VStack>
+                  <VStack spacing={1} align="start">
+                    <Text fontSize="xs" color="#7a7060" fontWeight="bold">Other</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Strength: {player.bonuses.str}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Ranged Str: {player.bonuses.ranged_str}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Magic Str: {player.bonuses.magic_str}</Text>
+                    <Text fontSize="xs" color="#e0d0b0">Prayer: {player.bonuses.prayer}</Text>
+                  </VStack>
+                </SimpleGrid>
+              </Box>
             </VStack>
           </TabPanel>
 
@@ -442,15 +491,21 @@ const PlayerSection: React.FC = () => {
                   border="1px solid #3b2914"
                   color="#e0d0b0"
                   _focus={{ borderColor: '#ffcb2f', boxShadow: '0 0 0 1px #ffcb2f' }}
-                  value={player.style.name}
+                  value={`${player.style.name} (${player.style.stance})`}
                   onChange={(e) => {
                     // TODO: Implement combat style change
                     console.log('Combat style changed to:', e.target.value);
                   }}
                 >
-                  <option value="Punch">Punch (Accurate)</option>
-                  <option value="Kick">Kick (Aggressive)</option>
-                  <option value="Block">Block (Defensive)</option>
+                  {(() => {
+                    const weaponName = player.equipment.weapon?.name || '';
+                    const combatStyles = getCombatStylesForCategory(getWeaponCategory(weaponName));
+                    return combatStyles.map((style) => (
+                      <option key={style.name} value={`${style.name} (${style.stance})`}>
+                        {style.name} ({style.stance})
+                      </option>
+                    ));
+                  })()}
                 </Select>
               </FormControl>
 
