@@ -1,0 +1,13 @@
+{
+    "folders": [
+		{
+			"path": "../../../osrs-dps-calc"
+		},
+		{
+			"path": "../.."
+		}
+	],
+    "settings": {
+        "powershell.cwd": "osrs-skills"
+    }
+}
