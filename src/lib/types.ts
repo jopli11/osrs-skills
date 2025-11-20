@@ -3,7 +3,7 @@
  */
 export type SkillName = 
   | "attack" | "strength" | "defence" | "ranged" | "prayer" | "magic"
-  | "runecraft" | "construction" | "hitpoints" | "agility" | "herblore"
+  | "runecraft" | "sailing" | "construction" | "hitpoints" | "agility" | "herblore"
   | "thieving" | "crafting" | "fletching" | "slayer" | "hunter"
   | "mining" | "smithing" | "fishing" | "cooking" | "firemaking"
   | "woodcutting" | "farming";

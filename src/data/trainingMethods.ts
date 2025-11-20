@@ -22,6 +22,7 @@ import { prayerMethods } from "./prayer";
 import { rangedMethods } from "./ranged";
 import { defenceMethods } from "./defence";
 import { strengthMethods } from "./strength";
+import { sailingMethods } from "./sailing";
 
 /**
  * Training method interface
@@ -193,4 +194,5 @@ export const trainingMethods: Record<SkillName, TrainingMethod[]> = {
   defence: convertMethodRowsToTrainingMethods(defenceMethods),
   ranged: convertMethodRowsToTrainingMethods(rangedMethods),
   prayer: convertMethodRowsToTrainingMethods(prayerMethods),
+  sailing: convertMethodRowsToTrainingMethods(sailingMethods),
 }; 

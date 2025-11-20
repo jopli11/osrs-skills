@@ -19,6 +19,7 @@ export const ALL_SKILLS: SkillName[] = [
   "hunter",
   "magic",
   "mining",
+  "sailing",
   "prayer",
   "ranged",
   "runecraft",
@@ -48,6 +49,7 @@ export const SKILL_NAMES: Record<SkillName, string> = {
   hunter: "Hunter",
   magic: "Magic",
   mining: "Mining",
+  sailing: "Sailing",
   prayer: "Prayer",
   ranged: "Ranged",
   runecraft: "Runecraft",
@@ -85,6 +87,7 @@ export const SKILL_ICON_PATHS: Record<SkillName, string> = {
   firemaking: "/icons/skills/new/firemaking128.png",
   woodcutting: "/icons/skills/new/woodcutting128.png",
   farming: "/icons/skills/new/farming128.png",
+  sailing: "/icons/skills/new/sailing128.png",
 };
 
 // Original Wiki URLs for reference or fallback
@@ -112,4 +115,5 @@ export const OSRS_WIKI_ICON_PATHS: Record<SkillName, string> = {
   firemaking: "https://oldschool.runescape.wiki/images/6/61/Firemaking_icon.png",
   woodcutting: "https://oldschool.runescape.wiki/images/1/1b/Woodcutting_icon.png",
   farming: "https://oldschool.runescape.wiki/images/f/fb/Farming_icon.png",
+  sailing: "https://oldschool.runescape.wiki/images/Sailing_icon.png?ebfec",
 }; 
