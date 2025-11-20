@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CalculatorInput, SkillName } from "./types";
 import { track } from '@vercel/analytics';
+import { ALL_SKILLS } from "./constants";
 
 // Type for player stats from OSRS highscores
 export interface PlayerStats {
@@ -67,7 +68,7 @@ interface CalculatorState {
 }
 
 // Default calculator input
-const defaultCalculatorInput: CalculatorInput = {
+export const defaultCalculatorInput: CalculatorInput = {
   currentLevel: 1,
   targetLevel: 99,
   boosts: {
@@ -86,13 +87,7 @@ export const useCalculatorStore = create<CalculatorState>()(
       
       // Initialize with default values for all skills
       calculatorInputs: Object.fromEntries(
-        [
-          "attack", "strength", "defence", "ranged", "prayer", "magic",
-          "runecraft", "sailing", "construction", "hitpoints", "agility", "herblore",
-          "thieving", "crafting", "fletching", "slayer", "hunter",
-          "mining", "smithing", "fishing", "cooking", "firemaking",
-          "woodcutting", "farming"
-        ].map((skill) => [skill, { ...defaultCalculatorInput }])
+        ALL_SKILLS.map((skill) => [skill, { ...defaultCalculatorInput }])
       ) as Record<SkillName, CalculatorInput>,
       
       // Update calculator input for a specific skill
@@ -101,7 +96,7 @@ export const useCalculatorStore = create<CalculatorState>()(
           calculatorInputs: {
             ...state.calculatorInputs,
             [skill]: {
-              ...state.calculatorInputs[skill],
+              ...(state.calculatorInputs[skill] ?? { ...defaultCalculatorInput }),
               ...input,
             },
           },
@@ -283,6 +278,31 @@ export const useCalculatorStore = create<CalculatorState>()(
     }),
     {
       name: "osrs-calculator-storage",
+      version: 2,
+      merge: (persistedState, currentState) => {
+        if (!persistedState) {
+          return currentState;
+        }
+
+        const persisted = persistedState as CalculatorState;
+
+        const mergedCalculatorInputs: Record<SkillName, CalculatorInput> = {
+          ...currentState.calculatorInputs,
+          ...(persisted.calculatorInputs ?? {})
+        };
+
+        ALL_SKILLS.forEach((skill) => {
+          if (!mergedCalculatorInputs[skill]) {
+            mergedCalculatorInputs[skill] = { ...defaultCalculatorInput };
+          }
+        });
+
+        return {
+          ...currentState,
+          ...persisted,
+          calculatorInputs: mergedCalculatorInputs,
+        };
+      },
     }
   )
 ); 
