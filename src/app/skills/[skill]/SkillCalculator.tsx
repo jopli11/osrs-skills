@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, ChangeEvent, useMemo, useCallback } from "react";
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   Box,
@@ -24,7 +23,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { SkillIcon } from "@/components/SkillIcon";
 import { SkillName } from "@/lib/types";
-import { ALL_SKILLS, SKILL_NAMES } from "@/lib/constants";
+import { SKILL_NAMES } from "@/lib/constants";
 import { trainingMethods } from "@/data/trainingMethods";
 import { useCalculatorStore } from "@/lib/store";
 import SectionHeading from '@/components/SectionHeading';
