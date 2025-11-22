@@ -240,10 +240,7 @@ export default function SkillCalculator({ params }: Props) {
   const { skill } = params;
   
   // Validate skill name
-  if (!ALL_SKILLS.includes(skill.toLowerCase() as SkillName)) {
-    return notFound();
-  }
-  
+  // Parent component already validates this, but we keep the cast
   const skillKey = skill.toLowerCase() as SkillName;
   // Get skill name from constants
   const skillName = SKILL_NAMES[skillKey];

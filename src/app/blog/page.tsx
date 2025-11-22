@@ -98,9 +98,7 @@ export default function BlogIndexPage() {
 
   // Reset to page 1 when filters change
   useEffect(() => {
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-    }
+    setCurrentPage(1);
   }, [debouncedSearch, dateFrom, dateTo]);
 
   const handlePageChange = (page: number) => {
