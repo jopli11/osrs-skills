@@ -132,7 +132,7 @@ export default function AdvertCarousel({
                   Advertising Space Available
                 </Text>
                 <Text fontSize="xs" color="rgba(255, 255, 255, 0.7)" textAlign="center">
-                  728 x 90 Banner • Contact: joel@probemas.com
+                  728 x 90 Banner • Contact: osrscalculators@gmail.com
                 </Text>
               </Flex>
             ) : banners[currentIndex].imageUrl.includes('streamable.com') ? (
