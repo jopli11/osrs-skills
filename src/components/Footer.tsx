@@ -149,7 +149,7 @@ export default function Footer({ ...props }: BoxProps) {
                 {' '}| Not affiliated with Jagex or RuneScape.
               </Text>
               <Text color={gold}>
-                Contact: <Link href="mailto:joel@probemas.com" color="white" _hover={{ color: gold }}>joel@probemas.com</Link>
+                Contact: <Link href="mailto:osrscalculators@gmail.com" color="white" _hover={{ color: gold }}>osrscalculators@gmail.com</Link>
               </Text>
             </Stack>
           </Box>
