@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'OSRS Blast Furnace Calculator - Profit & XP Calculator',
     description: 'Calculate profit, XP rates, and efficiency for OSRS Blast Furnace smithing. Compare different ores and find the most profitable methods.',
-    url: 'https://osrs-skills.vercel.app/blast-furnace-calculator',
+    url: 'https://www.osrscalculators.com/blast-furnace-calculator',
     type: 'website',
     images: [
       {
-        url: 'https://osrs-skills.vercel.app/images/og-image.png',
+        url: '/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'OSRS Blast Furnace Calculator',
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'OSRS Blast Furnace Calculator - Profit & XP Calculator',
     description: 'Calculate profit, XP rates, and efficiency for OSRS Blast Furnace smithing.',
-    images: ['https://osrs-skills.vercel.app/images/og-image.png'],
+    images: ['/images/og-image.png'],
   },
   alternates: {
-    canonical: 'https://osrs-skills.vercel.app/blast-furnace-calculator',
+    canonical: '/blast-furnace-calculator',
   },
 };
 

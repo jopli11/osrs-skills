@@ -33,26 +33,56 @@ const nextConfig = {
         removeConsole: process.env.NODE_ENV === 'production',
     },
     async headers() {
-        return [{
-            source: '/(.*)',
-            headers: [{
-                    key: 'X-Frame-Options',
-                    value: 'DENY',
-                },
-                {
-                    key: 'X-Content-Type-Options',
-                    value: 'nosniff',
-                },
-                {
-                    key: 'X-XSS-Protection',
-                    value: '1; mode=block',
-                },
-                {
-                    key: 'Cache-Control',
-                    value: 'public, max-age=31536000, immutable',
-                },
-            ],
-        }, ];
+        return [
+            {
+                // Security headers for all routes
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'X-Frame-Options',
+                        value: 'DENY',
+                    },
+                    {
+                        key: 'X-Content-Type-Options',
+                        value: 'nosniff',
+                    },
+                    {
+                        key: 'X-XSS-Protection',
+                        value: '1; mode=block',
+                    },
+                ],
+            },
+            {
+                // Long cache for static assets only (JS, CSS, images, fonts)
+                source: '/_next/static/(.*)',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=31536000, immutable',
+                    },
+                ],
+            },
+            {
+                // Long cache for public static files
+                source: '/images/(.*)',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=31536000, immutable',
+                    },
+                ],
+            },
+            {
+                // Long cache for icon files
+                source: '/icons/(.*)',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=31536000, immutable',
+                    },
+                ],
+            },
+        ];
     },
     webpack: (config, { dev, isServer }) => {
         // Production optimizations

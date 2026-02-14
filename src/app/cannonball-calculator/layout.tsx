@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'OSRS Cannonball Calculator - Profit & Production Calculator',
     description: 'Calculate profit and production rates for making OSRS cannonballs. Find out GP per hour and how many cannonballs to make.',
-    url: 'https://osrs-skills.vercel.app/cannonball-calculator',
+    url: 'https://www.osrscalculators.com/cannonball-calculator',
     type: 'website',
     images: [
       {
-        url: 'https://osrs-skills.vercel.app/images/og-image.png',
+        url: '/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'OSRS Cannonball Calculator',
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'OSRS Cannonball Calculator - Profit & Production Calculator',
     description: 'Calculate profit and production rates for making OSRS cannonballs.',
-    images: ['https://osrs-skills.vercel.app/images/og-image.png'],
+    images: ['/images/og-image.png'],
   },
   alternates: {
-    canonical: 'https://osrs-skills.vercel.app/cannonball-calculator',
+    canonical: '/cannonball-calculator',
   },
 };
 
