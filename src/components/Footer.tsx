@@ -3,6 +3,7 @@
 // Ensure React hooks are NOT imported unless needed elsewhere
 import { Box, Container, Text, BoxProps, Link, Flex, Divider, Stack, Image } from '@chakra-ui/react';
 import { useState, useEffect, Fragment } from 'react';
+import { trackEvent } from '@/lib/analytics';
 
 // No need for a separate interface if it just extends BoxProps
 // interface FooterProps extends BoxProps {}
@@ -101,6 +102,11 @@ export default function Footer({ ...props }: BoxProps) {
                   color="white"
                   _hover={{ color: gold }}
                   whiteSpace="nowrap"
+                  onClick={() => trackEvent('external_link_click', { 
+                    label: l.label, 
+                    url: l.href,
+                    location: 'footer_useful_links'
+                  })}
                 >
                   {l.label}
                 </Link>
@@ -129,6 +135,11 @@ export default function Footer({ ...props }: BoxProps) {
                   color="white"
                   _hover={{ color: gold }}
                   whiteSpace="nowrap"
+                  onClick={() => trackEvent('external_link_click', { 
+                    label: l.label, 
+                    url: l.href,
+                    location: 'footer_partners'
+                  })}
                 >
                   {l.label}
                 </Link>

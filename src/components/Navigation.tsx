@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { track } from '@vercel/analytics';
+import { trackEvent } from '@/lib/analytics';
 
 interface NavigationProps {
   currentPage?: string;
@@ -102,7 +103,14 @@ export default function Navigation({ currentPage }: NavigationProps) {
                         fontSize="md"
                         fontWeight="medium"
                         _hover={{ color: '#ffcb2f', textDecoration: 'none' }}
-                        onClick={() => track(item.trackEvent, { from: currentPage || '/' })}
+                        onClick={() => {
+                          track(item.trackEvent, { from: currentPage || '/' });
+                          trackEvent('navigation_click', { 
+                            label: item.label, 
+                            href: item.href,
+                            from: currentPage || '/'
+                          });
+                        }}
                       >
                         {item.label}
                       </ChakraLink>
@@ -154,6 +162,11 @@ export default function Navigation({ currentPage }: NavigationProps) {
                       onClick={() => { 
                         onClose(); 
                         track(item.trackEvent, { from: 'mobile_menu' }); 
+                        trackEvent('navigation_click', { 
+                          label: item.label, 
+                          href: item.href,
+                          from: 'mobile_menu'
+                        });
                       }}
                     >
                       {item.label}

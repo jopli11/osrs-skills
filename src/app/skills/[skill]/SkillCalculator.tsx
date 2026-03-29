@@ -28,6 +28,7 @@ import { trainingMethods } from "@/data/trainingMethods";
 import { useCalculatorStore } from "@/lib/store";
 import SectionHeading from '@/components/SectionHeading';
 import PlayerLookup from '@/components/PlayerLookup';
+import { trackEvent } from "@/lib/analytics";
 
 // Experience table for levels 1-99
 const xpTable = [
@@ -117,7 +118,10 @@ function SortButtons({ localSortOption, setLocalSortOption }: { localSortOption:
         borderLeftRadius="md" 
         borderRightRadius="0"
         _hover={{ bg: "#e0a922" }}
-        onClick={() => setLocalSortOption("xphr")}
+        onClick={() => {
+          setLocalSortOption("xphr");
+          trackEvent('calculator_sort', { option: 'xphr' });
+        }}
         fontWeight="bold"
         height="10"
       >
@@ -130,7 +134,10 @@ function SortButtons({ localSortOption, setLocalSortOption }: { localSortOption:
         borderRadius="0"
         borderLeft="none" 
         _hover={{ bg: "#e0a922" }}
-        onClick={() => setLocalSortOption("gphr")}
+        onClick={() => {
+          setLocalSortOption("gphr");
+          trackEvent('calculator_sort', { option: 'gphr' });
+        }}
         fontWeight="bold"
         height="10"
       >
@@ -144,7 +151,10 @@ function SortButtons({ localSortOption, setLocalSortOption }: { localSortOption:
         borderRightRadius="md"
         borderLeft="none"
         _hover={{ bg: "#e0a922" }}
-        onClick={() => setLocalSortOption("level")}
+        onClick={() => {
+          setLocalSortOption("level");
+          trackEvent('calculator_sort', { option: 'level' });
+        }}
         fontWeight="bold"
         height="10"
       >
@@ -176,6 +186,7 @@ function ToggleButton() {
   const handleToggle = () => {
     const newValue = !showOnlyAvailable;
     setShowOnlyAvailable(newValue);
+    trackEvent('calculator_toggle_available', { enabled: newValue });
     
     // Show notification based on new state
     if (newValue) {
@@ -564,14 +575,19 @@ export default function SkillCalculator({ params }: Props) {
           </Box>
           <Box as="tbody">
             {calculatedMethods.map((method) => (
-              <Box 
-                key={method.id}
-                as="tr" 
-                _hover={{ bg: "rgba(0,0,0,0.2)" }} 
-                cursor="pointer" 
-                borderBottom="1px solid rgba(0,0,0,0.4)"
-                title={method.notes}
-              >
+                <Box 
+                  key={method.id}
+                  as="tr" 
+                  _hover={{ bg: "rgba(0,0,0,0.2)" }} 
+                  cursor="pointer" 
+                  borderBottom="1px solid rgba(0,0,0,0.4)"
+                  title={method.notes}
+                  onClick={() => trackEvent('method_select', { 
+                    method: method.name, 
+                    skill: skillKey,
+                    level_req: method.level
+                  })}
+                >
                 <Box as="td" px={4} py={3} color="white">
                   <Flex align="center" gap={2}>
                     {method.name}

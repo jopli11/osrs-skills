@@ -1,6 +1,7 @@
 'use client';
 
 import { track } from '@vercel/analytics';
+import { trackEvent } from '@/lib/analytics';
 import { useState, useCallback, useEffect } from 'react';
 import {
   Box,
@@ -88,6 +89,7 @@ export default function PlayerLookup() {
     
     setIsUsernameInvalid(false);
     track('PlayerLookup_Initiated', { username });
+    trackEvent('player_lookup', { username });
     debouncedLookup(username);
   };
 

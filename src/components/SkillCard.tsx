@@ -5,6 +5,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { SkillName } from "@/lib/types";
 import { SkillIcon } from "./SkillIcon";
 import { SKILL_NAMES } from "@/lib/constants";
+import { trackEvent } from "@/lib/analytics";
 
 interface SkillCardProps {
   skill: SkillName;
@@ -21,7 +22,11 @@ export default function SkillCard({ skill, name, priorityLoad = false, index = 0
   const shouldPrioritize = priorityLoad || index < 6;
 
   return (
-    <Link href={`/skills/${skill}`} style={{ textDecoration: 'none' }}>
+    <Link 
+      href={`/skills/${skill}`} 
+      style={{ textDecoration: 'none' }}
+      onClick={() => trackEvent('skill_select', { skill })}
+    >
       <Box
         bg="rgba(53, 40, 30, 0.9)"
         border="2px solid"
