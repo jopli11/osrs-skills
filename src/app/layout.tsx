@@ -164,7 +164,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://oldschool.runescape.wiki" crossOrigin="anonymous" />
         
         {/* Crumbless tracking script */}
-        <script defer data-website-id="cmnah3g3q0003aad2s9nfeyl4" src="https://www.crumbless.io/tracker.js"></script>
+        <script 
+          defer 
+          data-website-id="cmnah3g3q0003aad2s9nfeyl4" 
+          data-host="/ca/api/collect"
+          src="/ca/tracker.js"
+        ></script>
         
         {/* Google Tag Manager - must be in <head> per GTM docs */}
         {/* eslint-disable-next-line @next/next/next-script-for-ga */}
