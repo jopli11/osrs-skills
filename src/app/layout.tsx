@@ -167,8 +167,8 @@ export default function RootLayout({
         <script 
           defer 
           data-website-id="cmnah3g3q0003aad2s9nfeyl4" 
-          data-host="/ca/api/collect"
-          src="/ca/tracker.js"
+          data-host="/api/crumbless/collect"
+          src="/api/crumbless/tracker.js"
         ></script>
         
         {/* Google Tag Manager - must be in <head> per GTM docs */}
